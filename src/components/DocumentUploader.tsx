@@ -100,19 +100,19 @@ export const DocumentUploader: React.FC<DocumentUploaderProps> = ({ onDocumentIn
           const reader = new FileReader();
           reader.onload = (event) => {
             const fileContent = event.target?.result as string;
-            triggerDocumentCreation(file.name, guessedType, fileSizeStr, fileContent);
+            triggerDocumentCreation(file.name, guessedType, fileSizeStr, fileContent, file);
           };
           reader.readAsText(file);
         } else {
           // Generate realistic OCR text output based on guessed type
           const generatedOcr = generateMockOcrContent(file.name, guessedType);
-          triggerDocumentCreation(file.name, guessedType, fileSizeStr, generatedOcr);
+          triggerDocumentCreation(file.name, guessedType, fileSizeStr, generatedOcr, file);
         }
       }
     }, 750);
   };
 
-  const triggerDocumentCreation = (name: string, type: any, size: string, content: string) => {
+  const triggerDocumentCreation = (name: string, type: any, size: string, content: string, fileObj?: File) => {
     const todayStr = new Date().toISOString().replace("T", " ").slice(0, 19);
     const newDoc: DocumentItem = {
       id: `doc-${Date.now()}`,
@@ -125,7 +125,8 @@ export const DocumentUploader: React.FC<DocumentUploaderProps> = ({ onDocumentIn
         authorTool: "FineUploader Client Standard Node (Agentic Upload)",
         dpiCheck: "300 DPI (Verified Authentic Vector Stream)",
         fontsPercent: "100% Fully Embedded Web Fonts"
-      }
+      },
+      file: fileObj
     };
     onDocumentIngested(newDoc);
     

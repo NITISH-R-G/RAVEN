@@ -48,6 +48,11 @@ export interface AnalysisResult {
   };
   deviceFingerprintLog?: string;
   isSimulated?: boolean;
+  aiStatus?: {
+    success: boolean;
+    isQuotaExceeded: boolean;
+    message?: string;
+  };
   managedAgentStats?: {
     agentId: string;
     description: string;
@@ -69,6 +74,7 @@ export interface DocumentItem {
     dpiCheck?: string;
     fontsPercent?: string;
   };
+  file?: File;
 }
 
 export interface CaseStudy {
