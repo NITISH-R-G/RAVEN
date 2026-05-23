@@ -1,0 +1,6 @@
+{
+  "name": "RAVEN: Fraud Coherence & Graph Network",
+  "description": "Multi-document bank fraud detection platform that analyzes logical consistency, graph relationships, and browser fingerprinting to expose structured fraud rings.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
