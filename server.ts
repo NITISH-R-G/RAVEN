@@ -13,7 +13,7 @@ const pdfParse = requireModule("pdf-parse");
 // Load environment variables
 dotenv.config();
 
-import { AnalysisResult, DocumentItem } from "./src/types.js";
+import { AnalysisResult, DocumentItem, Contradiction, ExtractedEntity, GraphNode, GraphEdge, TamperedSignature } from "./src/types.js";
 
 const upload = multer({ storage: multer.memoryStorage() });
 
@@ -60,11 +60,11 @@ const SAL_REGEX = /(?:GROSS SALARY|NET SALARY|NET PAYABLE|PAYABLE|SALARY):\s*(?:
 
 // Dynamic document-parsing intelligence engine (No mockups!)
 function analyzeDocumentsDynamically(documents: DocumentItem[]): AnalysisResult {
-  const contradictions: any[] = [];
-  const extractedEntities: any[] = [];
-  const graphNodes: any[] = [];
-  const graphEdges: any[] = [];
-  const tamperedSignatures: any[] = [];
+  const contradictions: Contradiction[] = [];
+  const extractedEntities: ExtractedEntity[] = [];
+  const graphNodes: GraphNode[] = [];
+  const graphEdges: GraphEdge[] = [];
+  const tamperedSignatures: TamperedSignature[] = [];
   
   let score = 12;
   let verdict: "HIGH RISK" | "MEDIUM RISK" | "LOW RISK" = "LOW RISK";
