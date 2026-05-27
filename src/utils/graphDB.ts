@@ -64,8 +64,21 @@ export class GraphDatabase {
     const reports: TraversalReport[] = [];
     const visited = new Set<string>();
 
+    const devices: GraphNode[] = [];
+    const properties: GraphNode[] = [];
+    const persons: GraphNode[] = [];
+
+    for (const v of this.vertices.values()) {
+      if (v.type === "device" || v.type === "phone") {
+        devices.push(v);
+      } else if (v.type === "address" || v.type === "property") {
+        properties.push(v);
+      } else if (v.type === "person") {
+        persons.push(v);
+      }
+    }
+
     // Pattern 1: Reused Device Fingerprint or template across multiple applicants
-    const devices = Array.from(this.vertices.values()).filter(v => v.type === "device" || v.type === "phone");
     devices.forEach(device => {
       const incomingEdges = this.adjacencyList.get(device.id) || [];
       const connectedPersons = incomingEdges
@@ -105,7 +118,6 @@ export class GraphDatabase {
     });
 
     // Pattern 2: Shared Address/Guarantor Mismatch or double mortgages
-    const properties = Array.from(this.vertices.values()).filter(v => v.type === "address" || v.type === "property");
     properties.forEach(prop => {
       const adjacentEdges = this.adjacencyList.get(prop.id) || [];
       const linkedApplicants = adjacentEdges
@@ -146,7 +158,6 @@ export class GraphDatabase {
 
     // Pattern 3: Identity Bridge / Synthetic Employer Loops (BFS traversal)
     // Map connections where a single applicant is linked to multiple clashing corporate nodes Or proxy IP locations
-    const persons = Array.from(this.vertices.values()).filter(v => v.type === "person");
     persons.forEach(person => {
       const startId = person.id;
       const queue: { current: string; path: TraversalStep[] }[] = [];
