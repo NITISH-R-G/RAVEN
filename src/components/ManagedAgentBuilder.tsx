@@ -102,9 +102,7 @@ const interaction = await client.interactions.create({
     agent: "${agentId}",
     input: "Analyze the uploaded case study and generate the executive slide deck.",
     environment: "remote"
-}, { timeout: 300000 });
-
-console.log("Forensic Output:", interaction.output_text);`;
+}, { timeout: 300000 });`;
   };
 
   const getPythonCode = () => {
