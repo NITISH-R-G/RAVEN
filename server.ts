@@ -50,6 +50,14 @@ app.get("/api/cases", (req, res) => {
   res.json([]);
 });
 
+const NAME_REGEX = /(?:NAME|Name|APPLICANT|Applicant|Owner|OWNER):\s*([A-Za-z ]+)/gi;
+const PAN_REGEX = /(?:PAN|PAN card|PAN):\s*([A-Z0-9]+)/gi;
+const FP_REGEX = /(?:device|fingerprint|fp-)\s*(?:ID|id)?:?\s*([a-fA-F0-9-]+)/gi;
+const EMP_REGEX = /(?:EMPLOYER|Employer|Company|COMPANY):\s*([A-Za-z0-9 ]+)/gi;
+const ADDR_REGEX = /(?:ADDRESS|Address|PROPERTY|Property|Flat|FLAT):\s*([A-Za-z0-9 ,.-]+)/gi;
+const ITR_REGEX = /(?:TOTAL INCOME|GROSS INCOME|TAXABLE INCOME|INCOME|GTI):\s*(?:INR|₹)?\s*([0-9,.]+)/i;
+const SAL_REGEX = /(?:GROSS SALARY|NET SALARY|NET PAYABLE|PAYABLE|SALARY):\s*(?:INR|₹)?\s*([0-9,.]+)/i;
+
 // Dynamic document-parsing intelligence engine (No mockups!)
 function analyzeDocumentsDynamically(documents: DocumentItem[]): AnalysisResult {
   const contradictions: any[] = [];
@@ -81,7 +89,7 @@ function analyzeDocumentsDynamically(documents: DocumentItem[]): AnalysisResult 
     const type = doc.type || "OTHER";
     
     // Parse Names
-    const nameMatches = text.match(/(?:NAME|Name|APPLICANT|Applicant|Owner|OWNER):\s*([A-Za-z ]+)/gi);
+    const nameMatches = text.match(NAME_REGEX);
     if (nameMatches) {
       nameMatches.forEach((m) => {
         const val = m.split(":")[1]?.trim();
@@ -93,7 +101,7 @@ function analyzeDocumentsDynamically(documents: DocumentItem[]): AnalysisResult 
     }
     
     // Parse PAN / Tax identifiers
-    const panMatches = text.match(/(?:PAN|PAN card|PAN):\s*([A-Z0-9]+)/gi);
+    const panMatches = text.match(PAN_REGEX);
     if (panMatches) {
       panMatches.forEach((m) => {
         const val = m.split(":")[1]?.trim();
@@ -104,7 +112,7 @@ function analyzeDocumentsDynamically(documents: DocumentItem[]): AnalysisResult 
     }
 
     // Parse Device Fingerprints
-    const fpMatches = text.match(/(?:device|fingerprint|fp-)\s*(?:ID|id)?:?\s*([a-fA-F0-9-]+)/gi);
+    const fpMatches = text.match(FP_REGEX);
     if (fpMatches) {
       fpMatches.forEach((m) => {
         const parts = m.split(":");
@@ -116,7 +124,7 @@ function analyzeDocumentsDynamically(documents: DocumentItem[]): AnalysisResult 
     }
     
     // Parse Employers
-    const empMatches = text.match(/(?:EMPLOYER|Employer|Company|COMPANY):\s*([A-Za-z0-9 ]+)/gi);
+    const empMatches = text.match(EMP_REGEX);
     if (empMatches) {
       empMatches.forEach((m) => {
         const val = m.split(":")[1]?.trim();
@@ -129,7 +137,7 @@ function analyzeDocumentsDynamically(documents: DocumentItem[]): AnalysisResult 
     }
     
     // Parse Addresses
-    const addrMatches = text.match(/(?:ADDRESS|Address|PROPERTY|Property|Flat|FLAT):\s*([A-Za-z0-9 ,.-]+)/gi);
+    const addrMatches = text.match(ADDR_REGEX);
     if (addrMatches) {
       addrMatches.forEach((m) => {
         const val = m.split(":")[1]?.trim();
@@ -142,13 +150,13 @@ function analyzeDocumentsDynamically(documents: DocumentItem[]): AnalysisResult 
     
     // Parse Financial statements values
     if (type === "ITR") {
-      const itrMatches = text.match(/(?:TOTAL INCOME|GROSS INCOME|TAXABLE INCOME|INCOME|GTI):\s*(?:INR|₹)?\s*([0-9,.]+)/i);
+      const itrMatches = text.match(ITR_REGEX);
       if (itrMatches) {
         itrGross = parseInt(itrMatches[1].replace(/,/g, ""), 10);
       }
     }
     if (type === "SALARY_SLIP") {
-      const salMatches = text.match(/(?:GROSS SALARY|NET SALARY|NET PAYABLE|PAYABLE|SALARY):\s*(?:INR|₹)?\s*([0-9,.]+)/i);
+      const salMatches = text.match(SAL_REGEX);
       if (salMatches) {
         salaryMonthly = parseInt(salMatches[1].replace(/,/g, ""), 10);
         salaryAnnualized = salaryMonthly * 12;
