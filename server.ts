@@ -384,7 +384,7 @@ app.post("/api/analyze", upload.array("files"), async (req, res) => {
 
   // If we have uploaded files, let's parse them!
   if (files && files.length > 0) {
-    for (const file of files) {
+    const documentPromises = files.map(async (file) => {
       let content = "";
       try {
         if (file.originalname.toLowerCase().endsWith(".pdf") || file.mimetype === "application/pdf") {
@@ -413,7 +413,7 @@ app.post("/api/analyze", upload.array("files"), async (req, res) => {
 
       const cleanFileName = file.originalname.replace(/\.[^/.]+$/, "").replace(/[_-]/g, " ");
 
-      documents.push({
+      return {
         id: `uploaded-${Date.now()}-${Math.random()}`,
         name: file.originalname,
         type: guessedType,
@@ -425,8 +425,9 @@ app.post("/api/analyze", upload.array("files"), async (req, res) => {
           dpiCheck: file.originalname.toLowerCase().includes("slip") ? "96 DPI (Web low resolution anomaly)" : "300 DPI",
           fontsPercent: file.originalname.toLowerCase().includes("slip") ? "Not Embedded" : "100% Embedded"
         }
-      });
-    }
+      };
+    });
+    documents = await Promise.all(documentPromises);
   } else if (req.body.documents) {
     // Fall back to JSON text document objects if provided (useful for some test utilities or direct custom text entries)
     if (typeof req.body.documents === "string") {
