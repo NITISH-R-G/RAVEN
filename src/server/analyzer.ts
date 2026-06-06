@@ -1,4 +1,18 @@
-import { AnalysisResult, DocumentItem } from "../types.js";
+import { AnalysisResult, DocumentItem, Contradiction, ExtractedEntity, GraphNode, GraphEdge, TamperedSignature } from "../types.js";
+
+interface ExtractionState {
+  people: Set<string>;
+  employers: Set<string>;
+  addresses: Set<string>;
+  devices: Set<string>;
+  itrGross: number;
+  salaryMonthly: number;
+  salaryAnnualized: number;
+  itrEmployer: string;
+  salaryEmployer: string;
+  extractedEntities: ExtractedEntity[];
+  tamperedSignatures: TamperedSignature[];
+}
 
 const NAME_REGEX = /(?:NAME|Name|APPLICANT|Applicant|Owner|OWNER):\s*([A-Za-z ]+)/gi;
 const PAN_REGEX = /(?:PAN|PAN card|PAN):\s*([A-Z0-9]+)/gi;
@@ -8,31 +22,22 @@ const ADDR_REGEX = /(?:ADDRESS|Address|PROPERTY|Property|Flat|FLAT):\s*([A-Za-z0
 const ITR_REGEX = /(?:TOTAL INCOME|GROSS INCOME|TAXABLE INCOME|INCOME|GTI):\s*(?:INR|₹)?\s*([0-9,.]+)/i;
 const SAL_REGEX = /(?:GROSS SALARY|NET SALARY|NET PAYABLE|PAYABLE|SALARY):\s*(?:INR|₹)?\s*([0-9,.]+)/i;
 
-export function analyzeDocumentsDynamically(documents: DocumentItem[]): AnalysisResult {
-  const contradictions: any[] = [];
-  const extractedEntities: any[] = [];
-  const graphNodes: any[] = [];
-  const graphEdges: any[] = [];
-  const tamperedSignatures: any[] = [];
-
-  let score = 12;
-  let verdict: "HIGH RISK" | "MEDIUM RISK" | "LOW RISK" = "LOW RISK";
-  let summary = "Relational sweep successful: Workspace files are digitally sound and structurally aligned on all checks.";
-
-  let itrGross = 0;
-  let salaryMonthly = 0;
-  let salaryAnnualized = 0;
-
-  let itrEmployer = "";
-  let salaryEmployer = "";
-
-  const people = new Set<string>();
-  const employers = new Set<string>();
-  const addresses = new Set<string>();
-  const devices = new Set<string>();
+function parseDocuments(documents: DocumentItem[]): ExtractionState {
+  const state: ExtractionState = {
+    people: new Set(),
+    employers: new Set(),
+    addresses: new Set(),
+    devices: new Set(),
+    itrGross: 0,
+    salaryMonthly: 0,
+    salaryAnnualized: 0,
+    itrEmployer: "",
+    salaryEmployer: "",
+    extractedEntities: [],
+    tamperedSignatures: []
+  };
 
   const items = documents || [];
-
   items.forEach((doc) => {
     const text = doc.content || "";
     const type = doc.type || "OTHER";
@@ -43,8 +48,8 @@ export function analyzeDocumentsDynamically(documents: DocumentItem[]): Analysis
       nameMatches.forEach((m) => {
         const val = m.split(":")[1]?.trim();
         if (val && val.length > 3) {
-          people.add(val);
-          extractedEntities.push({ entity: val, value: `${type} Signee`, docType: type });
+          state.people.add(val);
+          state.extractedEntities.push({ entity: val, value: `${type} Signee`, docType: type });
         }
       });
     }
@@ -55,7 +60,7 @@ export function analyzeDocumentsDynamically(documents: DocumentItem[]): Analysis
       panMatches.forEach((m) => {
         const val = m.split(":")[1]?.trim();
         if (val && val.length > 5) {
-          extractedEntities.push({ entity: val, value: `Tax PAN ID`, docType: type });
+          state.extractedEntities.push({ entity: val, value: `Tax PAN ID`, docType: type });
         }
       });
     }
@@ -67,7 +72,7 @@ export function analyzeDocumentsDynamically(documents: DocumentItem[]): Analysis
         const parts = m.split(":");
         const val = (parts.length > 1 ? parts[1] : m).replace(/device/i, "").replace(/id/i, "").replace(/fingerprint/i, "").replace(/=/g, "").trim();
         if (val && val.length > 4) {
-          devices.add(val);
+          state.devices.add(val);
         }
       });
     }
@@ -78,9 +83,9 @@ export function analyzeDocumentsDynamically(documents: DocumentItem[]): Analysis
       empMatches.forEach((m) => {
         const val = m.split(":")[1]?.trim();
         if (val && val.length > 3) {
-          employers.add(val);
-          if (type === "ITR") itrEmployer = val;
-          if (type === "SALARY_SLIP") salaryEmployer = val;
+          state.employers.add(val);
+          if (type === "ITR") state.itrEmployer = val;
+          if (type === "SALARY_SLIP") state.salaryEmployer = val;
         }
       });
     }
@@ -92,7 +97,7 @@ export function analyzeDocumentsDynamically(documents: DocumentItem[]): Analysis
         const val = m.split(":")[1]?.trim();
         if (val && val.length > 8) {
           const shortAddr = val.split(",")[0].trim() || val;
-          addresses.add(shortAddr);
+          state.addresses.add(shortAddr);
         }
       });
     }
@@ -101,14 +106,14 @@ export function analyzeDocumentsDynamically(documents: DocumentItem[]): Analysis
     if (type === "ITR") {
       const itrMatches = text.match(ITR_REGEX);
       if (itrMatches) {
-        itrGross = parseInt(itrMatches[1].replace(/,/g, ""), 10);
+        state.itrGross = parseInt(itrMatches[1].replace(/,/g, ""), 10);
       }
     }
     if (type === "SALARY_SLIP") {
       const salMatches = text.match(SAL_REGEX);
       if (salMatches) {
-        salaryMonthly = parseInt(salMatches[1].replace(/,/g, ""), 10);
-        salaryAnnualized = salaryMonthly * 12;
+        state.salaryMonthly = parseInt(salMatches[1].replace(/,/g, ""), 10);
+        state.salaryAnnualized = state.salaryMonthly * 12;
       }
     }
 
@@ -117,21 +122,21 @@ export function analyzeDocumentsDynamically(documents: DocumentItem[]): Analysis
     const dpi = doc.metadata?.dpiCheck || "";
 
     if (text.includes("Canva") || author.includes("Canva")) {
-      tamperedSignatures.push({
+      state.tamperedSignatures.push({
         signature: "Canva Pro Template Mark",
         confidence: 92,
         explanation: "Document elements align with Canva design exports instead of certified payroll system prints."
       });
     }
     if (text.includes("Photoshop") || author.includes("Photoshop")) {
-      tamperedSignatures.push({
+      state.tamperedSignatures.push({
         signature: "Adobe Photoshop CC adjustment layers",
         confidence: 96,
         explanation: "EXIF contains raster modifying traces indicating coordinate table graphics manipulation."
       });
     }
     if (dpi && (dpi.includes("96") || dpi.includes("72"))) {
-      tamperedSignatures.push({
+      state.tamperedSignatures.push({
         signature: "Low Resolution Raster Anomaly",
         confidence: 85,
         explanation: `Raster mapped at a low ${dpi} rendering. Certified original financial vectors exceed 300 DPI.`
@@ -139,40 +144,47 @@ export function analyzeDocumentsDynamically(documents: DocumentItem[]): Analysis
     }
   });
 
+  return state;
+}
+
+function findContradictions(state: ExtractionState, documents: DocumentItem[]): Contradiction[] {
+  const contradictions: Contradiction[] = [];
+
   // Real-time comparative logic
-  if (itrEmployer && salaryEmployer && itrEmployer.toLowerCase() !== salaryEmployer.toLowerCase()) {
-    if (!itrEmployer.toLowerCase().includes(salaryEmployer.toLowerCase()) && !salaryEmployer.toLowerCase().includes(itrEmployer.toLowerCase())) {
+  if (state.itrEmployer && state.salaryEmployer && state.itrEmployer.toLowerCase() !== state.salaryEmployer.toLowerCase()) {
+    if (!state.itrEmployer.toLowerCase().includes(state.salaryEmployer.toLowerCase()) && !state.salaryEmployer.toLowerCase().includes(state.itrEmployer.toLowerCase())) {
       contradictions.push({
         title: "Employer Brand Identification Conflict",
         severity: "medium",
-        description: `Government tax filings register '${itrEmployer}' as prime employer, but salary slip certifies payment from '${salaryEmployer}'. Signifies distinct discrepancies.`,
+        description: `Government tax filings register '${state.itrEmployer}' as prime employer, but salary slip certifies payment from '${state.salaryEmployer}'. Signifies distinct discrepancies.`,
         crossDocSource: "ITR vs Salary Slip"
       });
     }
   }
 
-  if (itrGross > 0 && salaryAnnualized > 0) {
-    const ratio = Math.max(itrGross, salaryAnnualized) / Math.min(itrGross, salaryAnnualized);
+  if (state.itrGross > 0 && state.salaryAnnualized > 0) {
+    const ratio = Math.max(state.itrGross, state.salaryAnnualized) / Math.min(state.itrGross, state.salaryAnnualized);
     if (ratio > 1.25) {
       const severity = ratio > 2 ? "high" : "medium";
       contradictions.push({
         title: "Income Margin Misalignment",
         severity,
-        description: `Tax reported Gross total income is ₹${itrGross.toLocaleString()}, whereas payslip states ₹${salaryMonthly.toLocaleString()} monthly (₹${salaryAnnualized.toLocaleString()} annualized). This represents an unsupported ${(ratio * 100 - 100).toFixed(0)}% deviation.`,
+        description: `Tax reported Gross total income is ₹${state.itrGross.toLocaleString()}, whereas payslip states ₹${state.salaryMonthly.toLocaleString()} monthly (₹${state.salaryAnnualized.toLocaleString()} annualized). This represents an unsupported ${(ratio * 100 - 100).toFixed(0)}% deviation.`,
         crossDocSource: "ITR FY26 vs Payslip"
       });
     }
   }
 
-  if (devices.size > 0 && people.size > 1) {
+  if (state.devices.size > 0 && state.people.size > 1) {
     contradictions.push({
       title: "Device Footprint Collision",
       severity: "high",
-      description: `Risk engine detects identical client device browser fingerprints [${Array.from(devices).join(", ")}] executing submissions for discrete candidate applicants. Coordinated transaction hazard flagged.`,
+      description: `Risk engine detects identical client device browser fingerprints [${Array.from(state.devices).join(", ")}] executing submissions for discrete candidate applicants. Coordinated transaction hazard flagged.`,
       crossDocSource: "Fingerprint SDK Ledger"
     });
   }
 
+  const items = documents || [];
   const propertiesText = items.some(d => d.content?.toLowerCase().includes("lien") || d.content?.toLowerCase().includes("double mortgage") || d.content?.toLowerCase().includes("concurrent"));
   if (propertiesText) {
     contradictions.push({
@@ -183,7 +195,14 @@ export function analyzeDocumentsDynamically(documents: DocumentItem[]): Analysis
     });
   }
 
-  // Scoring
+  return contradictions;
+}
+
+function calculateRisk(contradictions: Contradiction[], tamperedSignatures: TamperedSignature[]): { score: number, verdict: "HIGH RISK" | "MEDIUM RISK" | "LOW RISK", summary: string } {
+  let score = 12;
+  let verdict: "HIGH RISK" | "MEDIUM RISK" | "LOW RISK" = "LOW RISK";
+  let summary = "Relational sweep successful: Workspace files are digitally sound and structurally aligned on all checks.";
+
   if (contradictions.length > 0) {
     const high = contradictions.filter(c => c.severity === "high").length;
     const med = contradictions.filter(c => c.severity === "medium").length;
@@ -203,12 +222,17 @@ export function analyzeDocumentsDynamically(documents: DocumentItem[]): Analysis
     summary = `Success: Relational sweep completed clean. Zero clashing claims, device crossovers, or template modifications discovered. Verified fully authentic.`;
   }
 
-  // Construct Extracted Relationships Graph
+  return { score, verdict, summary };
+}
+
+function buildRelationshipGraph(state: ExtractionState, score: number): { graphNodes: GraphNode[], graphEdges: GraphEdge[] } {
+  const graphNodes: GraphNode[] = [];
+  const graphEdges: GraphEdge[] = [];
   const personNodeIds: string[] = [];
   let nodeIdx = 1;
 
-  if (people.size > 0) {
-    people.forEach((p) => {
+  if (state.people.size > 0) {
+    state.people.forEach((p) => {
       const id = `node-person-${nodeIdx++}`;
       graphNodes.push({
         id,
@@ -232,13 +256,13 @@ export function analyzeDocumentsDynamically(documents: DocumentItem[]): Analysis
   }
 
   let empIdx = 1;
-  employers.forEach((e) => {
+  state.employers.forEach((e) => {
     const id = `node-emp-${empIdx++}`;
     graphNodes.push({
       id,
       label: e,
       type: "employer",
-      status: salaryEmployer && itrEmployer && salaryEmployer !== itrEmployer ? "flagged" : "verified",
+      status: state.salaryEmployer && state.itrEmployer && state.salaryEmployer !== state.itrEmployer ? "flagged" : "verified",
       details: "Discovered employer linkage"
     });
 
@@ -248,13 +272,13 @@ export function analyzeDocumentsDynamically(documents: DocumentItem[]): Analysis
         source: pid,
         target: id,
         relationship: "Employed By",
-        status: salaryEmployer && itrEmployer && salaryEmployer !== itrEmployer ? "flagged" : "verified"
+        status: state.salaryEmployer && state.itrEmployer && state.salaryEmployer !== state.itrEmployer ? "flagged" : "verified"
       });
     });
   });
 
   let addrIdx = 1;
-  addresses.forEach((a) => {
+  state.addresses.forEach((a) => {
     const id = `node-addr-${addrIdx++}`;
     graphNodes.push({
       id,
@@ -275,7 +299,7 @@ export function analyzeDocumentsDynamically(documents: DocumentItem[]): Analysis
   });
 
   let devIdx = 1;
-  devices.forEach((d) => {
+  state.devices.forEach((d) => {
     const id = `node-dev-${devIdx++}`;
     graphNodes.push({
       id,
@@ -304,6 +328,15 @@ export function analyzeDocumentsDynamically(documents: DocumentItem[]): Analysis
     });
   }
 
+  return { graphNodes, graphEdges };
+}
+
+export function analyzeDocumentsDynamically(documents: DocumentItem[]): AnalysisResult {
+  const state = parseDocuments(documents);
+  const contradictions = findContradictions(state, documents);
+  const { score, verdict, summary } = calculateRisk(contradictions, state.tamperedSignatures);
+  const { graphNodes, graphEdges } = buildRelationshipGraph(state, score);
+
   const bankActionRequired = score > 60
     ? "MANDATED AUDIT CONTROL. Freeze candidate application routing lines, file secure suspicious transaction logs to regulatory agencies instantly."
     : "Proceed standard credit routing pathways. No anomalies detected.";
@@ -317,10 +350,10 @@ export function analyzeDocumentsDynamically(documents: DocumentItem[]): Analysis
     verdict,
     summary,
     contradictions,
-    extractedEntities,
+    extractedEntities: state.extractedEntities,
     graphNodes,
     graphEdges,
-    tamperedSignatures,
+    tamperedSignatures: state.tamperedSignatures,
     caseFileDetails: {
       bankActionRequired,
       rbiComplianceWarning,
