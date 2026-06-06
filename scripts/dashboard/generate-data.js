@@ -1,3 +1,4 @@
+/* global process, console */
 import fs from 'fs';
 import path from 'path';
 import { execSync } from 'child_process';
@@ -124,7 +125,7 @@ async function gatherMetrics() {
   try {
     const gitLog = execSync('git log -1 --format="%cd"').toString().trim();
     console.log('Last commit date:', gitLog);
-  } catch (e) {
+  } catch {
     console.log('Git command failed, using mock data.');
   }
 
