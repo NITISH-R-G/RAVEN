@@ -178,7 +178,7 @@ router.post("/api/analyze", analyzeLimiter, upload.array("files"), async (req, r
     // Compile docs text
     let promptDocs = "";
     if (documents && Array.isArray(documents)) {
-      documents.forEach((doc: any, i: number) => {
+      documents.forEach((doc: DocumentItem, i: number) => {
         promptDocs += `\n\n--- DOCUMENT ${i + 1}: ${doc.name} (Type: ${doc.type}) ---\n${doc.content}\n`;
       });
     }
