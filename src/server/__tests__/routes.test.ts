@@ -160,6 +160,25 @@ describe("POST /api/analyze", () => {
     expect(response.body.score).toBe(40); // the local fallback score
   });
 
+  it("should handle invalid JSON in documents string by falling back to empty array", async () => {
+    const response = await request(app)
+      .post("/api/analyze")
+      .send({
+        engineMode: "local",
+        documents: "invalid json string"
+      });
+
+    expect(response.status).toBe(200);
+
+    // Check that analyzeDocumentsDynamically was called with an empty array
+    const analyzeDocumentsDynamically = vi.mocked(await import("../analyzer.js")).analyzeDocumentsDynamically;
+    expect(analyzeDocumentsDynamically).toHaveBeenCalled();
+    const passedDocs = analyzeDocumentsDynamically.mock.calls[0][0];
+
+    expect(passedDocs).toBeDefined();
+    expect(passedDocs.length).toBe(0);
+  });
+
   it("should guess document type correctly based on uploaded filename", async () => {
     const response = await request(app)
       .post("/api/analyze")
