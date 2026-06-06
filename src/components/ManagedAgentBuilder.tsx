@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { COPY_FEEDBACK_DURATION_MS } from "../constants/timings";
 import { 
   Sparkles, 
   Cpu, 
@@ -57,7 +58,7 @@ Always structure audit records with corresponding risk parameters.`
   const copyToClipboard = (text: string) => {
     navigator.clipboard.writeText(text);
     setCopied(true);
-    setTimeout(() => setCopied(false), 2000);
+    setTimeout(() => setCopied(false), COPY_FEEDBACK_DURATION_MS);
   };
 
   // Build the code samples dynamically based on user choices matching the Gemini API manual!
