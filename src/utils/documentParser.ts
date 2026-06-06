@@ -14,12 +14,14 @@ export interface LayoutDiscovered {
   alignmentConfidence: number;
 }
 
+import { DocumentItem } from "../types";
+
 export const parseDocument = (
-  text: string,
-  type: string,
-  selectedModel: "anthropic-finance" | "fingpt-llama" | "layoutlm-v3",
-  documentId: string
+  document: DocumentItem,
+  nlpModel: string
 ): { entities: ParsedEntity[], layout: LayoutDiscovered } => {
+  const { content: text, type, id: documentId } = document;
+  const selectedModel = nlpModel as "anthropic-finance" | "fingpt-llama" | "layoutlm-v3";
   const lines = text.split("\n");
   const tempEntities: ParsedEntity[] = [];
   let discoveredFields = 0;
