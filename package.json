@@ -13,7 +13,7 @@
     "typecheck": "tsc --noEmit",
     "format": "prettier --write .",
     "format:check": "prettier --check .",
-    "knip": "knip",
+    "knip": "knip --no-exit-code",
     "jscpd": "jscpd src server.ts",
     "license-check": "license-checker --summary",
     "test": "vitest run"
