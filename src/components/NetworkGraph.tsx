@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { GraphNode, GraphEdge } from "../types";
-import { Network, User, MapPin, Building, Smartphone, Fingerprint, ShieldAlert, Award } from "lucide-react";
+import { Network, User, MapPin, Building, Smartphone, Fingerprint, ShieldAlert } from "lucide-react";
 import { motion } from "motion/react";
 
 interface NetworkGraphProps {
