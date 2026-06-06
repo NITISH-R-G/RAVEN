@@ -97,12 +97,13 @@ router.post("/api/analyze", upload.array("files"), async (req, res) => {
     // Fall back to JSON text document objects if provided (useful for some test utilities or direct custom text entries)
     if (typeof req.body.documents === "string") {
       try {
-        documents = JSON.parse(req.body.documents);
+        const parsed = JSON.parse(req.body.documents);
+        documents = Array.isArray(parsed) ? parsed : [];
       } catch {
         documents = [];
       }
     } else {
-      documents = req.body.documents;
+      documents = Array.isArray(req.body.documents) ? req.body.documents : [];
     }
   }
 
