@@ -107,6 +107,21 @@ describe("POST /api/analyze", () => {
     expect(response.body.summary).toContain("[Managed Agent Account Sweep]");
   });
 
+  it("should enrich with default fallback managed agent stats when managedAgentId is omitted", async () => {
+    const response = await request(app)
+      .post("/api/analyze")
+      .send({
+        engineMode: "local",
+        useManagedAgent: true,
+        documents: []
+      });
+
+    expect(response.status).toBe(200);
+    expect(response.body.managedAgentStats).toBeDefined();
+    expect(response.body.managedAgentStats.agentId).toBe("raven-coherence-auditor");
+    expect(response.body.summary).toContain("[Managed Agent Account Sweep]");
+  });
+
   it("should return Gemini API success response when engineMode is 'gemini'", async () => {
     const mockAiResponse = {
       score: 85,
