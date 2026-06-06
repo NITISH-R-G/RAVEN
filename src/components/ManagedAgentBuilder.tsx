@@ -95,8 +95,6 @@ const agent = await client.agents.create({
     }
 });
 
-console.log(\`Created RAVEN audit agent successfully: \${agent.id}\`);
-
 // Step 2: Invoke your agent with custom input
 const interaction = await client.interactions.create({
     agent: "${agentId}",
@@ -139,8 +137,6 @@ agent = client.agents.create(
         }` : ""}
     }
 )
-
-print(f"Agent '{agent.id}' saved and persistent.")
 
 # Step 2: Query the agent
 result = client.interactions.create(
