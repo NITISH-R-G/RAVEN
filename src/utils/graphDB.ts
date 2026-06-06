@@ -110,7 +110,9 @@ export class GraphDatabase {
         reports.push({
           patternType: "reused_template",
           title: "Multi-Identity Hardware Collision Ring",
-          description: `Identical browser fingerprint/template profile and canvas hash shared by separate individuals (${connectedPersons.map(p => p.label).join(" & ")}). This represents a classic automated multi-account fraud ring bypassing single-IP isolation walls.`,
+          description: "Identical browser fingerprint/template profile and canvas hash " +
+            `shared by separate individuals (${connectedPersons.map(p => p.label).join(" & ")}). ` +
+            "This represents a classic automated multi-account fraud ring bypassing single-IP isolation walls.",
           steps,
           severity: "high"
         });
@@ -149,7 +151,9 @@ export class GraphDatabase {
         reports.push({
           patternType: "shared_address",
           title: "Concurrent Multi-Lien Collusion Ring",
-          description: `Separate high-value credit files concurrent claims filed over the exact same physical property address (${prop.label}) with high-level discrepancies. Signals double-mortgage loan-stacking scams.`,
+          description: "Separate high-value credit files concurrent claims filed over the exact " +
+            `same physical property address (${prop.label}) with high-level discrepancies. ` +
+            "Signals double-mortgage loan-stacking scams.",
           steps,
           severity: "high"
         });
@@ -195,7 +199,9 @@ export class GraphDatabase {
               reports.push({
                 patternType: "identity_bridge",
                 title: "Synthetic Corporation Employment Loop",
-                description: `Applicant ${person.label} claims substantial salary claims from synthetic/discrepant company node [${neighborNode.label}] alongside mismatched tax listings file verification. Indicates empty shell employer templates.`,
+                description: `Applicant ${person.label} claims substantial salary claims from ` +
+                  `synthetic/discrepant company node [${neighborNode.label}] alongside mismatched ` +
+                  "tax listings file verification. Indicates empty shell employer templates.",
                 steps: newPath,
                 severity: "high"
               });
@@ -206,7 +212,9 @@ export class GraphDatabase {
               reports.push({
                 patternType: "identity_bridge",
                 title: "Interstate Session Routing Anomaly",
-                description: `Co-applicant / spouse authorization is routing through out-of-state proxy network nodes [${neighborNode.label}] while primary account is local. Signals synthetic co-applicant credentials.`,
+                description: "Co-applicant / spouse authorization is routing through out-of-state " +
+                  `proxy network nodes [${neighborNode.label}] while primary account is local. ` +
+                  "Signals synthetic co-applicant credentials.",
                 steps: newPath,
                 severity: "medium"
               });
