@@ -1,5 +1,5 @@
 import React, { useState, useRef } from "react";
-import { UploadCloud, FileText, CheckCircle2, AlertTriangle, RefreshCw, Layers } from "lucide-react";
+import { UploadCloud, FileText, CheckCircle2, AlertTriangle, RefreshCw } from "lucide-react";
 import { DocumentItem } from "../types";
 
 interface DocumentUploaderProps {
