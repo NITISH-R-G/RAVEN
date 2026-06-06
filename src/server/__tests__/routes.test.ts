@@ -160,6 +160,20 @@ describe("POST /api/analyze", () => {
     expect(response.body.score).toBe(40); // the local fallback score
   });
 
+  it("should handle invalid JSON string in documents field gracefully", async () => {
+    const response = await request(app)
+      .post("/api/analyze")
+      .send({
+        engineMode: "local",
+        documents: "invalid-json-string-not-an-array-or-object"
+      });
+
+    expect(response.status).toBe(200);
+    // Should fallback to local engine correctly without crashing
+    expect(response.body.aiStatus.message).toContain("Local Rule Intelligence engine");
+    expect(response.body.score).toBe(40);
+  });
+
   it("should guess document type correctly based on uploaded filename", async () => {
     const response = await request(app)
       .post("/api/analyze")
