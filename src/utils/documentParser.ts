@@ -37,7 +37,10 @@ export const parseDocument = (
       if (labelKeywords.some(keyword => lowerLine.includes(keyword.toLowerCase()))) {
         discoveredFields++;
         // Extract after colon or equal
-        const delimiterIdx = line.indexOf(":") !== -1 ? line.indexOf(":") : line.indexOf("=");
+        let delimiterIdx = line.indexOf(":");
+        if (delimiterIdx === -1) {
+          delimiterIdx = line.indexOf("=");
+        }
         if (delimiterIdx !== -1) {
           return {
             val: line.substring(delimiterIdx + 1).trim(),
