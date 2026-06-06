@@ -1,5 +1,6 @@
 import React, { useState, useRef } from "react";
 import { UploadCloud, FileText, CheckCircle2, AlertTriangle, RefreshCw } from "lucide-react";
+import { UPLOAD_SUCCESS_DURATION_MS } from "../constants/timing";
 import { DocumentItem } from "../types";
 
 interface DocumentUploaderProps {
@@ -133,7 +134,7 @@ export const DocumentUploader: React.FC<DocumentUploaderProps> = ({ onDocumentIn
     // Keep showing completed indicator for a second then fade out
     setTimeout(() => {
       setCurrentUpload(null);
-    }, 2000);
+    }, UPLOAD_SUCCESS_DURATION_MS);
   };
 
   const handleDrop = (e: React.DragEvent) => {
