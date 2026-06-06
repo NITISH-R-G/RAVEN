@@ -112,7 +112,7 @@ export const DocumentUploader: React.FC<DocumentUploaderProps> = ({ onDocumentIn
     }, 750);
   };
 
-  const triggerDocumentCreation = (name: string, type: any, size: string, content: string, fileObj?: File) => {
+  const triggerDocumentCreation = (name: string, type: DocumentItem["type"], size: string, content: string, fileObj?: File) => {
     const todayStr = new Date().toISOString().replace("T", " ").slice(0, 19);
     const newDoc: DocumentItem = {
       id: `doc-${Date.now()}`,
