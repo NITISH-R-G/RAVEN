@@ -1,0 +1,47 @@
+name: Autonomous Documentation Agent
+
+on:
+  push:
+    branches: [ "main" ]
+  schedule:
+    - cron: '0 0 * * 0' # Weekly scan
+
+permissions:
+  contents: write
+
+jobs:
+  auto-document:
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v4
+
+    - name: Use Node.js
+      uses: actions/setup-node@v4
+      with:
+        node-version: '20'
+        cache: 'npm'
+
+    - name: Install dependencies
+      run: npm ci
+
+    - name: Install graphviz for Diagrams
+      run: sudo apt-get update && sudo apt-get install -y graphviz
+
+    - name: Analyze Repository Architecture
+      run: node scripts/automation/repo-analyzer.js
+
+    - name: Generate Architecture Diagrams
+      run: node scripts/automation/generate-diagrams.js
+
+    - name: Run AI Documentation Agent
+      env:
+        GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
+      run: node scripts/automation/auto-doc.js
+
+    - name: Commit and Push changes
+      uses: stefanzweifel/git-auto-commit-action@v5
+      with:
+        commit_message: "docs(auto): Update architecture diagrams and README.md"
+        branch: main
+        file_pattern: "docs/architecture/* README.md"

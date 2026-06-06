@@ -1,0 +1,39 @@
+{
+  "App.tsx": [
+    "components/AnalysisResults.tsx",
+    "components/Header.tsx",
+    "components/Sidebar.tsx",
+    "constants/documents.ts",
+    "types.ts",
+    "utils/fingerprint.ts"
+  ],
+  "components/AnalysisResults.tsx": [
+    "components/NetworkGraph.tsx",
+    "types.ts"
+  ],
+  "components/DocumentUploader.tsx": [
+    "types.ts"
+  ],
+  "components/Header.tsx": [
+    "utils/fingerprint.ts"
+  ],
+  "components/NetworkGraph.tsx": [
+    "types.ts"
+  ],
+  "components/Sidebar.tsx": [
+    "components/DocumentUploader.tsx",
+    "constants/documents.ts",
+    "types.ts",
+    "utils/fingerprint.ts"
+  ],
+  "constants/documents.ts": [
+    "types.ts"
+  ],
+  "index.css": [],
+  "main.tsx": [
+    "App.tsx",
+    "index.css"
+  ],
+  "types.ts": [],
+  "utils/fingerprint.ts": []
+}
