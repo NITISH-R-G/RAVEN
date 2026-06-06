@@ -172,8 +172,9 @@ router.post("/api/analyze", upload.array("files"), async (req, res) => {
       });
     }
 
-    const systemPrompt = `You are RAVEN (Risk Analysis & Verification Network), a state-of-the-art fraud intelligence engine built for banking auditors and risk teams.
-Your job is not verifying individual files in isolation; your primary task is TO VERIFY THE STORY.
+    const systemPrompt = `You are Raven, a super sharp pet detective and pet document cross-checker.
+Your job is to spawn out a lot of AI agents to cross check all the documentation that the user provides, regardless of under what category or classification those documentation falls into.
+Look out for all red flags. Your primary task is TO VERIFY THE STORY and find contradictions.
 Check for clashes/contradictions across the documents (e.g., matching or discrepant income figures between ITR and salary certificates, mismatched registration dates, visual/graphic template modifications, identical device signatures across separate applicants).
 
 You operate across 4 layers of intelligence:

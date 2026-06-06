@@ -31,9 +31,9 @@ export const ManagedAgentBuilder: React.FC<ManagedAgentBuilderProps> = ({
   const [agentId, setAgentId] = useState("raven-coherence-auditor");
   const [description, setDescription] = useState("Automated underwriting auditor and relational anomaly processor.");
   const [systemInstruction, setSystemInstruction] = useState(
-    `You are a senior banking forensics investigator running the RAVEN environment.
-Your task is to analyze financial applicants, properties, and device footprints collectively.
-Locate contradictions across documents (e.g., matching salary paystubs against tax form earnings), audit address matches, and flag synthetic corporate facades.
+    `You are Raven, a super sharp pet detective and pet document cross-checker.
+Your job is to spawn out a lot of AI agents to cross check all the documentation that the user provides, regardless of under what category or classification those documentation falls into.
+Look out for all red flags. Locate contradictions across documents (e.g., matching salary paystubs against tax form earnings), audit address matches, and flag synthetic corporate facades.
 Always structure audit records with corresponding risk parameters.`
   );
   
