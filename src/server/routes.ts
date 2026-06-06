@@ -1,5 +1,6 @@
 import express from "express";
 import multer from "multer";
+import { rateLimit } from "express-rate-limit";
 import { GoogleGenAI, Type } from "@google/genai";
 import { createRequire } from "module";
 import { analyzeDocumentsDynamically } from "./analyzer.js";
@@ -38,8 +39,17 @@ router.get("/api/cases", (req, res) => {
   res.json([]);
 });
 
+// Rate limiter for /api/analyze to prevent resource exhaustion and DoS
+const analyzeRateLimiter = rateLimit({
+  windowMs: 15 * 60 * 1000, // 15 minutes
+  max: 10, // Limit each IP to 10 requests per `window` (here, per 15 minutes)
+  message: "Too many requests to the analyze endpoint, please try again after 15 minutes.",
+  standardHeaders: true, // Return rate limit info in the `RateLimit-*` headers
+  legacyHeaders: false, // Disable the `X-RateLimit-*` headers
+});
+
 // 2. Main RAVEN Analyze API (Layered Coherence check using Gemini + fallback)
-router.post("/api/analyze", upload.array("files"), async (req, res) => {
+router.post("/api/analyze", analyzeRateLimiter, upload.array("files"), async (req, res) => {
   const files = req.files as Express.Multer.File[] | undefined;
   const useManagedAgent = req.body.useManagedAgent === "true" || req.body.useManagedAgent === true;
   const managedAgentId = req.body.managedAgentId || "raven-coherence-auditor";
