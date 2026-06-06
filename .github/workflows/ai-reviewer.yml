@@ -1,3 +1,5 @@
+env:
+  FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: true
 name: AI-Powered PR Reviewer
 
 on:
@@ -13,6 +15,8 @@ permissions:
 jobs:
   review:
     runs-on: ubuntu-latest
+    env:
+      FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: true
     steps:
       - name: CodeRabbit AI Review
-        uses: coderabbitai/ai-pr-reviewer@latest
+        uses: coderabbitai/coderabbit-action@v1
