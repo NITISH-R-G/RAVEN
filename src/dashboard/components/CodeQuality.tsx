@@ -21,7 +21,9 @@ export default function CodeQuality({ data }: { data: any }) {
         </div>
         <div className="bg-slate-800 p-4 rounded-lg flex justify-between items-center">
           <span className="text-slate-400">Tech Debt Score</span>
-          <span className={`text-2xl font-bold ${data.techDebtScore > 80 ? 'text-green-400' : 'text-yellow-400'}`}>
+          <span
+            className={`text-2xl font-bold ${data.techDebtScore > 80 ? 'text-green-400' : 'text-yellow-400'}`}
+          >
             {data.techDebtScore}
           </span>
         </div>
@@ -32,8 +34,20 @@ export default function CodeQuality({ data }: { data: any }) {
             <XAxis dataKey="date" stroke="#64748b" />
             <YAxis stroke="#64748b" />
             <Tooltip contentStyle={{ backgroundColor: '#1e293b', border: 'none' }} />
-            <Line isAnimationActive={false} type="monotone" dataKey="lintErrors" stroke="#f43f5e" name="Lint Errors" />
-            <Line isAnimationActive={false} type="monotone" dataKey="deadCode" stroke="#8b5cf6" name="Dead Code" />
+            <Line
+              isAnimationActive={false}
+              type="monotone"
+              dataKey="lintErrors"
+              stroke="#f43f5e"
+              name="Lint Errors"
+            />
+            <Line
+              isAnimationActive={false}
+              type="monotone"
+              dataKey="deadCode"
+              stroke="#8b5cf6"
+              name="Dead Code"
+            />
           </LineChart>
         </ResponsiveContainer>
       </div>
