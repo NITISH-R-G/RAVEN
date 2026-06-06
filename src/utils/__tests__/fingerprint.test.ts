@@ -1,5 +1,12 @@
 import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest';
-import { computeBrowserFingerprint } from '../fingerprint';
+import { computeBrowserFingerprint, getFingerprintJSVisitorId } from '../fingerprint';
+import fp from '@fingerprintjs/fingerprintjs';
+
+vi.mock('@fingerprintjs/fingerprintjs', () => ({
+  default: {
+    load: vi.fn(),
+  },
+}));
 
 describe('computeBrowserFingerprint', () => {
   beforeEach(() => {
@@ -81,5 +88,53 @@ describe('computeBrowserFingerprint', () => {
     expect(document.createElement).toHaveBeenCalledWith('canvas');
     expect(mockCanvas.getContext).toHaveBeenCalledWith('2d');
     expect(mockCanvas.toDataURL).toHaveBeenCalled();
+  });
+});
+
+describe('getFingerprintJSVisitorId', () => {
+  beforeEach(() => {
+    vi.clearAllMocks();
+
+    // We need to reset the module to clear the cachedFpjsId global state.
+    // However, since it's a let variable, we might need to rely on module isolation
+    // or we can test the behavior.
+    // If not possible, vitest vi.resetModules() works well when re-importing.
+  });
+
+  it('should return empty string and warn when fp.load throws an error', async () => {
+    // Suppress console.warn to avoid cluttering test output
+    const consoleWarnSpy = vi.spyOn(console, 'warn').mockImplementation(() => {});
+
+    vi.mocked(fp.load).mockRejectedValueOnce(new Error('Loader sandboxed'));
+
+    const visitorId = await getFingerprintJSVisitorId();
+
+    expect(visitorId).toBe('');
+    expect(consoleWarnSpy).toHaveBeenCalledWith(
+      "[RAVEN FingerprintJS] Loader failed/sandboxed, using standard canvas fingerprint.",
+      expect.any(Error)
+    );
+
+    consoleWarnSpy.mockRestore();
+  });
+
+  it('should return visitorId when fp.load succeeds', async () => {
+    vi.resetModules();
+    // This requires dynamic importing to avoid caching issues with the global `cachedFpjsId`.
+    const module = await import('../fingerprint');
+
+    const mockGet = vi.fn().mockResolvedValue({ visitorId: 'test-visitor-id' });
+    vi.mocked(fp.load).mockResolvedValueOnce({ get: mockGet } as any);
+
+    const visitorId = await module.getFingerprintJSVisitorId();
+
+    expect(visitorId).toBe('test-visitor-id');
+    expect(fp.load).toHaveBeenCalled();
+    expect(mockGet).toHaveBeenCalled();
+
+    // Testing caching behaviour
+    const cachedVisitorId = await module.getFingerprintJSVisitorId();
+    expect(cachedVisitorId).toBe('test-visitor-id');
+    expect(fp.load).toHaveBeenCalledTimes(1); // load shouldn't be called again
   });
 });
