@@ -60,7 +60,7 @@ router.post('/api/analyze', analyzeLimiter, upload.array('files'), async (req, r
 
   let documents: DocumentItem[] = [];
 
-  // If we have uploaded files, let's parse them concurrently!
+  // If we have uploaded files, let's parse them!
   if (files && files.length > 0) {
     const filePromises = files.map(async (file) => {
       let content = '';
