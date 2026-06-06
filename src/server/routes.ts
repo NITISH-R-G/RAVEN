@@ -167,9 +167,9 @@ router.post("/api/analyze", upload.array("files"), async (req, res) => {
     // Compile docs text
     let promptDocs = "";
     if (documents && Array.isArray(documents)) {
-      documents.forEach((doc: any, i: number) => {
-        promptDocs += `\n\n--- DOCUMENT ${i + 1}: ${doc.name} (Type: ${doc.type}) ---\n${doc.content}\n`;
-      });
+      promptDocs = documents.map((doc: any, i: number) =>
+        `\n\n--- DOCUMENT ${i + 1}: ${doc.name} (Type: ${doc.type}) ---\n${doc.content}\n`
+      ).join('');
     }
 
     const systemPrompt = `You are RAVEN (Risk Analysis & Verification Network), a state-of-the-art fraud intelligence engine built for banking auditors and risk teams.
