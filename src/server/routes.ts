@@ -59,7 +59,7 @@ router.post("/api/analyze", upload.array("files"), async (req, res) => {
         } else {
           content = file.buffer.toString("utf-8");
         }
-      } catch (err: any) {
+      } catch (err: unknown) {
         console.error(`[RAVEN Parser] Error parsing file ${file.originalname}:`, err);
         content = file.buffer.toString("utf-8");
       }
@@ -296,22 +296,23 @@ Analyze the documents below. You MUST respond in valid JSON format. Follow the s
       isQuotaExceeded: false
     };
     res.json(enrichWithAgentStats(parsedData));
-  } catch (error: any) {
+  } catch (error: unknown) {
     console.error("[RAVEN AI Error] Failed to evaluate using Gemini:", error);
 
+    const errObj = error as any;
     const isQuotaExceeded =
-      error.status === 429 ||
-      error.statusCode === 429 ||
-      String(error.message || "").toLowerCase().includes("quota") ||
-      String(error.message || "").toLowerCase().includes("429") ||
-      String(error.message || "").toLowerCase().includes("resource_exhausted") ||
+      errObj.status === 429 ||
+      errObj.statusCode === 429 ||
+      String(errObj.message || "").toLowerCase().includes("quota") ||
+      String(errObj.message || "").toLowerCase().includes("429") ||
+      String(errObj.message || "").toLowerCase().includes("resource_exhausted") ||
       String(error || "").toLowerCase().includes("429") ||
       String(error || "").toLowerCase().includes("quota");
 
     // Graceful fallback to rich analytics if Gemini errors
     const fallback = analyzeDocumentsDynamically(documents || []);
 
-    let cleanSummary = `Fallback active (Engine exception: ${error.message}). ${fallback.summary}`;
+    let cleanSummary = `Fallback active (Engine exception: ${errObj.message}). ${fallback.summary}`;
     if (isQuotaExceeded) {
       cleanSummary = `[Quota Standard Mode] Evaluation securely transitioned to local Relational Intelligence Engine. ${fallback.summary}`;
     }
@@ -322,7 +323,7 @@ Analyze the documents below. You MUST respond in valid JSON format. Follow the s
       aiStatus: {
         success: false,
         isQuotaExceeded,
-        message: error.message || String(error)
+        message: errObj.message || String(error)
       }
     }));
   }
