@@ -140,14 +140,18 @@ export function analyzeDocumentsDynamically(documents: DocumentItem[]): Analysis
   });
 
   // Real-time comparative logic
-  if (itrEmployer && salaryEmployer && itrEmployer.toLowerCase() !== salaryEmployer.toLowerCase()) {
-    if (!itrEmployer.toLowerCase().includes(salaryEmployer.toLowerCase()) && !salaryEmployer.toLowerCase().includes(itrEmployer.toLowerCase())) {
-      contradictions.push({
-        title: "Employer Brand Identification Conflict",
-        severity: "medium",
-        description: `Government tax filings register '${itrEmployer}' as prime employer, but salary slip certifies payment from '${salaryEmployer}'. Signifies distinct discrepancies.`,
-        crossDocSource: "ITR vs Salary Slip"
-      });
+  if (itrEmployer && salaryEmployer) {
+    const lowerItrEmployer = itrEmployer.toLowerCase();
+    const lowerSalaryEmployer = salaryEmployer.toLowerCase();
+    if (lowerItrEmployer !== lowerSalaryEmployer) {
+      if (!lowerItrEmployer.includes(lowerSalaryEmployer) && !lowerSalaryEmployer.includes(lowerItrEmployer)) {
+        contradictions.push({
+          title: "Employer Brand Identification Conflict",
+          severity: "medium",
+          description: `Government tax filings register '${itrEmployer}' as prime employer, but salary slip certifies payment from '${salaryEmployer}'. Signifies distinct discrepancies.`,
+          crossDocSource: "ITR vs Salary Slip"
+        });
+      }
     }
   }
 
