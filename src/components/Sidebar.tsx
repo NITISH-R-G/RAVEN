@@ -1,6 +1,6 @@
 import { Dispatch, SetStateAction } from "react";
 import { Database, FileText, Briefcase, Sparkles } from "lucide-react";
-import { DocumentItem } from "../types";
+import { DocumentItem, AnalysisResult } from "../types";
 import { DocumentUploader } from "./DocumentUploader";
 import { WebFingerprint } from "../utils/fingerprint";
 import { INITIAL_DEMO_DOCUMENTS } from "../constants/documents";
@@ -23,7 +23,7 @@ interface SidebarProps {
   isAnalyzing: boolean;
   triggerVerification: (currentDocs: DocumentItem[], customFpId?: string) => void;
   browserFingerprint: WebFingerprint | null;
-  setAnalysisResult: Dispatch<SetStateAction<any>>;
+  setAnalysisResult: Dispatch<SetStateAction<AnalysisResult | null>>;
 }
 
 export function Sidebar({
