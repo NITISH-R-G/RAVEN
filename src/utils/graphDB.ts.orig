@@ -37,7 +37,7 @@ export class GraphDatabase {
     if (!this.vertices.has(edge.source) || !this.vertices.has(edge.target)) {
       return;
     }
-    
+
     // Add out edge
     const outEdges = this.adjacencyList.get(edge.source) || [];
     outEdges.push(edge);
@@ -62,6 +62,7 @@ export class GraphDatabase {
   // Implementation of a Graph Traversal Algorithm to identify complex Fraud Rings
   public findFraudRings(): TraversalReport[] {
     const reports: TraversalReport[] = [];
+    const visited = new Set<string>();
 
     const devices: GraphNode[] = [];
     const properties: GraphNode[] = [];
@@ -80,14 +81,9 @@ export class GraphDatabase {
     // Pattern 1: Reused Device Fingerprint or template across multiple applicants
     devices.forEach(device => {
       const incomingEdges = this.adjacencyList.get(device.id) || [];
-      const connectedPersons: GraphNode[] = [];
-      for (let i = 0; i < incomingEdges.length; i++) {
-        const edge = incomingEdges[i];
-        const node = this.vertices.get(edge.target);
-        if (node && node.type === "person") {
-          connectedPersons.push(node);
-        }
-      }
+      const connectedPersons = incomingEdges
+        .map(edge => this.vertices.get(edge.target))
+        .filter((node): node is GraphNode => !!node && node.type === "person");
 
       if (connectedPersons.length > 1) {
         // We have found a shared hardware signature or template trace exposing separate identities!
@@ -126,14 +122,9 @@ export class GraphDatabase {
     // Pattern 2: Shared Address/Guarantor Mismatch or double mortgages
     properties.forEach(prop => {
       const adjacentEdges = this.adjacencyList.get(prop.id) || [];
-      const linkedApplicants: GraphNode[] = [];
-      for (let i = 0; i < adjacentEdges.length; i++) {
-        const edge = adjacentEdges[i];
-        const node = this.vertices.get(edge.target);
-        if (node && node.type === "person" && node.status === "flagged") {
-          linkedApplicants.push(node);
-        }
-      }
+      const linkedApplicants = adjacentEdges
+        .map(edge => this.vertices.get(edge.target))
+        .filter((node): node is GraphNode => !!node && node.type === "person" && node.status === "flagged");
 
       if (linkedApplicants.length > 1 && prop.id.includes("flat402")) {
         // Found address mismatch / double claim mortgage
@@ -174,7 +165,7 @@ export class GraphDatabase {
     persons.forEach(person => {
       const startId = person.id;
       const queue: { current: string; path: TraversalStep[] }[] = [];
-      
+
       queue.push({
         current: startId,
         path: [{ nodeId: startId, label: person.label, type: person.type, comment: "Identity anchor for relational traversal" }]
