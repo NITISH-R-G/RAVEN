@@ -181,7 +181,10 @@ export function analyzeDocumentsDynamically(documents: DocumentItem[]): Analysis
     });
   }
 
-  const propertiesText = items.some(d => d.content?.toLowerCase().includes("lien") || d.content?.toLowerCase().includes("double mortgage") || d.content?.toLowerCase().includes("concurrent"));
+  const propertiesText = items.some(d => {
+    const lower = d.content?.toLowerCase();
+    return lower?.includes("lien") || lower?.includes("double mortgage") || lower?.includes("concurrent");
+  });
   if (propertiesText) {
     contradictions.push({
       title: "Concurrent Asset Mortgage overlap",
