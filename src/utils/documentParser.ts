@@ -21,6 +21,7 @@ export const parseDocument = (
   documentId: string
 ): { entities: ParsedEntity[], layout: LayoutDiscovered } => {
   const lines = text.split("\n");
+  const lowerLines = lines.map(l => l.toLowerCase());
   const tempEntities: ParsedEntity[] = [];
   let discoveredFields = 0;
   let layoutDiscovered: LayoutDiscovered = {
@@ -32,9 +33,11 @@ export const parseDocument = (
 
   // Helper to find lines with content
   const findValue = (labelKeywords: string[]): { val: string; raw: string } | null => {
-    for (const line of lines) {
-      const lowerLine = line.toLowerCase();
-      if (labelKeywords.some(keyword => lowerLine.includes(keyword.toLowerCase()))) {
+    const lowerKeywords = labelKeywords.map(k => k.toLowerCase());
+    for (let i = 0; i < lines.length; i++) {
+      const line = lines[i];
+      const lowerLine = lowerLines[i];
+      if (lowerKeywords.some(keyword => lowerLine.includes(keyword))) {
         discoveredFields++;
         // Extract after colon or equal
         const delimiterIdx = line.indexOf(":") !== -1 ? line.indexOf(":") : line.indexOf("=");
