@@ -1,0 +1,408 @@
+{
+  "timestamp": "2026-06-06T14:08:25.039Z",
+  "frameworks": [
+    "React",
+    "Express",
+    "Vite",
+    "Tailwind CSS",
+    "TypeScript"
+  ],
+  "dependencies": {
+    "@fingerprintjs/fingerprintjs": "^5.2.0",
+    "@google/genai": "^2.4.0",
+    "@tailwindcss/vite": "^4.1.14",
+    "@vitejs/plugin-react": "^5.0.4",
+    "dotenv": "^17.2.3",
+    "express": "^4.21.2",
+    "express-rate-limit": "^8.5.2",
+    "lucide-react": "^0.546.0",
+    "motion": "^12.23.24",
+    "multer": "^2.1.1",
+    "pdf-parse": "^2.4.5",
+    "react": "^19.0.1",
+    "react-dom": "^19.0.1",
+    "vite": "^6.2.3"
+  },
+  "devDependencies": {
+    "@types/express": "^4.17.21",
+    "@types/multer": "^2.1.0",
+    "@types/node": "^22.14.0",
+    "@types/pdf-parse": "^1.1.5",
+    "@types/supertest": "^7.2.0",
+    "autoprefixer": "^10.4.21",
+    "esbuild": "^0.25.0",
+    "supertest": "^7.2.2",
+    "tailwindcss": "^4.1.14",
+    "tsx": "^4.22.3",
+    "typescript": "~5.8.2",
+    "vite": "^6.2.3",
+    "vitest": "^4.1.7"
+  },
+  "scripts": {
+    "dev": "tsx server.ts",
+    "build": "vite build && esbuild server.ts --bundle --platform=node --format=esm --packages=external --sourcemap --outfile=dist/server.js",
+    "start": "node dist/server.js",
+    "clean": "rm -rf dist server.js",
+    "lint": "tsc --noEmit",
+    "test": "vitest run"
+  },
+  "fileStructure": [
+    {
+      "type": "file",
+      "name": ".env.example",
+      "path": ".env.example",
+      "size": 445,
+      "extension": ".example"
+    },
+    {
+      "type": "directory",
+      "name": ".github",
+      "path": ".github",
+      "children": [
+        {
+          "type": "directory",
+          "name": "workflows",
+          "path": ".github/workflows",
+          "children": []
+        }
+      ]
+    },
+    {
+      "type": "file",
+      "name": ".gitignore",
+      "path": ".gitignore",
+      "size": 73,
+      "extension": ""
+    },
+    {
+      "type": "file",
+      "name": "README.md",
+      "path": "README.md",
+      "size": 542,
+      "extension": ".md"
+    },
+    {
+      "type": "directory",
+      "name": "docs",
+      "path": "docs",
+      "children": [
+        {
+          "type": "directory",
+          "name": "architecture",
+          "path": "docs/architecture",
+          "children": []
+        }
+      ]
+    },
+    {
+      "type": "file",
+      "name": "index.html",
+      "path": "index.html",
+      "size": 311,
+      "extension": ".html"
+    },
+    {
+      "type": "file",
+      "name": "metadata.json",
+      "path": "metadata.json",
+      "size": 338,
+      "extension": ".json"
+    },
+    {
+      "type": "file",
+      "name": "package-lock.json",
+      "path": "package-lock.json",
+      "size": 184011,
+      "extension": ".json"
+    },
+    {
+      "type": "file",
+      "name": "package.json",
+      "path": "package.json",
+      "size": 1257,
+      "extension": ".json"
+    },
+    {
+      "type": "directory",
+      "name": "scripts",
+      "path": "scripts",
+      "children": [
+        {
+          "type": "directory",
+          "name": "automation",
+          "path": "scripts/automation",
+          "children": [
+            {
+              "type": "file",
+              "name": "repo-analyzer.js",
+              "path": "scripts/automation/repo-analyzer.js",
+              "size": 3245,
+              "extension": ".js"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "type": "file",
+      "name": "server.ts",
+      "path": "server.ts",
+      "size": 1158,
+      "extension": ".ts"
+    },
+    {
+      "type": "directory",
+      "name": "src",
+      "path": "src",
+      "children": [
+        {
+          "type": "file",
+          "name": "App.tsx",
+          "path": "src/App.tsx",
+          "size": 10689,
+          "extension": ".tsx"
+        },
+        {
+          "type": "directory",
+          "name": "components",
+          "path": "src/components",
+          "children": [
+            {
+              "type": "file",
+              "name": "AnalysisResults.tsx",
+              "path": "src/components/AnalysisResults.tsx",
+              "size": 31371,
+              "extension": ".tsx"
+            },
+            {
+              "type": "file",
+              "name": "DocumentUploader.tsx",
+              "path": "src/components/DocumentUploader.tsx",
+              "size": 13210,
+              "extension": ".tsx"
+            },
+            {
+              "type": "file",
+              "name": "Header.tsx",
+              "path": "src/components/Header.tsx",
+              "size": 2378,
+              "extension": ".tsx"
+            },
+            {
+              "type": "file",
+              "name": "ManagedAgentBuilder.tsx",
+              "path": "src/components/ManagedAgentBuilder.tsx",
+              "size": 21046,
+              "extension": ".tsx"
+            },
+            {
+              "type": "file",
+              "name": "NLPDocumentExtractor.tsx",
+              "path": "src/components/NLPDocumentExtractor.tsx",
+              "size": 2373,
+              "extension": ".tsx"
+            },
+            {
+              "type": "directory",
+              "name": "NLPDocumentExtractorComponents",
+              "path": "src/components/NLPDocumentExtractorComponents",
+              "children": [
+                {
+                  "type": "file",
+                  "name": "LayoutVisualizer.tsx",
+                  "path": "src/components/NLPDocumentExtractorComponents/LayoutVisualizer.tsx",
+                  "size": 7723,
+                  "extension": ".tsx"
+                },
+                {
+                  "type": "file",
+                  "name": "ModelControl.tsx",
+                  "path": "src/components/NLPDocumentExtractorComponents/ModelControl.tsx",
+                  "size": 2418,
+                  "extension": ".tsx"
+                },
+                {
+                  "type": "file",
+                  "name": "ModelLogDetails.tsx",
+                  "path": "src/components/NLPDocumentExtractorComponents/ModelLogDetails.tsx",
+                  "size": 1871,
+                  "extension": ".tsx"
+                },
+                {
+                  "type": "file",
+                  "name": "ParsedEntitiesList.tsx",
+                  "path": "src/components/NLPDocumentExtractorComponents/ParsedEntitiesList.tsx",
+                  "size": 4341,
+                  "extension": ".tsx"
+                }
+              ]
+            },
+            {
+              "type": "file",
+              "name": "NetworkGraph.tsx",
+              "path": "src/components/NetworkGraph.tsx",
+              "size": 14109,
+              "extension": ".tsx"
+            },
+            {
+              "type": "file",
+              "name": "Sidebar.tsx",
+              "path": "src/components/Sidebar.tsx",
+              "size": 12607,
+              "extension": ".tsx"
+            }
+          ]
+        },
+        {
+          "type": "directory",
+          "name": "constants",
+          "path": "src/constants",
+          "children": [
+            {
+              "type": "file",
+              "name": "documents.ts",
+              "path": "src/constants/documents.ts",
+              "size": 2661,
+              "extension": ".ts"
+            }
+          ]
+        },
+        {
+          "type": "file",
+          "name": "index.css",
+          "path": "src/index.css",
+          "size": 1023,
+          "extension": ".css"
+        },
+        {
+          "type": "file",
+          "name": "main.tsx",
+          "path": "src/main.tsx",
+          "size": 231,
+          "extension": ".tsx"
+        },
+        {
+          "type": "directory",
+          "name": "server",
+          "path": "src/server",
+          "children": [
+            {
+              "type": "directory",
+              "name": "__tests__",
+              "path": "src/server/__tests__",
+              "children": [
+                {
+                  "type": "file",
+                  "name": "routes.test.ts",
+                  "path": "src/server/__tests__/routes.test.ts",
+                  "size": 5810,
+                  "extension": ".ts"
+                }
+              ]
+            },
+            {
+              "type": "file",
+              "name": "analyzer.ts",
+              "path": "src/server/analyzer.ts",
+              "size": 11703,
+              "extension": ".ts"
+            },
+            {
+              "type": "file",
+              "name": "routes.ts",
+              "path": "src/server/routes.ts",
+              "size": 14776,
+              "extension": ".ts"
+            }
+          ]
+        },
+        {
+          "type": "file",
+          "name": "types.ts",
+          "path": "src/types.ts",
+          "size": 1962,
+          "extension": ".ts"
+        },
+        {
+          "type": "directory",
+          "name": "utils",
+          "path": "src/utils",
+          "children": [
+            {
+              "type": "directory",
+              "name": "__tests__",
+              "path": "src/utils/__tests__",
+              "children": [
+                {
+                  "type": "file",
+                  "name": "documentParser.test.ts",
+                  "path": "src/utils/__tests__/documentParser.test.ts",
+                  "size": 6965,
+                  "extension": ".ts"
+                },
+                {
+                  "type": "file",
+                  "name": "fingerprint.test.ts",
+                  "path": "src/utils/__tests__/fingerprint.test.ts",
+                  "size": 2454,
+                  "extension": ".ts"
+                },
+                {
+                  "type": "file",
+                  "name": "graphDB.test.ts",
+                  "path": "src/utils/__tests__/graphDB.test.ts",
+                  "size": 10758,
+                  "extension": ".ts"
+                }
+              ]
+            },
+            {
+              "type": "file",
+              "name": "documentParser.ts",
+              "path": "src/utils/documentParser.ts",
+              "size": 9827,
+              "extension": ".ts"
+            },
+            {
+              "type": "file",
+              "name": "fingerprint.ts",
+              "path": "src/utils/fingerprint.ts",
+              "size": 3457,
+              "extension": ".ts"
+            },
+            {
+              "type": "file",
+              "name": "graphDB.ts",
+              "path": "src/utils/graphDB.ts",
+              "size": 8646,
+              "extension": ".ts"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "type": "file",
+      "name": "tsconfig.json",
+      "path": "tsconfig.json",
+      "size": 508,
+      "extension": ".json"
+    },
+    {
+      "type": "file",
+      "name": "vite.config.ts",
+      "path": "vite.config.ts",
+      "size": 708,
+      "extension": ".ts"
+    }
+  ],
+  "entryPoints": [
+    "server.ts",
+    "src/main.tsx"
+  ],
+  "configFiles": [
+    "tsconfig.json",
+    "vite.config.ts",
+    ".env.example"
+  ]
+}

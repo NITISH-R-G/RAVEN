@@ -1,0 +1,13 @@
+{
+  "server.ts": [
+    "src/server/routes.ts"
+  ],
+  "src/server/analyzer.ts": [
+    "src/types.ts"
+  ],
+  "src/server/routes.ts": [
+    "src/server/analyzer.ts",
+    "src/types.ts"
+  ],
+  "src/types.ts": []
+}
