@@ -22,7 +22,7 @@ describe('GraphDatabase.findFraudRings', () => {
     expect(reports[0].title).toBe('Multi-Identity Hardware Collision Ring');
     expect(reports[0].severity).toBe('high');
 
-    const stepIds = reports[0].steps.map(s => s.nodeId);
+    const stepIds = reports[0].steps.map((s) => s.nodeId);
     expect(stepIds).toContain('device_1');
     expect(stepIds).toContain('person_1');
     expect(stepIds).toContain('person_2');
@@ -47,7 +47,7 @@ describe('GraphDatabase.findFraudRings', () => {
     expect(reports[0].title).toBe('Concurrent Multi-Lien Collusion Ring');
     expect(reports[0].severity).toBe('high');
 
-    const stepIds = reports[0].steps.map(s => s.nodeId);
+    const stepIds = reports[0].steps.map((s) => s.nodeId);
     expect(stepIds).toContain('prop_flat402');
     expect(stepIds).toContain('person_3');
     expect(stepIds).toContain('person_4');
@@ -207,28 +207,57 @@ describe('GraphDatabase.findFraudRings', () => {
     const edges: GraphEdge[] = [
       // Branch 1: Path length 3 (Root -> Node2 -> Employer)
       // Root (1) -> Node2 (2) -> Employer (3)
-      { source: 'person_root_1', target: 'person_chain_2', relationship: 'knows', status: 'neutral' },
-      { source: 'person_chain_2', target: 'employer_dist_2', relationship: 'employed_by', status: 'neutral' },
+      {
+        source: 'person_root_1',
+        target: 'person_chain_2',
+        relationship: 'knows',
+        status: 'neutral',
+      },
+      {
+        source: 'person_chain_2',
+        target: 'employer_dist_2',
+        relationship: 'employed_by',
+        status: 'neutral',
+      },
 
       // Branch 2: Path length 4 (Root -> Node3 -> Node4 -> Employer)
       // Root (1) -> Node3 (2) -> Node4 (3) -> Employer (4)
-      { source: 'person_root_1', target: 'person_chain_3', relationship: 'knows', status: 'neutral' },
-      { source: 'person_chain_3', target: 'person_chain_4', relationship: 'knows', status: 'neutral' },
-      { source: 'person_chain_4', target: 'employer_dist_3', relationship: 'employed_by', status: 'neutral' },
+      {
+        source: 'person_root_1',
+        target: 'person_chain_3',
+        relationship: 'knows',
+        status: 'neutral',
+      },
+      {
+        source: 'person_chain_3',
+        target: 'person_chain_4',
+        relationship: 'knows',
+        status: 'neutral',
+      },
+      {
+        source: 'person_chain_4',
+        target: 'employer_dist_3',
+        relationship: 'employed_by',
+        status: 'neutral',
+      },
     ];
 
     const db = new GraphDatabase(nodes, edges);
     const reports = db.findFraudRings();
 
     // Check reports initiated by person_root_1
-    const rootReports = reports.filter(r => r.steps[0].nodeId === 'person_root_1');
+    const rootReports = reports.filter((r) => r.steps[0].nodeId === 'person_root_1');
 
     // The traversal should find employer_dist_2 because the path length is 3
-    const foundDist2 = rootReports.some(r => r.steps[r.steps.length - 1].nodeId === 'employer_dist_2');
+    const foundDist2 = rootReports.some(
+      (r) => r.steps[r.steps.length - 1].nodeId === 'employer_dist_2',
+    );
     expect(foundDist2).toBe(true);
 
     // The traversal should NOT find employer_dist_3 because the path length would be 4, which exceeds `< 3` check before queue push
-    const foundDist3 = rootReports.some(r => r.steps[r.steps.length - 1].nodeId === 'employer_dist_3');
+    const foundDist3 = rootReports.some(
+      (r) => r.steps[r.steps.length - 1].nodeId === 'employer_dist_3',
+    );
 
     // Ah, wait. Let's trace the path lengths:
     // Queue initial: { current: 'person_root_1', path: [nodeId: 'person_root_1'] } (path.length = 1)
@@ -264,16 +293,33 @@ describe('GraphDatabase.findFraudRings', () => {
 
     const edges: GraphEdge[] = [
       { source: 'person_root', target: 'person_step_1', relationship: 'knows', status: 'neutral' },
-      { source: 'person_step_1', target: 'person_step_2', relationship: 'knows', status: 'neutral' },
-      { source: 'person_step_2', target: 'person_step_3', relationship: 'knows', status: 'neutral' },
-      { source: 'person_step_3', target: 'employer_dist_4', relationship: 'employed_by', status: 'neutral' },
+      {
+        source: 'person_step_1',
+        target: 'person_step_2',
+        relationship: 'knows',
+        status: 'neutral',
+      },
+      {
+        source: 'person_step_2',
+        target: 'person_step_3',
+        relationship: 'knows',
+        status: 'neutral',
+      },
+      {
+        source: 'person_step_3',
+        target: 'employer_dist_4',
+        relationship: 'employed_by',
+        status: 'neutral',
+      },
     ];
 
     const db = new GraphDatabase(nodes, edges);
     const reports = db.findFraudRings();
 
-    const rootReports = reports.filter(r => r.steps[0].nodeId === 'person_root');
-    const foundDist4 = rootReports.some(r => r.steps[r.steps.length - 1].nodeId === 'employer_dist_4');
+    const rootReports = reports.filter((r) => r.steps[0].nodeId === 'person_root');
+    const foundDist4 = rootReports.some(
+      (r) => r.steps[r.steps.length - 1].nodeId === 'employer_dist_4',
+    );
 
     expect(foundDist4).toBe(false);
   });
@@ -304,7 +350,7 @@ describe('GraphDatabase.findFraudRings', () => {
     // So person_18 WILL detect employer_4 at depth 1.
     // We only care that person_15 DOES NOT detect employer_4.
     // We can verify this by checking that no report has person_15 as the starting node.
-    const reportsForPerson15 = reports.filter(r => r.steps[0].nodeId === 'person_15');
+    const reportsForPerson15 = reports.filter((r) => r.steps[0].nodeId === 'person_15');
     expect(reportsForPerson15.length).toBe(0);
 
     // person_18 will detect it because it's distance 1.
@@ -322,7 +368,12 @@ describe('GraphDatabase.findFraudRings', () => {
     const edges: GraphEdge[] = [
       { source: 'device_ok', target: 'person_ok', relationship: 'used_by', status: 'neutral' },
       { source: 'person_ok', target: 'prop_ok', relationship: 'owns', status: 'neutral' },
-      { source: 'person_ok', target: 'employer_ok', relationship: 'employed_by', status: 'neutral' },
+      {
+        source: 'person_ok',
+        target: 'employer_ok',
+        relationship: 'employed_by',
+        status: 'neutral',
+      },
     ];
 
     const db = new GraphDatabase(nodes, edges);
