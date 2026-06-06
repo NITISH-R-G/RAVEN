@@ -182,7 +182,7 @@ export default function App() {
       await delay(600);
 
       setAnalysisResult(data);
-    } catch (err: any) {
+    } catch (err: unknown) {
       console.error("Analysis API execution failure:", err);
       setErrorText("Relational sweep execution failed connecting online tools. Please check connection.");
     } finally {
