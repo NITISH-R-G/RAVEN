@@ -106,14 +106,25 @@ router.post("/api/analyze", analyzeLimiter, upload.array("files"), async (req, r
   } else if (req.body.documents) {
     // Fall back to JSON text document objects if provided (useful for some test utilities or direct custom text entries)
     if (typeof req.body.documents === "string") {
-      try {
-        const parsed = JSON.parse(req.body.documents);
-        documents = Array.isArray(parsed) ? parsed : [];
-      } catch {
+      // Prevent parsing excessively large JSON strings to avoid event loop blocking
+      if (req.body.documents.length > 2 * 1024 * 1024) { // 2MB limit
         documents = [];
+      } else {
+        try {
+          const parsed = JSON.parse(req.body.documents);
+          if (Array.isArray(parsed)) {
+            // Basic schema validation and array limit
+            documents = parsed.filter(doc => doc && typeof doc === 'object' && typeof doc.id === 'string' && typeof doc.name === 'string').slice(0, 50);
+          } else {
+            documents = [];
+          }
+        } catch {
+          documents = [];
+        }
       }
     } else {
-      documents = Array.isArray(req.body.documents) ? req.body.documents : [];
+      const rawDocs = Array.isArray(req.body.documents) ? req.body.documents : [];
+      documents = rawDocs.filter(doc => doc && typeof doc === 'object' && typeof doc.id === 'string' && typeof doc.name === 'string').slice(0, 50);
     }
   }
 

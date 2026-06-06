@@ -66,7 +66,7 @@ describe("POST /api/analyze", () => {
 
   beforeEach(() => {
     app = express();
-    app.use(express.json());
+    app.use(express.json({ limit: "10mb" }));
     app.use(router);
     vi.clearAllMocks();
 
@@ -158,6 +158,49 @@ describe("POST /api/analyze", () => {
     expect(response.body.aiStatus.isQuotaExceeded).toBe(true);
     expect(response.body.summary).toContain("[Quota Standard Mode]");
     expect(response.body.score).toBe(40); // the local fallback score
+  });
+
+  it("should handle large JSON strings safely by ignoring strings over 2MB", async () => {
+    const largeString = "a".repeat(3 * 1024 * 1024); // 3MB string
+    const response = await request(app)
+      .post("/api/analyze")
+      .send({
+        engineMode: "local",
+        documents: largeString
+      });
+
+    expect(response.status).toBe(200);
+    const analyzeDocumentsDynamically = vi.mocked(await import("../analyzer.js")).analyzeDocumentsDynamically;
+    expect(analyzeDocumentsDynamically).toHaveBeenCalled();
+    const passedDocs = analyzeDocumentsDynamically.mock.calls[0][0];
+    // Large string gets ignored, resulting in empty documents array
+    expect(passedDocs.length).toBe(0);
+  });
+
+  it("should filter out malformed objects during JSON fallback", async () => {
+    const documentsJSON = JSON.stringify([
+      { id: "1", name: "valid" }, // Valid
+      { id: "2" }, // Missing name
+      { name: "3" }, // Missing id
+      "not an object", // Invalid type
+      null // Invalid type
+    ]);
+
+    const response = await request(app)
+      .post("/api/analyze")
+      .send({
+        engineMode: "local",
+        documents: documentsJSON
+      });
+
+    expect(response.status).toBe(200);
+    const analyzeDocumentsDynamically = vi.mocked(await import("../analyzer.js")).analyzeDocumentsDynamically;
+    expect(analyzeDocumentsDynamically).toHaveBeenCalled();
+    // Only the first one is valid
+    const passedDocs = analyzeDocumentsDynamically.mock.calls[0][0];
+    expect(passedDocs.length).toBe(1);
+    expect(passedDocs[0].id).toBe("1");
+    expect(passedDocs[0].name).toBe("valid");
   });
 
   it("should guess document type correctly based on uploaded filename", async () => {
