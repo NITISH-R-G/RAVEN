@@ -1,4 +1,12 @@
-import { AnalysisResult, DocumentItem } from "../types.js";
+import {
+  AnalysisResult,
+  DocumentItem,
+  Contradiction,
+  ExtractedEntity,
+  GraphNode,
+  GraphEdge,
+  TamperedSignature
+} from "../types.js";
 
 const NAME_REGEX = /(?:NAME|Name|APPLICANT|Applicant|Owner|OWNER):\s*([A-Za-z ]+)/gi;
 const PAN_REGEX = /(?:PAN|PAN card|PAN):\s*([A-Z0-9]+)/gi;
@@ -9,11 +17,11 @@ const ITR_REGEX = /(?:TOTAL INCOME|GROSS INCOME|TAXABLE INCOME|INCOME|GTI):\s*(?
 const SAL_REGEX = /(?:GROSS SALARY|NET SALARY|NET PAYABLE|PAYABLE|SALARY):\s*(?:INR|₹)?\s*([0-9,.]+)/i;
 
 export function analyzeDocumentsDynamically(documents: DocumentItem[]): AnalysisResult {
-  const contradictions: any[] = [];
-  const extractedEntities: any[] = [];
-  const graphNodes: any[] = [];
-  const graphEdges: any[] = [];
-  const tamperedSignatures: any[] = [];
+  const contradictions: Contradiction[] = [];
+  const extractedEntities: ExtractedEntity[] = [];
+  const graphNodes: GraphNode[] = [];
+  const graphEdges: GraphEdge[] = [];
+  const tamperedSignatures: TamperedSignature[] = [];
 
   let score = 12;
   let verdict: "HIGH RISK" | "MEDIUM RISK" | "LOW RISK" = "LOW RISK";
