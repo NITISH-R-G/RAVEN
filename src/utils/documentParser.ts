@@ -32,9 +32,10 @@ export const parseDocument = (
 
   // Helper to find lines with content
   const findValue = (labelKeywords: string[]): { val: string; raw: string } | null => {
+    const lowerKeywords = labelKeywords.map(keyword => keyword.toLowerCase());
     for (const line of lines) {
       const lowerLine = line.toLowerCase();
-      if (labelKeywords.some(keyword => lowerLine.includes(keyword.toLowerCase()))) {
+      if (lowerKeywords.some(keyword => lowerLine.includes(keyword))) {
         discoveredFields++;
         // Extract after colon or equal
         const delimiterIdx = line.indexOf(":") !== -1 ? line.indexOf(":") : line.indexOf("=");
