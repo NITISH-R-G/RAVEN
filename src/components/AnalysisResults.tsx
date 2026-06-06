@@ -16,6 +16,9 @@ import { motion, AnimatePresence } from "motion/react";
 import { AnalysisResult, GraphNode } from "../types";
 import { NetworkGraph } from "./NetworkGraph";
 
+const CIRCLE_RADIUS = 40;
+const CIRCLE_CIRCUMFERENCE = 2 * Math.PI * CIRCLE_RADIUS;
+
 interface AnalysisResultsProps {
   isAnalyzing: boolean;
   activeStageId: number;
@@ -225,7 +228,7 @@ export function AnalysisResults({
                   <circle
                     cx="48"
                     cy="48"
-                    r="40"
+                    r={CIRCLE_RADIUS}
                     stroke="rgba(255,255,255,0.03)"
                     strokeWidth="5"
                     fill="transparent"
@@ -233,7 +236,7 @@ export function AnalysisResults({
                   <circle
                     cx="48"
                     cy="48"
-                    r="40"
+                    r={CIRCLE_RADIUS}
                     stroke={
                       analysisResult.score > 60
                         ? "#ef4444"
@@ -243,9 +246,9 @@ export function AnalysisResults({
                     }
                     strokeWidth="6"
                     fill="transparent"
-                    strokeDasharray={2 * Math.PI * 40}
+                    strokeDasharray={CIRCLE_CIRCUMFERENCE}
                     strokeDashoffset={
-                      2 * Math.PI * 40 * (1 - analysisResult.score / 100)
+                      CIRCLE_CIRCUMFERENCE * (1 - analysisResult.score / 100)
                     }
                     className="transition-all duration-1000 ease-out"
                   />
