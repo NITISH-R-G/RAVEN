@@ -14,10 +14,10 @@ export function Header({ browserFingerprint }: HeaderProps) {
         </div>
         <div>
           <h1 className="text-2xl font-serif text-white italic tracking-tight">
-            RAVEN <span className="text-xs font-sans not-italic text-indigo-400 font-semibold uppercase tracking-widest ml-2">Relational Verification Engine</span>
+            RAVEN <span className="text-xs font-sans not-italic text-indigo-400 font-semibold uppercase tracking-widest ml-2">Pet Detective Cross-Checker Engine</span>
           </h1>
           <p className="text-[9px] text-slate-500 uppercase tracking-widest font-mono">
-            Self-contained Underwriting Compliance Audit Consolidation
+            Self-contained Pet Detective Audit Consolidation
           </p>
         </div>
       </div>

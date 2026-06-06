@@ -32,6 +32,13 @@ export interface TamperedSignature {
   explanation: string;
 }
 
+export interface AgentReport {
+  agentName: string;
+  specialty: string;
+  findings: string;
+  status: "clear" | "flagged" | "investigating";
+}
+
 export interface AnalysisResult {
   score: number; // 0 to 100
   verdict: "HIGH RISK" | "MEDIUM RISK" | "LOW RISK";
@@ -60,6 +67,7 @@ export interface AnalysisResult {
     traversalDirectives: string;
     active: boolean;
   };
+  agentSwarmReports?: AgentReport[];
 }
 
 export interface DocumentItem {

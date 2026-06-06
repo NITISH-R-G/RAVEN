@@ -33,7 +33,7 @@ export default function App() {
   const [useManagedAgent, setUseManagedAgent] = useState<boolean>(true);
   const [managedAgentId, setManagedAgentId] = useState<string>("raven-coherence-auditor");
   const [customDirectives, setCustomDirectives] = useState<string>(
-    "Cross-verify applicant tax dossiers collectively, audit core employer mismatch parameters, trace duplicate device IDs, and run topological DFS traversals."
+    "Act as a pet detective cross checker. Cross-verify applicant dossiers collectively, check for matching or discrepant figures, flag structural contradictions, and trace duplicate device IDs."
   );
   
   const [engineMode, setEngineMode] = useState<"gemini" | "local">(() => {
@@ -76,10 +76,10 @@ export default function App() {
     setSelectedNode(null);
     setActiveStageId(1);
     setStageOutputs({
-      1: "Synthesizing raw dossiers and optical alignment tags...",
-      2: "Waiting for Ingestion layer authorization...",
-      3: "Waiting for Coherence index calculation...",
-      4: "Waiting for Executive compliance compilation..."
+      1: "Spawning Pet Detective agents for ingestion...",
+      2: "Deploying Swarm: Waiting for Agent cross-document analysis...",
+      3: "Deploying Swarm: Agents mapping coherence index & fraud rings...",
+      4: "Consolidating Agent Reports & Executive compliance compilation..."
     });
 
     const deviceFingerprintId = customFpId || browserFingerprint?.id || "fp-tester";
@@ -131,17 +131,17 @@ export default function App() {
       // --- LAYER 1 STREAMING TRANSITION ---
       setStageOutputs(prev => ({
         ...prev,
-        1: `Scanning ${currentDocs.length} custom user documents... Parsing EXIF metadata and OCR layers...`
+        1: `Pet Detective Swarm ingesting ${currentDocs.length} documents... Agent 1 extracting metadata...`
       }));
       await delay(1200);
 
       const mainApplicant = data.extractedEntities?.find(e => e.value.includes("Signee") || e.value.includes("Applicant") || e.value.includes("Owner"))?.entity || "Applicant";
-      const layer1Success = `Ingested: Extracted user trace signature of candidate [${mainApplicant}] successfully.`;
+      const layer1Success = `Swarm Ingestion Complete: Primary candidate [${mainApplicant}] identified.`;
       
       setStageOutputs(prev => ({
         ...prev,
         1: layer1Success,
-        2: "Running multi-document comparative matrices. Analyzing monthly income & employer clashing structures..."
+        2: "Swarm deployed: Agents cross-checking income, identity, and footprint matrices..."
       }));
       setActiveStageId(2);
       await delay(1400);
@@ -149,13 +149,13 @@ export default function App() {
       // --- LAYER 2 STREAMING TRANSITION ---
       const contradictionsCount = data.contradictions?.length || 0;
       const layer2Success = contradictionsCount > 0
-        ? `Coherence Alert: Highlighted ${contradictionsCount} active clashing claims. Detected '${data.contradictions[0].title}' discrepancies.`
-        : "Coherence Balanced: Verified clean income, date registers and address statements without conflicts.";
+        ? `Swarm Alert: Agents flagged ${contradictionsCount} structural contradictions. Review reports below.`
+        : "Swarm Consensus: Verified clean. No clashing claims discovered across documents.";
       
       setStageOutputs(prev => ({
         ...prev,
         2: layer2Success,
-        3: "Simulating entity mapping. Translating structural nodes into network vertices..."
+        3: "Agents mapping topological network. Searching for shared device footprints..."
       }));
       setActiveStageId(3);
       await delay(1200);
@@ -163,18 +163,18 @@ export default function App() {
       // --- LAYER 3 STREAMING TRANSITION ---
       const nodeCount = data.graphNodes?.length || 0;
       const edgeCount = data.graphEdges?.length || 0;
-      const layer3Success = `Graph Complete: Mapped ${nodeCount} transaction vertices and established ${edgeCount} relationship edges.`;
+      const layer3Success = `Swarm Graphing Complete: Mapped ${nodeCount} vertices and ${edgeCount} relationship edges.`;
       
       setStageOutputs(prev => ({
         ...prev,
         3: layer3Success,
-        4: "Compiling risk score algorithms, writing legal audit records under RBI regulations..."
+        4: "Agents consolidating final risk scores and auditing case files..."
       }));
       setActiveStageId(4);
       await delay(1100);
 
       // --- LAYER 4 STREAMING TRANSITION ---
-      const layer4Success = `Compliance Executed: Final threat weight rating compiled at ${data.score}/100. Case dossier ready.`;
+      const layer4Success = `Swarm Audit Executed: Final threat rating ${data.score}/100. Reports ready.`;
       setStageOutputs(prev => ({
         ...prev,
         4: layer4Success

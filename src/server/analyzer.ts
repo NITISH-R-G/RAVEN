@@ -312,6 +312,33 @@ export function analyzeDocumentsDynamically(documents: DocumentItem[]): Analysis
     ? "Section 45IA Alert: Cross-document credit anomalies represent structural declaration non-compliance."
     : "Transaction structures fully conform to RBI guidelines.";
 
+  const agentSwarmReports = [
+    {
+      agentName: "Income Auditor AI",
+      specialty: "Cross-checks financial statements against tax filings",
+      findings: contradictions.some(c => c.title.includes("Income"))
+        ? "Found material income margin misalignments."
+        : "Income figures align across documents.",
+      status: contradictions.some(c => c.title.includes("Income")) ? "flagged" as const : "clear" as const
+    },
+    {
+      agentName: "Device Forensics AI",
+      specialty: "Scans for identical digital footprints across applicants",
+      findings: devices.size > 0 && people.size > 1
+        ? "Detected identical client device browser fingerprints executing submissions for discrete candidate applicants."
+        : "No coordinated transaction hazard flagged.",
+      status: devices.size > 0 && people.size > 1 ? "flagged" as const : "clear" as const
+    },
+    {
+      agentName: "Document Authenticity AI",
+      specialty: "Checks for digital graphic manipulation and low DPI artifacts",
+      findings: tamperedSignatures.length > 0
+        ? "Identified EXIF traces of graphic modification or template usage."
+        : "EXIF structure clean. No digital manipulation traces found.",
+      status: tamperedSignatures.length > 0 ? "flagged" as const : "clear" as const
+    }
+  ];
+
   return {
     score,
     verdict,
@@ -325,6 +352,7 @@ export function analyzeDocumentsDynamically(documents: DocumentItem[]): Analysis
       bankActionRequired,
       rbiComplianceWarning,
       recommendingRejection: score > 60
-    }
+    },
+    agentSwarmReports
   };
 }

@@ -280,11 +280,25 @@ Analyze the documents below. You MUST respond in valid JSON format. Follow the s
                 recommendingRejection: { type: Type.BOOLEAN }
               },
               required: ["bankActionRequired", "rbiComplianceWarning", "recommendingRejection"]
+            },
+            agentSwarmReports: {
+              type: Type.ARRAY,
+              description: "Reports from the Pet Detective agent swarm.",
+              items: {
+                type: Type.OBJECT,
+                properties: {
+                  agentName: { type: Type.STRING, description: "Name of the pet detective AI agent." },
+                  specialty: { type: Type.STRING, description: "The specific domain this agent cross-checks." },
+                  findings: { type: Type.STRING, description: "Detailed findings from this agent." },
+                  status: { type: Type.STRING, description: "Must be 'clear', 'flagged', or 'investigating'." }
+                },
+                required: ["agentName", "specialty", "findings", "status"]
+              }
             }
           },
           required: [
             "score", "verdict", "summary", "contradictions", "extractedEntities",
-            "graphNodes", "graphEdges", "tamperedSignatures", "caseFileDetails"
+            "graphNodes", "graphEdges", "tamperedSignatures", "caseFileDetails", "agentSwarmReports"
           ]
         }
       }

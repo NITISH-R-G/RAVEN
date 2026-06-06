@@ -198,21 +198,22 @@ print(result.output_text)`;
       // Formulate a response reflecting the active parameters
       let simulatedResponse = "";
       if (userMsg.toLowerCase().includes("device") || userMsg.toLowerCase().includes("overlap")) {
-        simulatedResponse = `[RAVEN Managed Agent Engine ID: ${agentId}] Running BFS traversal on environment variables...
+        simulatedResponse = `[RAVEN Swarm Coordinator ID: ${agentId}] Deploying Device Forensics AI Agent...
+Agent reporting: Running BFS traversal on environment variables...
 Anomalies detected: ${contradictionsCount > 0 ? `${contradictionsCount} contradictions exist in active workspace files.` : "No clashing discrepancies uncovered."}
 Running system_instruction constraint sweeps:
 1. Target IP Check: Verified 100% DPI matches on uploaded items.
 2. Device cross-collision check: Scanned active Fingerprint variables.
 
-Recommendation: Proceed with immediate SEC/RBI risk classification logic on file logs. Ref: [AGENTS.md rulesets mapped].`;
+Agent Recommendation: Proceed with immediate SEC/RBI risk classification logic on file logs. Ref: [AGENTS.md rulesets mapped].`;
       } else {
-        simulatedResponse = `[RAVEN Managed Agent Engine ID: ${agentId}] Received query. Processing with custom system_instruction constraints.
-Loaded inline resources:
+        simulatedResponse = `[RAVEN Swarm Coordinator ID: ${agentId}] Received query. Deploying appropriate Pet Detective Agent with custom system_instruction constraints.
+Loaded inline resources for Swarm:
 * ${hasCustomAgentsMd ? "Mounted: /.agents/AGENTS.md (DF/BFS path instructions active)" : "No system AGENTS.md"}
 * ${hasSlideSkill ? "Loaded Skill: /.agents/skills/presentation-exporter/SKILL.md shadow blocks" : "Standard general skills"}
 
 Summary assessment target: "${currentCaseSummary.substring(0, 80)}..."
-All verification nodes report green status for regulatory formatting parameters. Agent execution complete.`;
+All Swarm verification nodes report green status for regulatory formatting parameters. Agent execution complete.`;
       }
 
       setSimulationLogs(prev => [...prev, {
@@ -231,10 +232,10 @@ All verification nodes report green status for regulatory formatting parameters.
       <div className="bg-[#161618] border border-white/5 p-4 rounded-xl flex flex-col gap-2.5">
         <h4 className="text-xs font-mono font-bold uppercase tracking-wider text-slate-300 flex items-center gap-1.5 border-b border-white/5 pb-2">
           <Sparkles className="w-4 h-4 text-indigo-400" />
-          Layer 5: Developer Managed Agents Builder (Gemini API Integration)
+          Layer 5: Pet Detective AI Agent Swarm (Gemini API Integration)
         </h4>
         <p className="text-xs text-slate-400 leading-normal font-sans">
-          Managed agents on the Gemini API let you extend the Antigravity agent with your custom instructions, skills, and templates. RAVEN lets you export active forensic logic, device parameters, and compliance filters as a fully persistent managed agent.
+          Managed agents on the Gemini API let you extend the Antigravity agent with your custom instructions, skills, and templates. RAVEN, the pet detective, lets you export active forensic logic, device parameters, and compliance filters as a fully persistent managed agent.
         </p>
       </div>
 
@@ -390,7 +391,7 @@ All verification nodes report green status for regulatory formatting parameters.
           <div className="bg-[#101012] border border-white/5 p-4 rounded-xl flex flex-col gap-3">
             <h5 className="text-[11px] font-mono font-bold text-slate-450 uppercase flex items-center gap-1.5 border-b border-white/5 pb-2.5">
               <Terminal className="w-4 h-4 text-indigo-400 shrink-0" />
-              Interactive Managed Agentic Playground
+              Interactive Swarm Agentic Playground
             </h5>
 
             {/* Interactive dialogue log */}
@@ -403,7 +404,7 @@ All verification nodes report green status for regulatory formatting parameters.
                     }`}>
                       {log.role === "system" && "⚙️ Core Platform"}
                       {log.role === "user" && `👤 Local Tester`}
-                      {log.role === "agent" && `🤖 AI Ingestion Agent: [${agentId}]`}
+                      {log.role === "agent" && `🤖 AI Pet Detective Swarm: [${agentId}]`}
                     </span>
                     <span className="text-[8.5px] font-mono text-slate-650">{log.timestamp}</span>
                   </div>

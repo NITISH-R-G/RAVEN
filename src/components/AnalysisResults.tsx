@@ -514,12 +514,50 @@ export function AnalysisResults({
               )}
             </div>
 
-            {/* 4. EXECUTIVE COMPLIANCE ACTION CONSOLE (RBI STamps compliance & Download anchor) */}
+            {/* 4. PET DETECTIVE AGENT SWARM REPORTS */}
+            <div className="bg-[#161618] border border-white/5 p-5 rounded-xl space-y-4">
+              <div className="border-b border-white/5 pb-2 flex justify-between items-center">
+                <h4 className="text-xs font-mono font-bold uppercase tracking-wider text-slate-300 flex items-center gap-1.5">
+                  <Activity className="w-4 h-4 text-indigo-400" />
+                  Section 4: Pet Detective Agent Swarm Reports
+                </h4>
+                <span className="text-[9.5px] font-mono text-slate-500 font-bold leading-none select-none">
+                  Multi-Agent Validation Active
+                </span>
+              </div>
+
+              <div className="grid grid-cols-1 gap-3">
+                {analysisResult.agentSwarmReports ? analysisResult.agentSwarmReports.map((report, idx) => (
+                  <div key={idx} className="bg-black/35 border border-white/5 rounded-lg p-3.5 flex flex-col gap-1">
+                    <div className="flex justify-between items-center mb-1">
+                      <span className="text-indigo-400 font-bold font-mono text-xs uppercase tracking-wider">
+                        🤖 {report.agentName}
+                      </span>
+                      <span className={`text-[9px] uppercase font-bold px-2 py-0.5 rounded font-mono ${
+                        report.status === 'clear' ? 'bg-emerald-500/10 text-emerald-400 border border-emerald-500/20' :
+                        report.status === 'flagged' ? 'bg-red-500/10 text-red-400 border border-red-500/20' :
+                        'bg-amber-500/10 text-amber-400 border border-amber-500/20'
+                      }`}>
+                        {report.status}
+                      </span>
+                    </div>
+                    <span className="text-slate-500 text-[9px] uppercase tracking-wider font-mono">Specialty: {report.specialty}</span>
+                    <p className="text-slate-300 text-xs font-sans mt-1">{report.findings}</p>
+                  </div>
+                )) : (
+                  <div className="text-slate-500 text-xs font-mono text-center py-4">
+                    No swarm reports available for this evaluation.
+                  </div>
+                )}
+              </div>
+            </div>
+
+            {/* 5. EXECUTIVE COMPLIANCE ACTION CONSOLE (RBI STamps compliance & Download anchor) */}
             <div className="bg-[#161618] border border-white/5 p-5 rounded-xl space-y-4">
               <div className="border-b border-white/5 pb-2 flex justify-between items-center">
                 <h4 className="text-xs font-mono font-bold uppercase tracking-wider text-slate-300 flex items-center gap-1.5">
                   <Scale className="w-4 h-4 text-indigo-400" />
-                  Section 4: Executive Compliance Directives & Action logs
+                  Section 5: Executive Compliance Directives & Action logs
                 </h4>
                 <span className="text-[9.5px] font-mono text-slate-500 font-bold leading-none select-none">
                   RBI Guidelines check
