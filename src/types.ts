@@ -1,6 +1,6 @@
 export interface Contradiction {
   title: string;
-  severity: "high" | "medium" | "low";
+  severity: 'high' | 'medium' | 'low';
   description: string;
   crossDocSource: string; // e.g. "ITR vs Salary Slip"
 }
@@ -14,8 +14,8 @@ export interface ExtractedEntity {
 export interface GraphNode {
   id: string;
   label: string;
-  type: "person" | "property" | "address" | "device" | "employer" | "phone";
-  status: "flagged" | "neutral" | "verified";
+  type: 'person' | 'property' | 'address' | 'device' | 'employer' | 'phone';
+  status: 'flagged' | 'neutral' | 'verified';
   details?: string;
 }
 
@@ -23,7 +23,7 @@ export interface GraphEdge {
   source: string;
   target: string;
   relationship: string;
-  status: "flagged" | "neutral" | "verified";
+  status: 'flagged' | 'neutral' | 'verified';
 }
 
 export interface TamperedSignature {
@@ -34,7 +34,7 @@ export interface TamperedSignature {
 
 export interface AnalysisResult {
   score: number; // 0 to 100
-  verdict: "HIGH RISK" | "MEDIUM RISK" | "LOW RISK";
+  verdict: 'HIGH RISK' | 'MEDIUM RISK' | 'LOW RISK';
   summary: string;
   contradictions: Contradiction[];
   extractedEntities: ExtractedEntity[];
@@ -65,7 +65,7 @@ export interface AnalysisResult {
 export interface DocumentItem {
   id: string;
   name: string;
-  type: "ITR" | "SALARY_SLIP" | "PROPERTY_VALUATION" | "ID_PROOF" | "OTHER";
+  type: 'ITR' | 'SALARY_SLIP' | 'PROPERTY_VALUATION' | 'ID_PROOF' | 'OTHER';
   content: string;
   metadata?: {
     fileSize?: string;
@@ -75,13 +75,4 @@ export interface DocumentItem {
     fontsPercent?: string;
   };
   file?: File;
-}
-
-export interface CaseStudy {
-  id: string;
-  title: string;
-  description: string;
-  targetRisk: "HIGH" | "LOW";
-  documents: DocumentItem[];
-  riskFactorNotes: string;
 }

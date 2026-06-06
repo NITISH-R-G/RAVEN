@@ -1,4 +1,4 @@
-import { Dispatch, SetStateAction } from "react";
+import { Dispatch, SetStateAction } from 'react';
 import {
   Terminal,
   Check,
@@ -10,11 +10,11 @@ import {
   Scale,
   Download,
   Database,
-  AlertTriangle
-} from "lucide-react";
-import { motion, AnimatePresence } from "motion/react";
-import { AnalysisResult, GraphNode } from "../types";
-import { NetworkGraph } from "./NetworkGraph";
+  AlertTriangle,
+} from 'lucide-react';
+import { motion, AnimatePresence } from 'motion/react';
+import { AnalysisResult, GraphNode } from '../types';
+import { NetworkGraph } from './NetworkGraph';
 
 interface AnalysisResultsProps {
   isAnalyzing: boolean;
@@ -60,23 +60,23 @@ export function AnalysisResults({
             {[
               {
                 id: 1,
-                title: "Layer 1 — Document Ingestion & Optical Scan",
-                desc: "Verifies digital coordinates, raster anomalies & fonts integration.",
+                title: 'Layer 1 — Document Ingestion & Optical Scan',
+                desc: 'Verifies digital coordinates, raster anomalies & fonts integration.',
               },
               {
                 id: 2,
-                title: "Layer 2 — Cross-Document Coherence Engine",
-                desc: "Crosschecks financial claims, employer registration indexes & dates.",
+                title: 'Layer 2 — Cross-Document Coherence Engine',
+                desc: 'Crosschecks financial claims, employer registration indexes & dates.',
               },
               {
                 id: 3,
-                title: "Layer 3 — Fraud Ring Connection Topography",
-                desc: "Extracts logical nodes and checks shared identifiers/crossovers.",
+                title: 'Layer 3 — Fraud Ring Connection Topography',
+                desc: 'Extracts logical nodes and checks shared identifiers/crossovers.',
               },
               {
                 id: 4,
-                title: "Layer 4 — Compliance Case Compilation",
-                desc: "Applies regulatory compliance weights and drafts actionable directives.",
+                title: 'Layer 4 — Compliance Case Compilation',
+                desc: 'Applies regulatory compliance weights and drafts actionable directives.',
               },
             ].map((step) => {
               const isActive = activeStageId === step.id;
@@ -87,10 +87,10 @@ export function AnalysisResults({
                   key={step.id}
                   className={`p-4 rounded-xl border transition-all duration-300 flex flex-col gap-2 ${
                     isActive
-                      ? "bg-indigo-950/15 border-indigo-500/40 shadow-md shadow-indigo-950/30 ring-1 ring-indigo-500/20"
+                      ? 'bg-indigo-950/15 border-indigo-500/40 shadow-md shadow-indigo-950/30 ring-1 ring-indigo-500/20'
                       : isDone
-                      ? "bg-[#0A0A0B]/40 border-emerald-500/20"
-                      : "bg-black/20 border-white/5 opacity-40 select-none"
+                        ? 'bg-[#0A0A0B]/40 border-emerald-500/20'
+                        : 'bg-black/20 border-white/5 opacity-40 select-none'
                   }`}
                 >
                   <div className="flex items-start sm:items-center justify-between gap-3 flex-col sm:flex-row">
@@ -112,10 +112,10 @@ export function AnalysisResults({
                         <h4
                           className={`text-xs font-mono font-bold leading-none ${
                             isActive
-                              ? "text-indigo-300"
+                              ? 'text-indigo-300'
                               : isDone
-                              ? "text-emerald-400"
-                              : "text-slate-500"
+                                ? 'text-emerald-400'
+                                : 'text-slate-500'
                           }`}
                         >
                           {step.title}
@@ -236,17 +236,15 @@ export function AnalysisResults({
                     r="40"
                     stroke={
                       analysisResult.score > 60
-                        ? "#ef4444"
+                        ? '#ef4444'
                         : analysisResult.score > 25
-                        ? "#f59e0b"
-                        : "#10b981"
+                          ? '#f59e0b'
+                          : '#10b981'
                     }
                     strokeWidth="6"
                     fill="transparent"
                     strokeDasharray={2 * Math.PI * 40}
-                    strokeDashoffset={
-                      2 * Math.PI * 40 * (1 - analysisResult.score / 100)
-                    }
+                    strokeDashoffset={2 * Math.PI * 40 * (1 - analysisResult.score / 100)}
                     className="transition-all duration-1000 ease-out"
                   />
                 </svg>
@@ -257,17 +255,17 @@ export function AnalysisResults({
                   <p
                     className={`text-[8px] uppercase font-bold tracking-wider leading-none mt-1 ${
                       analysisResult.score > 60
-                        ? "text-red-500"
+                        ? 'text-red-500'
                         : analysisResult.score > 25
-                        ? "text-amber-500"
-                        : "text-emerald-500"
+                          ? 'text-amber-500'
+                          : 'text-emerald-500'
                     }`}
                   >
                     {analysisResult.score > 60
-                      ? "Deficit Risk"
+                      ? 'Deficit Risk'
                       : analysisResult.score > 25
-                      ? "Warn Hold"
-                      : "Verified Clear"}
+                        ? 'Warn Hold'
+                        : 'Verified Clear'}
                   </p>
                 </div>
               </div>
@@ -276,11 +274,11 @@ export function AnalysisResults({
                 <div className="flex flex-wrap items-center gap-1.5 justify-center sm:justify-start">
                   <span
                     className={`text-[9.5px] font-mono tracking-widest font-bold uppercase border px-2.5 py-1 rounded leading-none ${
-                      analysisResult.verdict === "HIGH RISK"
-                        ? "bg-red-500/10 text-red-400 border-red-500/25"
-                        : analysisResult.verdict === "MEDIUM RISK"
-                        ? "bg-amber-500/10 text-amber-400 border-amber-500/25"
-                        : "bg-emerald-500/10 text-emerald-400 border-emerald-500/25"
+                      analysisResult.verdict === 'HIGH RISK'
+                        ? 'bg-red-500/10 text-red-400 border-red-500/25'
+                        : analysisResult.verdict === 'MEDIUM RISK'
+                          ? 'bg-amber-500/10 text-amber-400 border-amber-500/25'
+                          : 'bg-emerald-500/10 text-emerald-400 border-emerald-500/25'
                     }`}
                   >
                     {analysisResult.verdict}
@@ -305,13 +303,13 @@ export function AnalysisResults({
                 <span
                   className={
                     analysisResult.caseFileDetails.recommendingRejection
-                      ? "text-red-400 font-bold"
-                      : "text-emerald-450 font-bold"
+                      ? 'text-red-400 font-bold'
+                      : 'text-emerald-450 font-bold'
                   }
                 >
                   {analysisResult.caseFileDetails.recommendingRejection
-                    ? "REJECT ROUTE"
-                    : "STANDARD PASS"}
+                    ? 'REJECT ROUTE'
+                    : 'STANDARD PASS'}
                 </span>
               </div>
               <div className="flex justify-between items-center gap-4">
@@ -319,8 +317,8 @@ export function AnalysisResults({
                 <span
                   className={
                     analysisResult.contradictions.length > 0
-                      ? "text-amber-450 font-bold"
-                      : "text-slate-400"
+                      ? 'text-amber-450 font-bold'
+                      : 'text-slate-400'
                   }
                 >
                   {analysisResult.contradictions.length} flagged
@@ -355,22 +353,22 @@ export function AnalysisResults({
                     <div
                       key={idx}
                       className={`p-4 rounded-xl border flex flex-col sm:flex-row gap-3 items-start justify-between transition-all duration-300 ${
-                        con.severity === "high"
-                          ? "bg-red-500/5 border-red-550/20 text-red-100"
-                          : con.severity === "medium"
-                          ? "bg-amber-500/5 border-amber-550/15 text-amber-100"
-                          : "bg-[#0A0A0B]/60 border-white/5"
+                        con.severity === 'high'
+                          ? 'bg-red-500/5 border-red-550/20 text-red-100'
+                          : con.severity === 'medium'
+                            ? 'bg-amber-500/5 border-amber-550/15 text-amber-100'
+                            : 'bg-[#0A0A0B]/60 border-white/5'
                       }`}
                     >
                       <div className="space-y-1.5 flex-1 select-text">
                         <div className="flex items-center gap-2">
                           <span
                             className={`text-[8px] font-mono tracking-widest uppercase px-1.5 py-0.5 rounded leading-none font-bold ${
-                              con.severity === "high"
-                                ? "bg-red-950/85 text-red-400 border border-red-900/30"
-                                : con.severity === "medium"
-                                ? "bg-amber-955/85 text-amber-400 border border-amber-900/30"
-                                : "bg-[#0A0A0B] text-slate-400"
+                              con.severity === 'high'
+                                ? 'bg-red-950/85 text-red-400 border border-red-900/30'
+                                : con.severity === 'medium'
+                                  ? 'bg-amber-955/85 text-amber-400 border border-amber-900/30'
+                                  : 'bg-[#0A0A0B] text-slate-400'
                             }`}
                           >
                             {con.severity}
@@ -394,8 +392,8 @@ export function AnalysisResults({
                     Coherence alignment verified
                   </h4>
                   <p className="text-xs text-slate-500 font-sans max-w-sm leading-relaxed">
-                    Income margins, corporate PAN hashes, listed guarantor files, and locations align
-                    precisely without cross-document contradictions.
+                    Income margins, corporate PAN hashes, listed guarantor files, and locations
+                    align precisely without cross-document contradictions.
                   </p>
                 </div>
               )}
@@ -415,10 +413,12 @@ export function AnalysisResults({
                 </div>
                 <div className="flex gap-1.5 text-[9.5px] font-mono shrink-0">
                   <span className="bg-slate-900 border border-white/5 px-2 py-0.5 rounded text-slate-400 font-semibold">
-                    Nodes: <strong className="text-indigo-400">{analysisResult.graphNodes.length}</strong>
+                    Nodes:{' '}
+                    <strong className="text-indigo-400">{analysisResult.graphNodes.length}</strong>
                   </span>
                   <span className="bg-slate-900 border border-white/5 px-2 py-0.5 rounded text-slate-400 font-semibold">
-                    Edges: <strong className="text-indigo-400">{analysisResult.graphEdges.length}</strong>
+                    Edges:{' '}
+                    <strong className="text-indigo-400">{analysisResult.graphEdges.length}</strong>
                   </span>
                 </div>
               </div>
@@ -456,14 +456,18 @@ export function AnalysisResults({
                       {selectedNode.label}
                     </h5>
                     <p className="text-xs text-slate-300 leading-relaxed font-sans">
-                      {selectedNode.details || "Extracted relation node."}
+                      {selectedNode.details || 'Extracted relation node.'}
                     </p>
                     <div className="text-[10px] font-mono text-slate-500 flex gap-4 uppercase font-semibold">
                       <span>
-                        Classification: <strong className="text-slate-350">{selectedNode.type}</strong>
+                        Classification:{' '}
+                        <strong className="text-slate-350">{selectedNode.type}</strong>
                       </span>
                       <span>
-                        Audit Status: <strong className="text-indigo-300">{selectedNode.status || "Audited"}</strong>
+                        Audit Status:{' '}
+                        <strong className="text-indigo-300">
+                          {selectedNode.status || 'Audited'}
+                        </strong>
                       </span>
                     </div>
                   </motion.div>
@@ -551,11 +555,11 @@ export function AnalysisResults({
                 <button
                   onClick={() => {
                     const jsonString = `data:text/json;charset=utf-8,${encodeURIComponent(
-                      JSON.stringify(analysisResult, null, 2)
+                      JSON.stringify(analysisResult, null, 2),
                     )}`;
-                    const downloadAnchor = document.createElement("a");
-                    downloadAnchor.setAttribute("href", jsonString);
-                    downloadAnchor.setAttribute("download", `RAVEN_RelationAudit_Registry.json`);
+                    const downloadAnchor = document.createElement('a');
+                    downloadAnchor.setAttribute('href', jsonString);
+                    downloadAnchor.setAttribute('download', `RAVEN_RelationAudit_Registry.json`);
                     document.body.appendChild(downloadAnchor);
                     downloadAnchor.click();
                     downloadAnchor.remove();
@@ -570,7 +574,7 @@ export function AnalysisResults({
                   onClick={() => {
                     const reportText = `[RAVEN RELATIONAL AUDIT REPORT]\nVerdict: ${analysisResult.verdict}\nDeficit risk rating: ${analysisResult.score}/100\nCore Summary: ${analysisResult.summary}\nRBI compliant warning: ${analysisResult.caseFileDetails.rbiComplianceWarning}\nImmediate underwriter duty: ${analysisResult.caseFileDetails.bankActionRequired}`;
                     navigator.clipboard.writeText(reportText);
-                    alert("Official Case File data copied successfully to clipboard!");
+                    alert('Official Case File data copied successfully to clipboard!');
                   }}
                   className="inline-flex items-center justify-center gap-1.5 w-full sm:w-auto bg-[#0a0a0b] border border-white/5 hover:bg-black hover:border-white/10 cursor-pointer text-slate-300 text-[10.5px] font-mono tracking-widest uppercase font-bold px-4 py-2.5 rounded transition"
                 >

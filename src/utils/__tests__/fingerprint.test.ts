@@ -22,8 +22,8 @@ describe('computeBrowserFingerprint', () => {
 
     vi.stubGlobal('Intl', {
       DateTimeFormat: () => ({
-        resolvedOptions: () => ({ timeZone: 'UTC' })
-      })
+        resolvedOptions: () => ({ timeZone: 'UTC' }),
+      }),
     });
   });
 
