@@ -10,7 +10,7 @@ const requireModule = createRequire(import.meta.url);
 const pdfParse = requireModule("pdf-parse");
 
 const router = express.Router();
-const upload = multer({ storage: multer.memoryStorage() });
+const upload = multer({ storage: multer.memoryStorage(), limits: { fileSize: 10 * 1024 * 1024 } }); // 10 MB limit
 
 // Lazy load Gemini Client
 let _ai: GoogleGenAI | null = null;
