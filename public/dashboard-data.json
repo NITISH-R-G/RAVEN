@@ -1,0 +1,438 @@
+{
+  "executiveOverview": {
+    "overallScore": 88,
+    "engineeringQualityScore": 92,
+    "securityScore": 85,
+    "maintainabilityScore": 89,
+    "documentationScore": 75,
+    "testReliabilityScore": 94,
+    "deploymentReliabilityScore": 99,
+    "history": [
+      {
+        "date": "2026-05-30",
+        "score": 81
+      },
+      {
+        "date": "2026-05-31",
+        "score": 85
+      },
+      {
+        "date": "2026-06-01",
+        "score": 86
+      },
+      {
+        "date": "2026-06-02",
+        "score": 87
+      },
+      {
+        "date": "2026-06-03",
+        "score": 83
+      },
+      {
+        "date": "2026-06-04",
+        "score": 87
+      },
+      {
+        "date": "2026-06-05",
+        "score": 87
+      },
+      {
+        "date": "2026-06-06",
+        "score": 82
+      }
+    ]
+  },
+  "buildHealth": {
+    "buildSuccessRate": 98,
+    "buildFailureRate": 2,
+    "deploySuccessRate": 99,
+    "deployFailureRate": 1,
+    "meanDeploymentTime": 145,
+    "history": [
+      {
+        "date": "2026-05-30",
+        "success": 94,
+        "failure": 1
+      },
+      {
+        "date": "2026-05-31",
+        "success": 96,
+        "failure": 3
+      },
+      {
+        "date": "2026-06-01",
+        "success": 98,
+        "failure": 2
+      },
+      {
+        "date": "2026-06-02",
+        "success": 81,
+        "failure": 0
+      },
+      {
+        "date": "2026-06-03",
+        "success": 84,
+        "failure": 4
+      },
+      {
+        "date": "2026-06-04",
+        "success": 86,
+        "failure": 3
+      },
+      {
+        "date": "2026-06-05",
+        "success": 83,
+        "failure": 1
+      },
+      {
+        "date": "2026-06-06",
+        "success": 87,
+        "failure": 0
+      }
+    ]
+  },
+  "testCoverage": {
+    "lines": 85,
+    "functions": 82,
+    "branches": 78,
+    "history": [
+      {
+        "date": "2026-05-30",
+        "coverage": 84
+      },
+      {
+        "date": "2026-05-31",
+        "coverage": 83
+      },
+      {
+        "date": "2026-06-01",
+        "coverage": 85
+      },
+      {
+        "date": "2026-06-02",
+        "coverage": 85
+      },
+      {
+        "date": "2026-06-03",
+        "coverage": 84
+      },
+      {
+        "date": "2026-06-04",
+        "coverage": 85
+      },
+      {
+        "date": "2026-06-05",
+        "coverage": 86
+      },
+      {
+        "date": "2026-06-06",
+        "coverage": 85
+      }
+    ]
+  },
+  "securityDashboard": {
+    "critical": 0,
+    "high": 2,
+    "moderate": 5,
+    "history": [
+      {
+        "date": "2026-05-30",
+        "critical": 1,
+        "high": 3,
+        "moderate": 2
+      },
+      {
+        "date": "2026-05-31",
+        "critical": 0,
+        "high": 3,
+        "moderate": 1
+      },
+      {
+        "date": "2026-06-01",
+        "critical": 1,
+        "high": 4,
+        "moderate": 8
+      },
+      {
+        "date": "2026-06-02",
+        "critical": 1,
+        "high": 4,
+        "moderate": 1
+      },
+      {
+        "date": "2026-06-03",
+        "critical": 0,
+        "high": 2,
+        "moderate": 1
+      },
+      {
+        "date": "2026-06-04",
+        "critical": 0,
+        "high": 1,
+        "moderate": 5
+      },
+      {
+        "date": "2026-06-05",
+        "critical": 0,
+        "high": 0,
+        "moderate": 0
+      },
+      {
+        "date": "2026-06-06",
+        "critical": 0,
+        "high": 4,
+        "moderate": 1
+      }
+    ]
+  },
+  "codeQuality": {
+    "lintErrors": 4,
+    "duplicateCode": 2.5,
+    "deadCode": 1,
+    "techDebtScore": 88,
+    "history": [
+      {
+        "date": "2026-05-30",
+        "lintErrors": 6,
+        "deadCode": 4
+      },
+      {
+        "date": "2026-05-31",
+        "lintErrors": 3,
+        "deadCode": 2
+      },
+      {
+        "date": "2026-06-01",
+        "lintErrors": 6,
+        "deadCode": 0
+      },
+      {
+        "date": "2026-06-02",
+        "lintErrors": 7,
+        "deadCode": 1
+      },
+      {
+        "date": "2026-06-03",
+        "lintErrors": 9,
+        "deadCode": 1
+      },
+      {
+        "date": "2026-06-04",
+        "lintErrors": 5,
+        "deadCode": 0
+      },
+      {
+        "date": "2026-06-05",
+        "lintErrors": 1,
+        "deadCode": 1
+      },
+      {
+        "date": "2026-06-06",
+        "lintErrors": 5,
+        "deadCode": 3
+      }
+    ]
+  },
+  "repositoryActivity": {
+    "totalCommits": 1450,
+    "activeContributors": 12,
+    "history": [
+      {
+        "date": "2026-05-30",
+        "commits": 14
+      },
+      {
+        "date": "2026-05-31",
+        "commits": 36
+      },
+      {
+        "date": "2026-06-01",
+        "commits": 39
+      },
+      {
+        "date": "2026-06-02",
+        "commits": 55
+      },
+      {
+        "date": "2026-06-03",
+        "commits": 58
+      },
+      {
+        "date": "2026-06-04",
+        "commits": 29
+      },
+      {
+        "date": "2026-06-05",
+        "commits": 33
+      },
+      {
+        "date": "2026-06-06",
+        "commits": 54
+      }
+    ]
+  },
+  "prAnalytics": {
+    "openPRs": 8,
+    "mergedPRs": 45,
+    "avgMergeTime": 24,
+    "history": [
+      {
+        "date": "2026-05-30",
+        "opened": 5,
+        "merged": 7
+      },
+      {
+        "date": "2026-05-31",
+        "opened": 8,
+        "merged": 1
+      },
+      {
+        "date": "2026-06-01",
+        "opened": 6,
+        "merged": 6
+      },
+      {
+        "date": "2026-06-02",
+        "opened": 8,
+        "merged": 6
+      },
+      {
+        "date": "2026-06-03",
+        "opened": 6,
+        "merged": 2
+      },
+      {
+        "date": "2026-06-04",
+        "opened": 8,
+        "merged": 5
+      },
+      {
+        "date": "2026-06-05",
+        "opened": 9,
+        "merged": 5
+      },
+      {
+        "date": "2026-06-06",
+        "opened": 5,
+        "merged": 4
+      }
+    ]
+  },
+  "issueManagement": {
+    "openIssues": 15,
+    "closedIssues": 120,
+    "history": [
+      {
+        "date": "2026-05-30",
+        "open": 22,
+        "closed": 6
+      },
+      {
+        "date": "2026-05-31",
+        "open": 18,
+        "closed": 10
+      },
+      {
+        "date": "2026-06-01",
+        "open": 19,
+        "closed": 9
+      },
+      {
+        "date": "2026-06-02",
+        "open": 23,
+        "closed": 5
+      },
+      {
+        "date": "2026-06-03",
+        "open": 27,
+        "closed": 19
+      },
+      {
+        "date": "2026-06-04",
+        "open": 11,
+        "closed": 14
+      },
+      {
+        "date": "2026-06-05",
+        "open": 21,
+        "closed": 10
+      },
+      {
+        "date": "2026-06-06",
+        "open": 12,
+        "closed": 7
+      }
+    ]
+  },
+  "performanceMonitoring": {
+    "buildDuration": 135,
+    "bundleSize": 1.2,
+    "history": [
+      {
+        "date": "2026-05-30",
+        "buildTime": 143
+      },
+      {
+        "date": "2026-05-31",
+        "buildTime": 158
+      },
+      {
+        "date": "2026-06-01",
+        "buildTime": 165
+      },
+      {
+        "date": "2026-06-02",
+        "buildTime": 138
+      },
+      {
+        "date": "2026-06-03",
+        "buildTime": 147
+      },
+      {
+        "date": "2026-06-04",
+        "buildTime": 132
+      },
+      {
+        "date": "2026-06-05",
+        "buildTime": 136
+      },
+      {
+        "date": "2026-06-06",
+        "buildTime": 154
+      }
+    ]
+  },
+  "contributors": {
+    "list": [
+      {
+        "name": "Alice Smith",
+        "commits": 342
+      },
+      {
+        "name": "Bob Jones",
+        "commits": 289
+      },
+      {
+        "name": "Charlie Brown",
+        "commits": 156
+      },
+      {
+        "name": "Diana Prince",
+        "commits": 98
+      }
+    ]
+  },
+  "aiInsights": {
+    "summary": "The repository is generally healthy with strong engineering practices. Test coverage is solid at 85%, though branch coverage could be improved. Recent build times have stabilized.",
+    "actionItems": [
+      "Address 2 high severity vulnerabilities in npm dependencies.",
+      "Improve branch coverage which is currently at 78%.",
+      "Clean up the 1 dead code file identified by Knip."
+    ],
+    "positiveTrends": [
+      "Deployment success rate is excellent at 99%.",
+      "Duplicate code is very low (2.5%).",
+      "PR merge velocity is strong (avg 24h)."
+    ]
+  }
+}
