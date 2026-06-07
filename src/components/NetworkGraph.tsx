@@ -1,7 +1,15 @@
-import React, { useState, useEffect } from "react";
-import { GraphNode, GraphEdge } from "../types";
-import { Network, User, MapPin, Building, Smartphone, Fingerprint, ShieldAlert } from "lucide-react";
-import { motion } from "motion/react";
+import React, { useState, useEffect } from 'react';
+import { GraphNode, GraphEdge } from '../types';
+import {
+  Network,
+  User,
+  MapPin,
+  Building,
+  Smartphone,
+  Fingerprint,
+  ShieldAlert,
+} from 'lucide-react';
+import { motion } from 'motion/react';
 
 interface NetworkGraphProps {
   nodes: GraphNode[];
@@ -19,12 +27,12 @@ export const NetworkGraph: React.FC<NetworkGraphProps> = ({ nodes, edges, onSele
 
     const width = 600;
     const height = 400;
-    const padding = 60;
     const newCoords: { [key: string]: { x: number; y: number } } = {};
 
     // Center principal node if possible (like an applicant or target property)
-    const primaryNode = nodes.find(n => n.type === "person" && n.status === "flagged") || nodes[0];
-    const surroundingNodes = nodes.filter(n => n.id !== primaryNode.id);
+    const primaryNode =
+      nodes.find((n) => n.type === 'person' && n.status === 'flagged') || nodes[0];
+    const surroundingNodes = nodes.filter((n) => n.id !== primaryNode.id);
 
     // Center coordinates
     newCoords[primaryNode.id] = { x: width / 2, y: height / 2 };
@@ -37,7 +45,7 @@ export const NetworkGraph: React.FC<NetworkGraphProps> = ({ nodes, edges, onSele
       const ry = 130; // vertical radius
       newCoords[node.id] = {
         x: width / 2 + rx * Math.cos(angle),
-        y: height / 2 + ry * Math.sin(angle)
+        y: height / 2 + ry * Math.sin(angle),
       };
     });
 
@@ -45,20 +53,24 @@ export const NetworkGraph: React.FC<NetworkGraphProps> = ({ nodes, edges, onSele
   }, [nodes]);
 
   const getNodeIcon = (type: string, status: string) => {
-    const isFlagged = status === "flagged";
-    const baseColor = isFlagged ? "text-rose-400" : status === "verified" ? "text-emerald-400" : "text-sky-300";
+    const isFlagged = status === 'flagged';
+    const baseColor = isFlagged
+      ? 'text-rose-400'
+      : status === 'verified'
+        ? 'text-emerald-400'
+        : 'text-sky-300';
 
     switch (type) {
-      case "person":
+      case 'person':
         return <User className={`${baseColor} w-5 h-5`} />;
-      case "address":
-      case "property":
+      case 'address':
+      case 'property':
         return <MapPin className={`${baseColor} w-5 h-5`} />;
-      case "employer":
+      case 'employer':
         return <Building className={`${baseColor} w-5 h-5`} />;
-      case "phone":
+      case 'phone':
         return <Smartphone className={`${baseColor} w-5 h-5`} />;
-      case "device":
+      case 'device':
         return <Fingerprint className={`${baseColor} w-5 h-5`} />;
       default:
         return <Network className={`${baseColor} w-5 h-5`} />;
@@ -67,23 +79,23 @@ export const NetworkGraph: React.FC<NetworkGraphProps> = ({ nodes, edges, onSele
 
   const getNodeColorClass = (status: string) => {
     switch (status) {
-      case "flagged":
+      case 'flagged':
         return {
-          bg: "bg-rose-950/80 border-rose-500/80 hover:border-rose-400 shadow-rose-900/40",
-          text: "text-rose-200",
-          ring: "ring-rose-500/30"
+          bg: 'bg-rose-950/80 border-rose-500/80 hover:border-rose-400 shadow-rose-900/40',
+          text: 'text-rose-200',
+          ring: 'ring-rose-500/30',
         };
-      case "verified":
+      case 'verified':
         return {
-          bg: "bg-emerald-950/80 border-emerald-500/80 hover:border-emerald-400 shadow-emerald-900/40",
-          text: "text-emerald-200",
-          ring: "ring-emerald-500/30"
+          bg: 'bg-emerald-950/80 border-emerald-500/80 hover:border-emerald-400 shadow-emerald-900/40',
+          text: 'text-emerald-200',
+          ring: 'ring-emerald-500/30',
         };
       default:
         return {
-          bg: "bg-slate-900/90 border-slate-700 hover:border-sky-400 shadow-slate-900",
-          text: "text-slate-300",
-          ring: "ring-sky-500/10"
+          bg: 'bg-slate-900/90 border-slate-700 hover:border-sky-400 shadow-slate-900',
+          text: 'text-slate-300',
+          ring: 'ring-sky-500/10',
         };
     }
   };
@@ -95,7 +107,7 @@ export const NetworkGraph: React.FC<NetworkGraphProps> = ({ nodes, edges, onSele
     }
   };
 
-  const activeNode = nodes.find(n => n.id === selectedNodeId);
+  const activeNode = nodes.find((n) => n.id === selectedNodeId);
 
   return (
     <div className="flex flex-col xl:flex-row gap-6 bg-[#161618] rounded-xl border border-white/5 p-5 mt-4 min-h-[460px]">
@@ -152,9 +164,13 @@ export const NetworkGraph: React.FC<NetworkGraphProps> = ({ nodes, edges, onSele
               const to = coords[edge.target];
               if (!from || !to) return null;
 
-              const isFlagged = edge.status === "flagged";
-              const strokeColor = isFlagged ? "#f43f5e" : edge.status === "verified" ? "#10b981" : "#475569";
-              const strokeWidth = isFlagged ? "2" : "1.5";
+              const isFlagged = edge.status === 'flagged';
+              const strokeColor = isFlagged
+                ? '#f43f5e'
+                : edge.status === 'verified'
+                  ? '#10b981'
+                  : '#475569';
+              const strokeWidth = isFlagged ? '2' : '1.5';
               const isDashed = isFlagged;
 
               // Quadratic bezier curve for visual appeal (curved links style)
@@ -168,7 +184,7 @@ export const NetworkGraph: React.FC<NetworkGraphProps> = ({ nodes, edges, onSele
                     fill="none"
                     stroke={strokeColor}
                     strokeWidth={strokeWidth}
-                    strokeDasharray={isDashed ? "5,5" : "none"}
+                    strokeDasharray={isDashed ? '5,5' : 'none'}
                     markerEnd={`url(#arrow-${edge.status})`}
                     className="transition-all duration-300"
                   />
@@ -198,9 +214,8 @@ export const NetworkGraph: React.FC<NetworkGraphProps> = ({ nodes, edges, onSele
               const coord = coords[node.id];
               if (!coord) return null;
 
-              const style = getNodeColorClass(node.status);
               const isSelected = selectedNodeId === node.id;
-              const isFlagged = node.status === "flagged";
+              const isFlagged = node.status === 'flagged';
 
               return (
                 <g
@@ -215,7 +230,7 @@ export const NetworkGraph: React.FC<NetworkGraphProps> = ({ nodes, edges, onSele
                       cy={coord.y}
                       r="19"
                       className="fill-none stroke-rose-500/40 animate-ping"
-                      style={{ animationDuration: "3s" }}
+                      style={{ animationDuration: '3s' }}
                     />
                   )}
 
@@ -223,15 +238,15 @@ export const NetworkGraph: React.FC<NetworkGraphProps> = ({ nodes, edges, onSele
                   <circle
                     cx={coord.x}
                     cy={coord.y}
-                    r={isSelected ? "22" : "18"}
+                    r={isSelected ? '22' : '18'}
                     className={`transition-all duration-300 fill-slate-950 stroke-2 ${
                       isSelected
-                        ? "stroke-sky-400/90 shadow-lg"
+                        ? 'stroke-sky-400/90 shadow-lg'
                         : isFlagged
-                        ? "stroke-rose-500/80 group-hover:stroke-rose-400"
-                        : node.status === "verified"
-                        ? "stroke-emerald-500/80 group-hover:stroke-emerald-400"
-                        : "stroke-slate-700 group-hover:stroke-sky-400"
+                          ? 'stroke-rose-500/80 group-hover:stroke-rose-400'
+                          : node.status === 'verified'
+                            ? 'stroke-emerald-500/80 group-hover:stroke-emerald-400'
+                            : 'stroke-slate-700 group-hover:stroke-sky-400'
                     }`}
                   />
 
@@ -255,10 +270,10 @@ export const NetworkGraph: React.FC<NetworkGraphProps> = ({ nodes, edges, onSele
                     textAnchor="middle"
                     className={`text-[9px] font-semibold tracking-wide select-none ${
                       isFlagged
-                        ? "fill-rose-300"
-                        : node.status === "verified"
-                        ? "fill-emerald-300"
-                        : "fill-slate-300"
+                        ? 'fill-rose-300'
+                        : node.status === 'verified'
+                          ? 'fill-emerald-300'
+                          : 'fill-slate-300'
                     } font-mono`}
                   >
                     {node.label.length > 20 ? `${node.label.slice(0, 18)}...` : node.label}
@@ -286,24 +301,32 @@ export const NetworkGraph: React.FC<NetworkGraphProps> = ({ nodes, edges, onSele
               className="mt-4 space-y-3"
             >
               <div>
-                <span className="text-[10px] uppercase font-mono tracking-wider text-slate-500 block">Node Entity</span>
-                <span className="text-sm font-semibold tracking-tight text-white">{activeNode.label}</span>
+                <span className="text-[10px] uppercase font-mono tracking-wider text-slate-500 block">
+                  Node Entity
+                </span>
+                <span className="text-sm font-semibold tracking-tight text-white">
+                  {activeNode.label}
+                </span>
               </div>
 
               <div>
-                <span className="text-[10px] uppercase font-mono tracking-wider text-slate-500 block">Class Type</span>
+                <span className="text-[10px] uppercase font-mono tracking-wider text-slate-500 block">
+                  Class Type
+                </span>
                 <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded text-[10px] font-mono tracking-widest uppercase bg-slate-850 text-sky-400 border border-slate-700/80">
                   {activeNode.type}
                 </span>
               </div>
 
               <div>
-                <span className="text-[10px] uppercase font-mono tracking-wider text-slate-500 block">Status Level</span>
-                {activeNode.status === "flagged" ? (
+                <span className="text-[10px] uppercase font-mono tracking-wider text-slate-500 block">
+                  Status Level
+                </span>
+                {activeNode.status === 'flagged' ? (
                   <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded text-[10px] font-mono tracking-widest uppercase bg-rose-950/80 text-rose-400 border border-rose-800/50">
                     CRITICAL EXPOSURE
                   </span>
-                ) : activeNode.status === "verified" ? (
+                ) : activeNode.status === 'verified' ? (
                   <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded text-[10px] font-mono tracking-widest uppercase bg-emerald-950/80 text-emerald-400 border border-emerald-800/50">
                     SURE TRUSTED
                   </span>
@@ -316,25 +339,32 @@ export const NetworkGraph: React.FC<NetworkGraphProps> = ({ nodes, edges, onSele
 
               {activeNode.details && (
                 <div>
-                  <span className="text-[10px] uppercase font-mono tracking-wider text-slate-500 block">Audit Context</span>
-                  <p className="text-xs text-slate-300 leading-relaxed font-sans">{activeNode.details}</p>
+                  <span className="text-[10px] uppercase font-mono tracking-wider text-slate-500 block">
+                    Audit Context
+                  </span>
+                  <p className="text-xs text-slate-300 leading-relaxed font-sans">
+                    {activeNode.details}
+                  </p>
                 </div>
               )}
             </motion.div>
           ) : (
             <div className="mt-8 text-center text-slate-500">
               <Network className="w-10 h-10 mx-auto text-slate-700 stroke-1 animate-[spin_8s_linear_infinite]" />
-              <p className="text-xs font-sans mt-3">Click any network node on the left to inspect multi-document associations.</p>
+              <p className="text-xs font-sans mt-3">
+                Click any network node on the left to inspect multi-document associations.
+              </p>
             </div>
           )}
         </div>
 
-        {activeNode && activeNode.status === "flagged" && (
+        {activeNode && activeNode.status === 'flagged' && (
           <div className="bg-rose-950/35 border border-rose-900/40 p-3 rounded mt-4">
             <div className="flex items-start gap-1.5 text-[11px] text-rose-300 leading-tight">
               <ShieldAlert className="w-4 h-4 text-rose-400 shrink-0" />
               <span>
-                <strong>Coherence Block Flag:</strong> Mapped connection bypasses isolation limits. Crosscheck required immediately.
+                <strong>Coherence Block Flag:</strong> Mapped connection bypasses isolation limits.
+                Crosscheck required immediately.
               </span>
             </div>
           </div>
