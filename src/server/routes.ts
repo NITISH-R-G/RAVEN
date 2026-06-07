@@ -88,7 +88,7 @@ router.post(
             content = file.buffer.toString('utf-8');
           }
         } catch (err: unknown) {
-          console.error(`[RAVEN Parser] Error parsing file ${file.originalname}:`, err);
+          console.error('[RAVEN Parser] Error parsing file %s:', file.originalname, err);
           content = file.buffer.toString('utf-8');
         }
 
