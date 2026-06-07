@@ -27,7 +27,9 @@ vi.mock('../components/AnalysisResults', () => ({
       Analysis Results
       {props.isAnalyzing && <span data-testid="is-analyzing">Analyzing...</span>}
       {props.errorText && <span data-testid="error-text">{props.errorText}</span>}
-      {props.analysisResult && <span data-testid="analysis-result-score">{props.analysisResult.score}</span>}
+      {props.analysisResult && (
+        <span data-testid="analysis-result-score">{props.analysisResult.score}</span>
+      )}
     </div>
   ),
 }));
@@ -48,12 +50,12 @@ describe('App', () => {
       canvasHash: 'mock-hash',
       userAgent: 'test-ua',
       language: 'en-US',
-      colorDepth: 24,
-      deviceMemory: 8,
-      hardwareConcurrency: 4,
+      platform: 'Linux x86_64',
       screenResolution: '1920x1080',
-      timezoneOffset: 0,
-      touchSupport: false
+      timezone: 'UTC',
+      hardwareConcurrency: 4,
+      webGlVendor: 'test-vendor',
+      cookiesEnabled: true,
     });
     vi.mocked(fingerprintUtils.getFingerprintJSVisitorId).mockResolvedValue('mock-visitor-id');
 
@@ -77,26 +79,26 @@ describe('App', () => {
   it('handles analysis trigger successfully', async () => {
     const mockResult = {
       score: 85,
-      verdict: "HIGH RISK",
-      summary: "Test summary",
+      verdict: 'HIGH RISK',
+      summary: 'Test summary',
       contradictions: [],
       extractedEntities: [],
       graphNodes: [],
       graphEdges: [],
       tamperedSignatures: [],
       caseFileDetails: {
-        bankActionRequired: "Reject",
-        rbiComplianceWarning: "None",
-        recommendingRejection: true
+        bankActionRequired: 'Reject',
+        rbiComplianceWarning: 'None',
+        recommendingRejection: true,
       },
       aiStatus: {
         success: true,
-        isQuotaExceeded: false
-      }
+        isQuotaExceeded: false,
+      },
     };
 
     global.fetch = vi.fn().mockResolvedValue({
-      json: vi.fn().mockResolvedValue(mockResult)
+      json: vi.fn().mockResolvedValue(mockResult),
     });
 
     render(<App />);

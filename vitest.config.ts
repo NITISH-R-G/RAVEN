@@ -12,13 +12,13 @@ export default defineConfig({
     coverage: {
       provider: 'v8',
       reporter: ['text', 'json', 'html'],
-      exclude: ['node_modules/', 'vitest.setup.ts', 'dist/']
+      exclude: ['node_modules/', 'vitest.setup.ts', 'dist/'],
     },
     server: {
       deps: {
-        inline: [/@testing-library\/react/]
-      }
-    }
+        inline: [/@testing-library\/react/],
+      },
+    },
   },
   resolve: {
     alias: {
