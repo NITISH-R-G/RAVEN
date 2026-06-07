@@ -16,7 +16,7 @@ describe('parseDocument', () => {
 
       const doc: DocumentItem = { id: 'doc-1', content: text, type: 'ITR', name: 'itr.pdf' };
 
-      const result = parseDocument(doc, 'anthropic-finance');
+      const result = parseDocument({ document: doc, nlpModel: 'anthropic-finance' });
 
       expect(result.layout.gridMatch).toBe("Govt ITR-1/ITR-4 Form Schema");
       expect(result.entities).toHaveLength(6);
@@ -34,7 +34,7 @@ describe('parseDocument', () => {
 
     it('flags short PANs with warning status', () => {
       const doc: DocumentItem = { id: 'doc-1', content: "PAN: SHORT", type: 'ITR', name: 'itr.pdf' };
-      const result = parseDocument(doc, 'fingpt-llama');
+      const result = parseDocument({ document: doc, nlpModel: 'fingpt-llama' });
 
       const panEntity = result.entities.find(e => e.field === "Permanent Account Number (PAN)");
       expect(panEntity?.status).toBe("warning");
@@ -46,7 +46,7 @@ describe('parseDocument', () => {
 
     it('flags discrepant income for rajesh > 2000000', () => {
       const doc: DocumentItem = { id: 'doc-1', content: "Name: Rajesh Kumar\nGross Total Income: 2500000", type: 'ITR', name: 'itr.pdf' };
-      const result = parseDocument(doc, 'fingpt-llama');
+      const result = parseDocument({ document: doc, nlpModel: 'fingpt-llama' });
 
       const incomeEntity = result.entities.find(e => e.field === "Declared Gross Income");
       expect(incomeEntity?.status).toBe("discrepant");
@@ -63,7 +63,7 @@ describe('parseDocument', () => {
       ].join('\n');
 
       const doc: DocumentItem = { id: 'doc-2', content: text, type: 'SALARY_SLIP', name: 'salary.pdf' };
-      const result = parseDocument(doc, 'layoutlm-v3');
+      const result = parseDocument({ document: doc, nlpModel: 'layoutlm-v3' });
 
       expect(result.layout.gridMatch).toBe("Corporate Multi-Column Ledger");
       expect(result.layout.alignmentConfidence).toBe(99.4);
@@ -76,7 +76,7 @@ describe('parseDocument', () => {
 
     it('detects discrepancy in employer', () => {
       const doc: DocumentItem = { id: 'doc-2', content: "Employer: MegaCorp Discrepancy", type: 'SALARY_SLIP', name: 'salary.pdf' };
-      const result = parseDocument(doc, 'fingpt-llama');
+      const result = parseDocument({ document: doc, nlpModel: 'fingpt-llama' });
 
       const empEntity = result.entities.find(e => e.field === "Corporate Employer");
       expect(empEntity?.status).toBe("discrepant");
@@ -84,7 +84,7 @@ describe('parseDocument', () => {
 
     it('detects discrepant gross salary when text contains photoshop', () => {
       const doc: DocumentItem = { id: 'doc-2', content: "Gross Salary: 85000\nNote: This is a photoshop", type: 'SALARY_SLIP', name: 'salary.pdf' };
-      const result = parseDocument(doc, 'fingpt-llama');
+      const result = parseDocument({ document: doc, nlpModel: 'fingpt-llama' });
 
       const salaryEntity = result.entities.find(e => e.field === "Gross Stated Salary");
       expect(salaryEntity?.status).toBe("discrepant");
@@ -101,7 +101,7 @@ describe('parseDocument', () => {
       ].join('\n');
 
       const doc: DocumentItem = { id: 'doc-3', content: text, type: 'PROPERTY_VALUATION', name: 'prop.pdf' };
-      const result = parseDocument(doc, 'anthropic-finance');
+      const result = parseDocument({ document: doc, nlpModel: 'anthropic-finance' });
 
       expect(result.layout.gridMatch).toBe("State Real-Estate Stamps Survey");
       expect(result.entities).toHaveLength(4);
@@ -112,7 +112,7 @@ describe('parseDocument', () => {
 
     it('flags double-mortgaged status', () => {
       const doc: DocumentItem = { id: 'doc-3', content: "Valuation Amount: 5000000\nNote: Double-mortgaged property", type: 'PROPERTY_VALUATION', name: 'prop.pdf' };
-      const result = parseDocument(doc, 'anthropic-finance');
+      const result = parseDocument({ document: doc, nlpModel: 'anthropic-finance' });
 
       const valEntity = result.entities.find(e => e.field === "Appraised Liquidity Value");
       expect(valEntity?.status).toBe("discrepant");
@@ -127,7 +127,7 @@ describe('parseDocument', () => {
       ].join('\n');
 
       const doc: DocumentItem = { id: 'doc-4', content: text, type: 'OTHER', name: 'log.txt' };
-      const result = parseDocument(doc, 'fingpt-llama');
+      const result = parseDocument({ document: doc, nlpModel: 'fingpt-llama' });
 
       expect(result.layout.gridMatch).toBe("Unstructured Log & Metapage Schema");
       // Expect 3 entities: IP, Device, and the default Document Ingestion Hash
@@ -145,7 +145,7 @@ describe('parseDocument', () => {
 
     it('handles anomaly in device ID', () => {
       const doc: DocumentItem = { id: 'doc-4', content: "Device ID: unknown anomaly", type: 'OTHER', name: 'log.txt' };
-      const result = parseDocument(doc, 'fingpt-llama');
+      const result = parseDocument({ document: doc, nlpModel: 'fingpt-llama' });
 
       const deviceEntity = result.entities.find(e => e.field === "Extracted Target Device Engine Signature");
       expect(deviceEntity?.status).toBe("warning");
@@ -153,7 +153,7 @@ describe('parseDocument', () => {
 
     it('handles mismatch in IP', () => {
       const doc: DocumentItem = { id: 'doc-4', content: "Session IP: 10.0.0.1 mismatch", type: 'OTHER', name: 'log.txt' };
-      const result = parseDocument(doc, 'fingpt-llama');
+      const result = parseDocument({ document: doc, nlpModel: 'fingpt-llama' });
 
       const ipEntity = result.entities.find(e => e.field === "Identified Client IP Geolocation");
       expect(ipEntity?.status).toBe("discrepant");
