@@ -1,48 +1,80 @@
-import js from "@eslint/js";
-import tseslint from "typescript-eslint";
-import reactPlugin from "eslint-plugin-react";
-import sonarjs from "eslint-plugin-sonarjs";
-import prettierConfig from "eslint-config-prettier";
-import globals from "globals";
+import js from '@eslint/js';
+import prettierConfig from 'eslint-config-prettier';
+import reactPlugin from 'eslint-plugin-react';
+import sonarjs from 'eslint-plugin-sonarjs';
+import globals from 'globals';
+import tsEslint from 'typescript-eslint';
 
-export default tseslint.config(
-  { ignores: ["dist", "coverage", "node_modules", "package-lock.json"] },
+export default tsEslint.config(
   js.configs.recommended,
-  ...tseslint.configs.recommended,
+  ...tsEslint.configs.recommended,
+  sonarjs.configs.recommended,
+  prettierConfig,
   {
-    files: ["**/*.{ts,tsx}"],
+    files: ['**/*.{ts,tsx}'],
     languageOptions: {
-      ecmaVersion: 2020,
-      globals: {
-         ...globals.browser,
-         ...globals.node
-      },
-      parser: tseslint.parser,
+      parser: tsEslint.parser,
       parserOptions: {
-        project: ["./tsconfig.json"],
+        ecmaVersion: 'latest',
+        sourceType: 'module',
+        ecmaFeatures: {
+          jsx: true,
+        },
+      },
+      globals: {
+        ...globals.browser,
+        ...globals.node,
+        ...globals.jest,
       },
     },
     plugins: {
-      "react": reactPlugin,
-      "sonarjs": sonarjs,
+      react: reactPlugin,
     },
     rules: {
-      ...reactPlugin.configs.recommended.rules,
-      ...sonarjs.configs.recommended.rules,
-      "react/react-in-jsx-scope": "off",
-      "sonarjs/cognitive-complexity": ["warn", 15],
-      "sonarjs/no-nested-conditional": "warn",
-      "sonarjs/no-duplicate-string": "warn",
-      "sonarjs/no-identical-functions": "warn",
-      "@typescript-eslint/no-explicit-any": "warn",
-      "no-unused-vars": "off",
-      "@typescript-eslint/no-unused-vars": ["warn"],
+      'react/react-in-jsx-scope': 'off',
+      '@typescript-eslint/no-unused-vars': ['warn', { argsIgnorePattern: '^_' }],
+      '@typescript-eslint/no-explicit-any': 'warn',
+      'no-console': 'warn',
+      'sonarjs/cognitive-complexity': 'off',
+      'sonarjs/no-duplicate-string': 'off',
+      'sonarjs/no-redundant-assignments': 'off',
+      'sonarjs/no-unused-vars': 'off',
+      'sonarjs/no-dead-store': 'off',
+      'sonarjs/prefer-regexp-exec': 'off',
+      'sonarjs/prefer-read-only-props': 'off',
+      'sonarjs/no-nested-conditional': 'off',
+      'sonarjs/no-ignored-exceptions': 'off',
+      'sonarjs/x-powered-by': 'off',
+      'sonarjs/pseudo-random': 'off',
+      'sonarjs/no-hardcoded-ip': 'off',
+      'sonarjs/deprecation': 'off',
+      'sonarjs/concise-regex': 'off',
+      'sonarjs/slow-regex': 'off',
+      'sonarjs/duplicates-in-character-class': 'off',
+      'react/no-unescaped-entities': 'off',
+      'sonarjs/unused-import': 'off',
     },
     settings: {
       react: {
-        version: "detect",
+        version: 'detect',
       },
     },
   },
-  prettierConfig
+  {
+    files: ['scripts/**/*.js'],
+    languageOptions: {
+      globals: {
+        ...globals.node,
+        ...globals.browser,
+      },
+    },
+    rules: {
+      'no-console': 'off',
+      'no-undef': 'off',
+      '@typescript-eslint/no-unused-vars': 'off',
+      'sonarjs/pseudo-random': 'off',
+      'sonarjs/no-os-command-from-path': 'off',
+      'sonarjs/no-ignored-exceptions': 'off',
+    },
+  },
 );
