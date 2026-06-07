@@ -14,9 +14,9 @@ const FP_REGEX = /(?:device|fingerprint|fp-)[ \t]*(?:ID|id)?[-: \t]*([a-fA-F0-9-
 const EMP_REGEX = /(?:EMPLOYER|Employer|Company|COMPANY):\s*([A-Za-z0-9 ]+)/gi;
 const ADDR_REGEX = /(?:ADDRESS|Address|PROPERTY|Property|Flat|FLAT):\s*([A-Za-z0-9 ,.-]+)/gi;
 const ITR_REGEX =
-  /(?:TOTAL INCOME|GROSS INCOME|TAXABLE INCOME|INCOME|GTI)[ \t]*:[ \t]*(?:INR|₹)?[ \t]*([0-9,.]+)/i;
+  /(?:TOTAL INCOME|GROSS INCOME|TAXABLE INCOME|INCOME|GTI)[ \t]*:[ \t]*(?:(?:INR|₹)[ \t]*)?([0-9,.]+)/i;
 const SAL_REGEX =
-  /(?:GROSS SALARY|NET SALARY|NET PAYABLE|PAYABLE|SALARY)[ \t]*:[ \t]*(?:INR|₹)?[ \t]*([0-9,.]+)/i;
+  /(?:GROSS SALARY|NET SALARY|NET PAYABLE|PAYABLE|SALARY)[ \t]*:[ \t]*(?:(?:INR|₹)[ \t]*)?([0-9,.]+)/i;
 
 export function analyzeDocumentsDynamically(documents: DocumentItem[]): AnalysisResult {
   const contradictions: Contradiction[] = [];

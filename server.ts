@@ -2,6 +2,7 @@ import express from 'express';
 import path from 'path';
 import { createServer as createViteServer } from 'vite';
 import dotenv from 'dotenv';
+import rateLimit from 'express-rate-limit';
 
 import router from './src/server/routes.js';
 
@@ -33,7 +34,14 @@ async function startServer() {
     // Serve static files from the 'dist' directory
     app.use(express.static(distPath));
 
-    app.get('*', (req, res) => {
+    const pageLimiter = rateLimit({
+      windowMs: 15 * 60 * 1000,
+      max: 100,
+      standardHeaders: true,
+      legacyHeaders: false,
+    });
+
+    app.get('*', pageLimiter, (req, res) => {
       res.sendFile(path.join(distPath, 'index.html'));
     });
   }
