@@ -1,5 +1,5 @@
-import { Layers, Fingerprint } from "lucide-react";
-import { WebFingerprint } from "../utils/fingerprint";
+import { Layers, Fingerprint } from 'lucide-react';
+import { WebFingerprint } from '../utils/fingerprint';
 
 interface HeaderProps {
   browserFingerprint: WebFingerprint | null;
@@ -14,7 +14,10 @@ export function Header({ browserFingerprint }: HeaderProps) {
         </div>
         <div>
           <h1 className="text-2xl font-serif text-white italic tracking-tight">
-            RAVEN <span className="text-xs font-sans not-italic text-indigo-400 font-semibold uppercase tracking-widest ml-2">Relational Verification Engine</span>
+            RAVEN{' '}
+            <span className="text-xs font-sans not-italic text-indigo-400 font-semibold uppercase tracking-widest ml-2">
+              Relational Verification Engine
+            </span>
           </h1>
           <p className="text-[9px] text-slate-500 uppercase tracking-widest font-mono">
             Self-contained Underwriting Compliance Audit Consolidation
@@ -28,13 +31,19 @@ export function Header({ browserFingerprint }: HeaderProps) {
           <div className="flex items-center gap-2.5 bg-indigo-500/5 border border-indigo-500/10 rounded-lg px-3.5 py-1.5 text-xs font-mono">
             <Fingerprint className="w-4 h-4 text-indigo-400 shrink-0" />
             <div className="text-left">
-              <span className="text-slate-500 block text-[8px] uppercase tracking-wider">Device ID Signature</span>
+              <span className="text-slate-500 block text-[8px] uppercase tracking-wider">
+                Device ID Signature
+              </span>
               <span className="text-indigo-300 font-bold">{browserFingerprint.id}</span>
             </div>
             <div className="h-6 w-px bg-white/5 mx-1"></div>
             <div>
-              <span className="text-slate-500 block text-[8px] uppercase tracking-wider">Canvas Signature</span>
-              <span className="text-slate-400 font-bold">{browserFingerprint.canvasHash.slice(0, 10)}</span>
+              <span className="text-slate-500 block text-[8px] uppercase tracking-wider">
+                Canvas Signature
+              </span>
+              <span className="text-slate-400 font-bold">
+                {browserFingerprint.canvasHash.slice(0, 10)}
+              </span>
             </div>
           </div>
         )}

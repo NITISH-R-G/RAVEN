@@ -22,7 +22,15 @@ export default function RepositoryActivity({ data }: { data: any }) {
             <XAxis dataKey="date" stroke="#64748b" />
             <YAxis stroke="#64748b" />
             <Tooltip contentStyle={{ backgroundColor: '#1e293b', border: 'none' }} />
-            <Area isAnimationActive={false} type="step" dataKey="commits" stroke="#10b981" fill="#10b981" fillOpacity={0.2} name="Commits" />
+            <Area
+              isAnimationActive={false}
+              type="step"
+              dataKey="commits"
+              stroke="#10b981"
+              fill="#10b981"
+              fillOpacity={0.2}
+              name="Commits"
+            />
           </AreaChart>
         </ResponsiveContainer>
       </div>

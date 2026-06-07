@@ -29,8 +29,8 @@ describe('computeBrowserFingerprint', () => {
 
     vi.stubGlobal('Intl', {
       DateTimeFormat: () => ({
-        resolvedOptions: () => ({ timeZone: 'UTC' })
-      })
+        resolvedOptions: () => ({ timeZone: 'UTC' }),
+      }),
     });
   });
 
@@ -111,8 +111,8 @@ describe('getFingerprintJSVisitorId', () => {
 
     expect(visitorId).toBe('');
     expect(consoleWarnSpy).toHaveBeenCalledWith(
-      "[RAVEN FingerprintJS] Loader failed/sandboxed, using standard canvas fingerprint.",
-      expect.any(Error)
+      '[RAVEN FingerprintJS] Loader failed/sandboxed, using standard canvas fingerprint.',
+      expect.any(Error),
     );
 
     consoleWarnSpy.mockRestore();
