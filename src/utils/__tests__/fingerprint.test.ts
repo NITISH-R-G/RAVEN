@@ -29,8 +29,8 @@ describe('computeBrowserFingerprint', () => {
 
     vi.stubGlobal('Intl', {
       DateTimeFormat: () => ({
-        resolvedOptions: () => ({ timeZone: 'UTC' })
-      })
+        resolvedOptions: () => ({ timeZone: 'UTC' }),
+      }),
     });
   });
 
@@ -89,6 +89,43 @@ describe('computeBrowserFingerprint', () => {
     expect(mockCanvas.getContext).toHaveBeenCalledWith('2d');
     expect(mockCanvas.toDataURL).toHaveBeenCalled();
   });
+
+  it('should use default webGlVendor when WebGL context extraction throws an error', () => {
+    const mockContext2D = {
+      textBaseline: '',
+      font: '',
+      fillStyle: '',
+      fillRect: vi.fn(),
+      fillText: vi.fn(),
+    };
+
+    const mockCanvas = {
+      width: 0,
+      height: 0,
+      getContext: vi.fn().mockImplementation((contextType: string) => {
+        if (contextType === '2d') {
+          return mockContext2D;
+        }
+        if (contextType === 'webgl' || contextType === 'experimental-webgl') {
+          throw new Error('WebGL is not supported or blocked');
+        }
+        return null;
+      }),
+      toDataURL: vi.fn().mockReturnValue('mock-data-url'),
+    };
+
+    vi.stubGlobal('document', {
+      createElement: vi.fn().mockReturnValue(mockCanvas),
+    });
+
+    const fingerprint = computeBrowserFingerprint();
+
+    // Verify it used the fallback webGlVendor
+    expect(fingerprint.webGlVendor).toBe('WebGL Generic');
+
+    // Ensure getContext was called for webgl
+    expect(mockCanvas.getContext).toHaveBeenCalledWith('webgl');
+  });
 });
 
 describe('getFingerprintJSVisitorId', () => {
@@ -111,8 +148,8 @@ describe('getFingerprintJSVisitorId', () => {
 
     expect(visitorId).toBe('');
     expect(consoleWarnSpy).toHaveBeenCalledWith(
-      "[RAVEN FingerprintJS] Loader failed/sandboxed, using standard canvas fingerprint.",
-      expect.any(Error)
+      '[RAVEN FingerprintJS] Loader failed/sandboxed, using standard canvas fingerprint.',
+      expect.any(Error),
     );
 
     consoleWarnSpy.mockRestore();
