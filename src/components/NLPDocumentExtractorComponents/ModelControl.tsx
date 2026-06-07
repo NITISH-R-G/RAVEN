@@ -1,7 +1,7 @@
-import React from "react";
-import { Cpu, Sparkles, TrendingUp, Layers3 } from "lucide-react";
+import React from 'react';
+import { Cpu, Sparkles, TrendingUp, Layers3 } from 'lucide-react';
 
-export type NLPModelType = "anthropic-finance" | "fingpt-llama" | "layoutlm-v3";
+export type NLPModelType = 'anthropic-finance' | 'fingpt-llama' | 'layoutlm-v3';
 
 interface ModelControlProps {
   selectedModel: NLPModelType;
@@ -20,11 +20,11 @@ export const ModelControl: React.FC<ModelControlProps> = ({ selectedModel, setSe
 
       <div className="flex items-center gap-1.5 bg-black/65 border border-white/5 p-1 rounded-lg self-start sm:self-auto text-[10px] font-mono shrink-0">
         <button
-          onClick={() => setSelectedModel("anthropic-finance")}
+          onClick={() => setSelectedModel('anthropic-finance')}
           className={`px-2 py-1 rounded transition-all flex items-center gap-1 ${
-            selectedModel === "anthropic-finance"
-              ? "bg-indigo-600/15 text-indigo-300 border border-indigo-500/30"
-              : "text-slate-500 hover:text-slate-300"
+            selectedModel === 'anthropic-finance'
+              ? 'bg-indigo-600/15 text-indigo-300 border border-indigo-500/30'
+              : 'text-slate-500 hover:text-slate-300'
           }`}
         >
           <Sparkles className="w-3 h-3 text-indigo-300" />
@@ -32,11 +32,11 @@ export const ModelControl: React.FC<ModelControlProps> = ({ selectedModel, setSe
         </button>
 
         <button
-          onClick={() => setSelectedModel("fingpt-llama")}
+          onClick={() => setSelectedModel('fingpt-llama')}
           className={`px-2 py-1 rounded transition-all flex items-center gap-1 ${
-            selectedModel === "fingpt-llama"
-              ? "bg-indigo-600/15 text-indigo-300 border border-indigo-500/30"
-              : "text-slate-500 hover:text-slate-300"
+            selectedModel === 'fingpt-llama'
+              ? 'bg-indigo-600/15 text-indigo-300 border border-indigo-500/30'
+              : 'text-slate-500 hover:text-slate-300'
           }`}
         >
           <TrendingUp className="w-3 h-3 text-indigo-400" />
@@ -44,11 +44,11 @@ export const ModelControl: React.FC<ModelControlProps> = ({ selectedModel, setSe
         </button>
 
         <button
-          onClick={() => setSelectedModel("layoutlm-v3")}
+          onClick={() => setSelectedModel('layoutlm-v3')}
           className={`px-2 py-1 rounded transition-all flex items-center gap-1 ${
-            selectedModel === "layoutlm-v3"
-              ? "bg-indigo-600/15 text-indigo-300 border border-indigo-500/30"
-              : "text-slate-500 hover:text-slate-300"
+            selectedModel === 'layoutlm-v3'
+              ? 'bg-indigo-600/15 text-indigo-300 border border-indigo-500/30'
+              : 'text-slate-500 hover:text-slate-300'
           }`}
         >
           <Layers3 className="w-3 h-3 text-indigo-400" />

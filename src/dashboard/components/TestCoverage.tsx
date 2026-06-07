@@ -10,8 +10,8 @@ export default function TestCoverage({ data }: { data: any }) {
         {[
           { label: 'Lines', value: data.lines },
           { label: 'Functions', value: data.functions },
-          { label: 'Branches', value: data.branches }
-        ].map(item => (
+          { label: 'Branches', value: data.branches },
+        ].map((item) => (
           <div key={item.label} className="bg-slate-800 p-3 rounded text-center">
             <div className="text-sm text-slate-400">{item.label}</div>
             <div className="text-xl font-semibold text-white">{item.value}%</div>
@@ -24,7 +24,14 @@ export default function TestCoverage({ data }: { data: any }) {
             <XAxis dataKey="date" stroke="#64748b" />
             <YAxis stroke="#64748b" domain={[0, 100]} />
             <Tooltip contentStyle={{ backgroundColor: '#1e293b', border: 'none' }} />
-            <Area isAnimationActive={false} type="monotone" dataKey="coverage" stroke="#60a5fa" fill="#3b82f6" fillOpacity={0.3} />
+            <Area
+              isAnimationActive={false}
+              type="monotone"
+              dataKey="coverage"
+              stroke="#60a5fa"
+              fill="#3b82f6"
+              fillOpacity={0.3}
+            />
           </AreaChart>
         </ResponsiveContainer>
       </div>
