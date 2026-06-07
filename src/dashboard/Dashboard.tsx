@@ -42,7 +42,10 @@ export default function Dashboard() {
       <div className="max-w-7xl mx-auto space-y-8">
         <header className="border-b border-white/10 pb-4 mb-8">
           <h1 className="text-3xl font-bold text-white">Repository Health Dashboard</h1>
-          <p className="text-slate-400 mt-2">Single source of truth for repository health, engineering quality, security posture, and velocity.</p>
+          <p className="text-slate-400 mt-2">
+            Single source of truth for repository health, engineering quality, security posture, and
+            velocity.
+          </p>
         </header>
 
         <AIInsights data={data.aiInsights} />

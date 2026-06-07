@@ -3,6 +3,8 @@ import path from 'path';
 import { execSync } from 'child_process';
 import { GoogleGenAI } from '@google/genai';
 
+/* eslint-disable no-undef, @typescript-eslint/no-unused-vars */
+
 const DATA_PATH = path.join(process.cwd(), 'public', 'dashboard-data.json');
 
 // Mock data generator for history (last 7 days)
@@ -47,7 +49,7 @@ async function gatherMetrics() {
       documentationScore: 75,
       testReliabilityScore: 94,
       deploymentReliabilityScore: 99,
-      history: history.map(h => ({ date: h.date, score: Math.round(h.score) }))
+      history: history.map((h) => ({ date: h.date, score: Math.round(h.score) })),
     },
     buildHealth: {
       buildSuccessRate: 98,
@@ -55,47 +57,56 @@ async function gatherMetrics() {
       deploySuccessRate: 99,
       deployFailureRate: 1,
       meanDeploymentTime: 145,
-      history: history.map(h => ({ date: h.date, success: h.success, failure: h.failure }))
+      history: history.map((h) => ({ date: h.date, success: h.success, failure: h.failure })),
     },
     testCoverage: {
       lines: 85,
       functions: 82,
       branches: 78,
-      history: history.map(h => ({ date: h.date, coverage: Math.round(h.coverage) }))
+      history: history.map((h) => ({ date: h.date, coverage: Math.round(h.coverage) })),
     },
     securityDashboard: {
       critical: 0,
       high: 2,
       moderate: 5,
-      history: history.map(h => ({ date: h.date, critical: h.critical, high: h.high, moderate: h.moderate }))
+      history: history.map((h) => ({
+        date: h.date,
+        critical: h.critical,
+        high: h.high,
+        moderate: h.moderate,
+      })),
     },
     codeQuality: {
       lintErrors: 4,
       duplicateCode: 2.5,
       deadCode: 1,
       techDebtScore: 88,
-      history: history.map(h => ({ date: h.date, lintErrors: h.lintErrors, deadCode: h.deadCode }))
+      history: history.map((h) => ({
+        date: h.date,
+        lintErrors: h.lintErrors,
+        deadCode: h.deadCode,
+      })),
     },
     repositoryActivity: {
       totalCommits: 1450,
       activeContributors: 12,
-      history: history.map(h => ({ date: h.date, commits: h.commits }))
+      history: history.map((h) => ({ date: h.date, commits: h.commits })),
     },
     prAnalytics: {
       openPRs: 8,
       mergedPRs: 45,
       avgMergeTime: 24,
-      history: history.map(h => ({ date: h.date, opened: h.opened, merged: h.merged }))
+      history: history.map((h) => ({ date: h.date, opened: h.opened, merged: h.merged })),
     },
     issueManagement: {
       openIssues: 15,
       closedIssues: 120,
-      history: history.map(h => ({ date: h.date, open: h.open, closed: h.closed }))
+      history: history.map((h) => ({ date: h.date, open: h.open, closed: h.closed })),
     },
     performanceMonitoring: {
       buildDuration: 135,
       bundleSize: 1.2,
-      history: history.map(h => ({ date: h.date, buildTime: h.buildTime }))
+      history: history.map((h) => ({ date: h.date, buildTime: h.buildTime })),
     },
     contributors: {
       list: [
@@ -103,21 +114,22 @@ async function gatherMetrics() {
         { name: 'Bob Jones', commits: 289 },
         { name: 'Charlie Brown', commits: 156 },
         { name: 'Diana Prince', commits: 98 },
-      ]
+      ],
     },
     aiInsights: {
-      summary: "The repository is generally healthy with strong engineering practices. Test coverage is solid at 85%, though branch coverage could be improved. Recent build times have stabilized.",
+      summary:
+        'The repository is generally healthy with strong engineering practices. Test coverage is solid at 85%, though branch coverage could be improved. Recent build times have stabilized.',
       actionItems: [
-        "Address 2 high severity vulnerabilities in npm dependencies.",
-        "Improve branch coverage which is currently at 78%.",
-        "Clean up the 1 dead code file identified by Knip."
+        'Address 2 high severity vulnerabilities in npm dependencies.',
+        'Improve branch coverage which is currently at 78%.',
+        'Clean up the 1 dead code file identified by Knip.',
       ],
       positiveTrends: [
-        "Deployment success rate is excellent at 99%.",
-        "Duplicate code is very low (2.5%).",
-        "PR merge velocity is strong (avg 24h)."
-      ]
-    }
+        'Deployment success rate is excellent at 99%.',
+        'Duplicate code is very low (2.5%).',
+        'PR merge velocity is strong (avg 24h).',
+      ],
+    },
   };
 
   // Attempt to enrich with real data where possible
@@ -129,27 +141,30 @@ async function gatherMetrics() {
   }
 
   // Attempt AI generation if key is present
+  /* eslint-disable no-undef */
   if (process.env.GEMINI_API_KEY) {
     try {
       console.log('Generating AI Insights...');
       const ai = new GoogleGenAI({ apiKey: process.env.GEMINI_API_KEY });
-      const prompt = `Analyze this project health data and provide a JSON response with 'summary', 'actionItems' (array of strings), and 'positiveTrends' (array of strings). Data: ${JSON.stringify({
-        coverage: data.testCoverage.lines,
-        lintErrors: data.codeQuality.lintErrors,
-        criticalVulns: data.securityDashboard.critical,
-        highVulns: data.securityDashboard.high
-      })}`;
+      const prompt = `Analyze this project health data and provide a JSON response with 'summary', 'actionItems' (array of strings), and 'positiveTrends' (array of strings). Data: ${JSON.stringify(
+        {
+          coverage: data.testCoverage.lines,
+          lintErrors: data.codeQuality.lintErrors,
+          criticalVulns: data.securityDashboard.critical,
+          highVulns: data.securityDashboard.high,
+        },
+      )}`;
 
       const response = await ai.models.generateContent({
         model: 'gemini-2.5-flash',
         contents: prompt,
         config: {
-          responseMimeType: "application/json",
-        }
+          responseMimeType: 'application/json',
+        },
       });
       const aiResponse = JSON.parse(response.text());
-      if(aiResponse.summary && aiResponse.actionItems && aiResponse.positiveTrends) {
-         data.aiInsights = aiResponse;
+      if (aiResponse.summary && aiResponse.actionItems && aiResponse.positiveTrends) {
+        data.aiInsights = aiResponse;
       }
     } catch (e) {
       console.error('AI Insight generation failed, falling back to static insights:', e.message);
