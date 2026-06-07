@@ -16,10 +16,15 @@ export interface LayoutDiscovered {
 
 import { DocumentItem } from "../types";
 
-export const parseDocument = (
-  document: DocumentItem,
-  nlpModel: string
-): { entities: ParsedEntity[], layout: LayoutDiscovered } => {
+export interface ParseDocumentOptions {
+  document: DocumentItem;
+  nlpModel: string;
+}
+
+export const parseDocument = ({
+  document,
+  nlpModel
+}: ParseDocumentOptions): { entities: ParsedEntity[], layout: LayoutDiscovered } => {
   const { content: text, type, id: documentId } = document;
   const selectedModel = nlpModel as "anthropic-finance" | "fingpt-llama" | "layoutlm-v3";
   const lines = text.split("\n");

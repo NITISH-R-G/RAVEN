@@ -25,7 +25,7 @@ export const NLPDocumentExtractor: React.FC<NLPDocumentExtractorProps> = ({ docu
   useEffect(() => {
     setIsParsing(true);
     const timer = setTimeout(() => {
-      const { entities, layout } = parseDocument(document, selectedModel);
+      const { entities, layout } = parseDocument({ document, nlpModel: selectedModel });
       setParsedEntities(entities);
       setLayoutDiscovered(layout);
       setIsParsing(false);
