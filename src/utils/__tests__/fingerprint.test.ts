@@ -39,7 +39,7 @@ describe('computeBrowserFingerprint', () => {
     vi.restoreAllMocks();
   });
 
-  it('should use default canvasHash when document.createElement throws an error', () => {
+  it('should use default canvasHash when document.createElement throws an error', async () => {
     // Mock document.createElement to throw an error for canvas
     vi.stubGlobal('document', {
       createElement: vi.fn().mockImplementation((tagName: string) => {
@@ -50,7 +50,7 @@ describe('computeBrowserFingerprint', () => {
       }),
     });
 
-    const fingerprint = computeBrowserFingerprint();
+    const fingerprint = await computeBrowserFingerprint();
 
     // Verify it used the fallback hash
     expect(fingerprint.canvasHash).toBe('cb-901a88b2f901');
@@ -58,7 +58,7 @@ describe('computeBrowserFingerprint', () => {
     expect(document.createElement).toHaveBeenCalledWith('canvas');
   });
 
-  it('should compute a hash when canvas rendering is supported', () => {
+  it('should compute a hash when canvas rendering is supported', async () => {
     const mockContext = {
       textBaseline: '',
       font: '',
@@ -78,7 +78,7 @@ describe('computeBrowserFingerprint', () => {
       createElement: vi.fn().mockReturnValue(mockCanvas),
     });
 
-    const fingerprint = computeBrowserFingerprint();
+    const fingerprint = await computeBrowserFingerprint();
 
     // The canvasHash will be different from the fallback
     expect(fingerprint.canvasHash).not.toBe('cb-901a88b2f901');

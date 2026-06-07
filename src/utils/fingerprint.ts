@@ -30,7 +30,7 @@ export async function getFingerprintJSVisitorId(): Promise<string> {
   }
 }
 
-export function computeBrowserFingerprint(): WebFingerprint {
+export async function computeBrowserFingerprint(): Promise<WebFingerprint> {
   const ua = navigator.userAgent;
   const lang = navigator.language || "en-US";
   const plat = navigator.platform || "Unknown";
@@ -58,12 +58,15 @@ export function computeBrowserFingerprint(): WebFingerprint {
       ctx.fillText("RAVEN,f-fingerprint,2026", 4, 17);
       const str = canvas.toDataURL();
       
-      let hash = 0;
-      for (let i = 0; i < str.length; i++) {
-        hash = (hash << 5) - hash + str.charCodeAt(i);
-        hash |= 0;
+      const encoder = new TextEncoder();
+      const data = encoder.encode(str);
+      const hashBuffer = await crypto.subtle.digest('SHA-256', data);
+      const hashArray = new Uint8Array(hashBuffer);
+      let hex = '';
+      for (let i = 0; i < 4; i++) {
+        hex += hashArray[i].toString(16).padStart(2, '0');
       }
-      canvasHash = "fp-" + Math.abs(hash).toString(16);
+      canvasHash = "fp-" + hex;
     }
   } catch (e) {
     // Ignore canvas blocking error
@@ -86,12 +89,15 @@ export function computeBrowserFingerprint(): WebFingerprint {
 
   // Create a predictable browser ID based on these parameters
   const combinedSpecs = `${lang}|${plat}|${screenRes}|${tz}|${hc}|${cookies}`;
-  let numericHash = 0;
-  for (let i = 0; i < combinedSpecs.length; i++) {
-    numericHash = (numericHash << 5) - numericHash + combinedSpecs.charCodeAt(i);
-    numericHash |= 0;
+  const encoder = new TextEncoder();
+  const data = encoder.encode(combinedSpecs);
+  const hashBuffer = await crypto.subtle.digest('SHA-256', data);
+  const hashArray = new Uint8Array(hashBuffer);
+  let hex = '';
+  for (let i = 0; i < 4; i++) {
+    hex += hashArray[i].toString(16).padStart(2, '0');
   }
-  const id = `fp-${Math.abs(numericHash).toString(16).slice(0, 8)}${canvasHash.slice(3, 7)}`;
+  const id = `fp-${hex}${canvasHash.slice(3, 7)}`;
 
   return {
     id,

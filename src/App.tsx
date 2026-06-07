@@ -41,31 +41,32 @@ export default function App() {
   });
 
   useEffect(() => {
-    const fp = computeBrowserFingerprint();
-    setBrowserFingerprint(fp);
+    computeBrowserFingerprint().then(fp => {
+      setBrowserFingerprint(fp);
 
-    getFingerprintJSVisitorId().then(visitorId => {
-      let activeFp = fp;
-      if (visitorId) {
-        activeFp = {
-          ...fp,
-          fpjsVisitorId: visitorId,
-          id: `fp-${visitorId.slice(0, 8)}`
-        };
-        setBrowserFingerprint(activeFp);
-      }
-      
-      const updatedDocs = INITIAL_DEMO_DOCUMENTS.map(doc => {
-        if (doc.id === "doc-devices" && activeFp) {
-          return {
-            ...doc,
-            content: doc.content.replace("fp-88a29b4e", activeFp.id)
+      getFingerprintJSVisitorId().then(visitorId => {
+        let activeFp = fp;
+        if (visitorId) {
+          activeFp = {
+            ...fp,
+            fpjsVisitorId: visitorId,
+            id: `fp-${visitorId.slice(0, 8)}`
           };
+          setBrowserFingerprint(activeFp);
         }
-        return doc;
+
+        const updatedDocs = INITIAL_DEMO_DOCUMENTS.map(doc => {
+          if (doc.id === "doc-devices" && activeFp) {
+            return {
+              ...doc,
+              content: doc.content.replace("fp-88a29b4e", activeFp.id)
+            };
+          }
+          return doc;
+        });
+        setDocumentsState(updatedDocs);
+        // Avoid auto-triggering verification on mount
       });
-      setDocumentsState(updatedDocs);
-      // Avoid auto-triggering verification on mount
     });
   }, []);
 
