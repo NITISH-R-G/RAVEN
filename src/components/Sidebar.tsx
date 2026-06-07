@@ -1,9 +1,9 @@
-import { Dispatch, SetStateAction } from "react";
-import { Database, FileText, Briefcase, Sparkles } from "lucide-react";
-import { DocumentItem, AnalysisResult } from "../types";
-import { DocumentUploader } from "./DocumentUploader";
-import { WebFingerprint } from "../utils/fingerprint";
-import { INITIAL_DEMO_DOCUMENTS } from "../constants/documents";
+import { Dispatch, SetStateAction } from 'react';
+import { Database, FileText, Briefcase, Sparkles } from 'lucide-react';
+import { DocumentItem, AnalysisResult } from '../types';
+import { DocumentUploader } from './DocumentUploader';
+import { WebFingerprint } from '../utils/fingerprint';
+import { INITIAL_DEMO_DOCUMENTS } from '../constants/documents';
 
 interface SidebarProps {
   documentsState: DocumentItem[];
@@ -18,8 +18,8 @@ interface SidebarProps {
   setUseManagedAgent: Dispatch<SetStateAction<boolean>>;
   customDirectives: string;
   setCustomDirectives: Dispatch<SetStateAction<string>>;
-  engineMode: "gemini" | "local";
-  setEngineMode: Dispatch<SetStateAction<"gemini" | "local">>;
+  engineMode: 'gemini' | 'local';
+  setEngineMode: Dispatch<SetStateAction<'gemini' | 'local'>>;
   isAnalyzing: boolean;
   triggerVerification: (currentDocs: DocumentItem[], customFpId?: string) => void;
   browserFingerprint: WebFingerprint | null;
@@ -44,7 +44,7 @@ export function Sidebar({
   isAnalyzing,
   triggerVerification,
   browserFingerprint,
-  setAnalysisResult
+  setAnalysisResult,
 }: SidebarProps) {
   const activeDocObj = documentsState.find((d) => d.id === activeDocTab);
 
@@ -78,8 +78,8 @@ export function Sidebar({
                 onClick={() => setActiveDocTab(doc.id)}
                 className={`px-3 py-1.5 text-[9.5px] font-mono rounded transition-all leading-none ${
                   isActive
-                    ? "bg-[#161618] text-white border border-white/5 shadow-sm"
-                    : "text-slate-500 hover:text-slate-300 hover:bg-white/5"
+                    ? 'bg-[#161618] text-white border border-white/5 shadow-sm'
+                    : 'text-slate-500 hover:text-slate-300 hover:bg-white/5'
                 }`}
               >
                 {doc.name.slice(0, 18)}
@@ -100,13 +100,13 @@ export function Sidebar({
                 <span className="block text-slate-500">EXIF Author Trace:</span>
                 <span
                   className={`font-bold uppercase ${
-                    activeDocObj.metadata?.authorTool?.includes("Canva") ||
-                    activeDocObj.metadata?.authorTool?.includes("Adobe")
-                      ? "text-amber-400"
-                      : "text-emerald-400"
+                    activeDocObj.metadata?.authorTool?.includes('Canva') ||
+                    activeDocObj.metadata?.authorTool?.includes('Adobe')
+                      ? 'text-amber-400'
+                      : 'text-emerald-400'
                   }`}
                 >
-                  {activeDocObj.metadata?.authorTool || "Standard Portal"}
+                  {activeDocObj.metadata?.authorTool || 'Standard Portal'}
                 </span>
               </div>
             </div>
@@ -195,20 +195,20 @@ export function Sidebar({
                 Sweep Analytics Engine
               </label>
               <span className="text-[9px] text-[#94a3b8] font-mono leading-none">
-                {engineMode === "gemini" ? "⚡ AI Cloud" : "⚙️ Local Offline"}
+                {engineMode === 'gemini' ? '⚡ AI Cloud' : '⚙️ Local Offline'}
               </span>
             </div>
             <div className="grid grid-cols-2 gap-1 bg-black/50 p-1 rounded border border-white/5 font-mono text-[10px]">
               <button
                 type="button"
                 onClick={() => {
-                  setEngineMode("gemini");
-                  localStorage.setItem("raven_engine_mode", "gemini");
+                  setEngineMode('gemini');
+                  localStorage.setItem('raven_engine_mode', 'gemini');
                 }}
                 className={`py-1.5 rounded transition font-bold uppercase relative ${
-                  engineMode === "gemini"
-                    ? "bg-indigo-600 text-white shadow-sm font-bold"
-                    : "text-slate-500 hover:text-slate-300"
+                  engineMode === 'gemini'
+                    ? 'bg-indigo-600 text-white shadow-sm font-bold'
+                    : 'text-slate-500 hover:text-slate-300'
                 }`}
               >
                 Gemini Core
@@ -216,13 +216,13 @@ export function Sidebar({
               <button
                 type="button"
                 onClick={() => {
-                  setEngineMode("local");
-                  localStorage.setItem("raven_engine_mode", "local");
+                  setEngineMode('local');
+                  localStorage.setItem('raven_engine_mode', 'local');
                 }}
                 className={`py-1.5 rounded transition font-bold uppercase relative ${
-                  engineMode === "local"
-                    ? "bg-slate-700 text-white shadow-sm font-bold"
-                    : "text-slate-500 hover:text-slate-300"
+                  engineMode === 'local'
+                    ? 'bg-slate-700 text-white shadow-sm font-bold'
+                    : 'text-slate-500 hover:text-slate-300'
                 }`}
               >
                 Local Heuristic
@@ -236,7 +236,7 @@ export function Sidebar({
           <button
             onClick={() => {
               setDocumentsState(INITIAL_DEMO_DOCUMENTS);
-              setActiveDocTab("doc-itr");
+              setActiveDocTab('doc-itr');
               triggerVerification(INITIAL_DEMO_DOCUMENTS, browserFingerprint?.id);
             }}
             className="bg-black/45 hover:bg-black/60 border border-white/5 text-[10.5px] font-mono py-2 rounded text-slate-400 hover:text-white transition uppercase font-semibold"
@@ -247,7 +247,7 @@ export function Sidebar({
           <button
             onClick={() => {
               setDocumentsState([]);
-              setActiveDocTab("");
+              setActiveDocTab('');
               setAnalysisResult(null);
             }}
             className="bg-red-950/15 hover:bg-red-950/30 border border-red-500/15 text-[10.5px] font-mono py-2 rounded text-red-300 hover:text-red-200 transition uppercase font-semibold"
@@ -262,12 +262,12 @@ export function Sidebar({
           disabled={isAnalyzing || documentsState.length === 0}
           className={`w-full py-2.5 rounded font-mono text-xs tracking-widest uppercase font-bold text-white transition flex items-center justify-center gap-1.5 shadow-md ${
             isAnalyzing || documentsState.length === 0
-              ? "bg-slate-850 border border-white/5 text-slate-500 cursor-not-allowed"
-              : "bg-indigo-650 hover:bg-indigo-750 cursor-pointer shadow-indigo-950/30"
+              ? 'bg-slate-850 border border-white/5 text-slate-500 cursor-not-allowed'
+              : 'bg-indigo-650 hover:bg-indigo-750 cursor-pointer shadow-indigo-950/30'
           }`}
         >
           <Sparkles className="w-4 h-4 animate-spin text-indigo-300" />
-          {isAnalyzing ? "Executing Multi-Doc verification..." : "Execute Managed Agentic Sweep"}
+          {isAnalyzing ? 'Executing Multi-Doc verification...' : 'Execute Managed Agentic Sweep'}
         </button>
       </div>
     </section>

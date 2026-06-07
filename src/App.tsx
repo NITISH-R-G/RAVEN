@@ -3,25 +3,26 @@
  * SPDX-License-Identifier: Apache-2.0
  */
 
-import { useState } from "react";
-import { Award } from "lucide-react";
-import { DocumentItem } from "./types";
-import { INITIAL_DEMO_DOCUMENTS } from "./constants/documents";
-import { Header } from "./components/Header";
-import { Sidebar } from "./components/Sidebar";
-import { AnalysisResults } from "./components/AnalysisResults";
-import { useAnalysis } from "./hooks/useAnalysis";
-import { useFingerprint } from "./hooks/useFingerprint";
+import { useState } from 'react';
+import { Award } from 'lucide-react';
+import { DocumentItem } from './types';
+import { INITIAL_DEMO_DOCUMENTS } from './constants/documents';
+import { Header } from './components/Header';
+import { Sidebar } from './components/Sidebar';
+import { AnalysisResults } from './components/AnalysisResults';
+import { useAnalysis } from './hooks/useAnalysis';
+import { useFingerprint } from './hooks/useFingerprint';
 
 export default function App() {
-  const [activeDocTab, setActiveDocTab] = useState<string>("doc-itr");
+  const [activeDocTab, setActiveDocTab] = useState<string>('doc-itr');
   const [useManagedAgent, setUseManagedAgent] = useState<boolean>(true);
-  const [managedAgentId, setManagedAgentId] = useState<string>("raven-coherence-auditor");
+  const [managedAgentId, setManagedAgentId] = useState<string>('raven-coherence-auditor');
   const [customDirectives, setCustomDirectives] = useState<string>(
-    "Cross-verify applicant tax dossiers collectively, audit core employer mismatch parameters, trace duplicate device IDs, and run topological DFS traversals."
+    'Cross-verify applicant tax dossiers collectively, audit core employer mismatch parameters, trace duplicate device IDs, and run topological DFS traversals.',
   );
 
-  const { browserFingerprint, documentsState, setDocumentsState } = useFingerprint(INITIAL_DEMO_DOCUMENTS);
+  const { browserFingerprint, documentsState, setDocumentsState } =
+    useFingerprint(INITIAL_DEMO_DOCUMENTS);
 
   const {
     analysisResult,
@@ -34,11 +35,11 @@ export default function App() {
     stageOutputs,
     engineMode,
     setEngineMode,
-    triggerVerification
+    triggerVerification,
   } = useAnalysis({ useManagedAgent, managedAgentId, browserFingerprint });
 
   const handleDocumentContentChange = (docId: string, newContent: string) => {
-    const updated = documentsState.map(d => {
+    const updated = documentsState.map((d) => {
       if (d.id === docId) {
         return { ...d, content: newContent };
       }
@@ -53,8 +54,6 @@ export default function App() {
     setActiveDocTab(newDoc.id);
     triggerVerification(updatedDocs, browserFingerprint?.id);
   };
-
-  const activeDocObj = documentsState.find(d => d.id === activeDocTab);
 
   return (
     <div className="min-h-screen lg:h-screen lg:overflow-hidden bg-[#0A0A0B] text-slate-350 flex flex-col font-sans selection:bg-indigo-500/30 selection:text-white">
@@ -108,7 +107,6 @@ export default function App() {
           </div>
         </div>
       </footer>
-
     </div>
   );
 }
