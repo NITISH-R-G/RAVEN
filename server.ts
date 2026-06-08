@@ -11,6 +11,7 @@ dotenv.config();
 const app = express();
 const PORT = 3000;
 
+app.disable('x-powered-by');
 app.use(express.json());
 
 // Apply routes

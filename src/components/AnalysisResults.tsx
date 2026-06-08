@@ -17,15 +17,15 @@ import { AnalysisResult, GraphNode } from '../types';
 import { NetworkGraph } from './NetworkGraph';
 
 interface AnalysisResultsProps {
-  isAnalyzing: boolean;
-  activeStageId: number;
-  stageOutputs: { [key: number]: string };
-  analysisResult: AnalysisResult | null;
-  selectedNode: GraphNode | null;
-  setSelectedNode: Dispatch<SetStateAction<GraphNode | null>>;
-  useManagedAgent: boolean;
-  managedAgentId: string;
-  errorText: string;
+  readonly isAnalyzing: boolean;
+  readonly activeStageId: number;
+  readonly stageOutputs: { [key: number]: string };
+  readonly analysisResult: AnalysisResult | null;
+  readonly selectedNode: GraphNode | null;
+  readonly setSelectedNode: Dispatch<SetStateAction<GraphNode | null>>;
+  readonly useManagedAgent: boolean;
+  readonly managedAgentId: string;
+  readonly errorText: string;
 }
 
 export function AnalysisResults({
@@ -202,7 +202,7 @@ export function AnalysisResults({
                       LOCAL HEURISTICS EXECUTION
                     </span>
                     <p className="text-[11px] text-slate-400 font-sans mt-0.5 leading-relaxed">
-                      Evaluated using RAVEN's fully optimized multi-document coherence ruleset. Set
+                      Evaluated using RAVEN&apos;s fully optimized multi-document coherence ruleset. Set
                       GEMINI_API_KEY inside Settings drawer to fully enable LLM deep-reasoning tree
                       structures.
                     </p>

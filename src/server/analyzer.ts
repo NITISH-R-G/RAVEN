@@ -8,15 +8,15 @@ import {
   TamperedSignature,
 } from '../types.js';
 
-const NAME_REGEX = /(?:NAME|Name|APPLICANT|Applicant|Owner|OWNER):\s*([A-Za-z ]+)/gi;
-const PAN_REGEX = /(?:PAN|PAN card|PAN):\s*([A-Z0-9]+)/gi;
-const FP_REGEX = /(?:device|fingerprint|fp-)\s*(?:ID|id)?:?\s*([a-fA-F0-9-]+)/gi;
-const EMP_REGEX = /(?:EMPLOYER|Employer|Company|COMPANY):\s*([A-Za-z0-9 ]+)/gi;
-const ADDR_REGEX = /(?:ADDRESS|Address|PROPERTY|Property|Flat|FLAT):\s*([A-Za-z0-9 ,.-]+)/gi;
+const NAME_REGEX = /(?:NAME|Name|APPLICANT|Applicant|Owner|OWNER):\s{0,5}([A-Za-z ]+)/gi;
+const PAN_REGEX = /(?:PAN|PAN card|PAN):\s{0,5}([A-Z0-9]+)/gi;
+const FP_REGEX = /(?:device|fingerprint|fp-)\s{0,5}(?:ID|id)?:?\s{0,5}([a-fA-F0-9-]+)/gi;
+const EMP_REGEX = /(?:EMPLOYER|Employer|Company|COMPANY):\s{0,5}([A-Za-z0-9 ]+)/gi;
+const ADDR_REGEX = /(?:ADDRESS|Address|PROPERTY|Property|Flat|FLAT):\s{0,5}([A-Za-z0-9 ,.-]+)/gi;
 const ITR_REGEX =
-  /(?:TOTAL INCOME|GROSS INCOME|TAXABLE INCOME|INCOME|GTI):\s*(?:INR|₹)? *(?:[0-9,.]+)/i;
+  /(?:TOTAL INCOME|GROSS INCOME|TAXABLE INCOME|INCOME|GTI):\s{0,5}(?:INR|₹)?\s{0,5}([0-9,.]+)/i;
 const SAL_REGEX =
-  /(?:GROSS SALARY|NET SALARY|NET PAYABLE|PAYABLE|SALARY):\s*(?:INR|₹)? *(?:[0-9,.]+)/i;
+  /(?:GROSS SALARY|NET SALARY|NET PAYABLE|PAYABLE|SALARY):\s{0,5}(?:INR|₹)?\s{0,5}([0-9,.]+)/i;
 
 export function analyzeDocumentsDynamically(documents: DocumentItem[]): AnalysisResult {
   const contradictions: Contradiction[] = [];

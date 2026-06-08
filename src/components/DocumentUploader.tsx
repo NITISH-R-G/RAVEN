@@ -39,9 +39,10 @@ export const DocumentUploader: React.FC<DocumentUploaderProps> = ({ onDocumentIn
     const allowedExtensions = ['.pdf', '.png', '.jpg', '.jpeg', '.txt', '.docx'];
     const fileExt = file.name.substring(file.name.lastIndexOf('.')).toLowerCase();
 
+    const isImageRegex = /^image\//;
     if (
       !allowedExtensions.includes(fileExt) &&
-      !file.type.match('image/*') &&
+      !isImageRegex.exec(file.type) &&
       file.type !== 'application/pdf'
     ) {
       setErrorText('Unsupported document format. Please upload PDF, PNG, JPG, JPEG, TXT or DOCX.');
