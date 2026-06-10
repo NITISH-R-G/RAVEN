@@ -22,24 +22,8 @@ export default function IssueManagement({ data }: { data: any }) {
             <XAxis dataKey="date" stroke="#64748b" />
             <YAxis stroke="#64748b" />
             <Tooltip contentStyle={{ backgroundColor: '#1e293b', border: 'none' }} />
-            <Area
-              isAnimationActive={false}
-              type="monotone"
-              dataKey="open"
-              stroke="#ef4444"
-              fill="#ef4444"
-              fillOpacity={0.2}
-              name="Open Issues"
-            />
-            <Area
-              isAnimationActive={false}
-              type="monotone"
-              dataKey="closed"
-              stroke="#22c55e"
-              fill="#22c55e"
-              fillOpacity={0.2}
-              name="Closed Issues"
-            />
+            <Area isAnimationActive={false} type="monotone" dataKey="open" stroke="#ef4444" fill="#ef4444" fillOpacity={0.2} name="Open Issues" />
+            <Area isAnimationActive={false} type="monotone" dataKey="closed" stroke="#22c55e" fill="#22c55e" fillOpacity={0.2} name="Closed Issues" />
           </AreaChart>
         </ResponsiveContainer>
       </div>

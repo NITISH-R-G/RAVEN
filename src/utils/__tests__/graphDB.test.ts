@@ -22,7 +22,7 @@ describe('GraphDatabase.findFraudRings', () => {
     expect(reports[0].title).toBe('Multi-Identity Hardware Collision Ring');
     expect(reports[0].severity).toBe('high');
 
-    const stepIds = reports[0].steps.map((s) => s.nodeId);
+    const stepIds = reports[0].steps.map(s => s.nodeId);
     expect(stepIds).toContain('device_1');
     expect(stepIds).toContain('person_1');
     expect(stepIds).toContain('person_2');
@@ -47,7 +47,7 @@ describe('GraphDatabase.findFraudRings', () => {
     expect(reports[0].title).toBe('Concurrent Multi-Lien Collusion Ring');
     expect(reports[0].severity).toBe('high');
 
-    const stepIds = reports[0].steps.map((s) => s.nodeId);
+    const stepIds = reports[0].steps.map(s => s.nodeId);
     expect(stepIds).toContain('prop_flat402');
     expect(stepIds).toContain('person_3');
     expect(stepIds).toContain('person_4');
@@ -204,7 +204,7 @@ describe('GraphDatabase.findFraudRings', () => {
     // So person_18 WILL detect employer_4 at depth 1.
     // We only care that person_15 DOES NOT detect employer_4.
     // We can verify this by checking that no report has person_15 as the starting node.
-    const reportsForPerson15 = reports.filter((r) => r.steps[0].nodeId === 'person_15');
+    const reportsForPerson15 = reports.filter(r => r.steps[0].nodeId === 'person_15');
     expect(reportsForPerson15.length).toBe(0);
 
     // person_18 will detect it because it's distance 1.
@@ -222,12 +222,7 @@ describe('GraphDatabase.findFraudRings', () => {
     const edges: GraphEdge[] = [
       { source: 'device_ok', target: 'person_ok', relationship: 'used_by', status: 'neutral' },
       { source: 'person_ok', target: 'prop_ok', relationship: 'owns', status: 'neutral' },
-      {
-        source: 'person_ok',
-        target: 'employer_ok',
-        relationship: 'employed_by',
-        status: 'neutral',
-      },
+      { source: 'person_ok', target: 'employer_ok', relationship: 'employed_by', status: 'neutral' },
     ];
 
     const db = new GraphDatabase(nodes, edges);

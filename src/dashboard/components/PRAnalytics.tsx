@@ -26,20 +26,8 @@ export default function PRAnalytics({ data }: { data: any }) {
             <XAxis dataKey="date" stroke="#64748b" />
             <YAxis stroke="#64748b" />
             <Tooltip contentStyle={{ backgroundColor: '#1e293b', border: 'none' }} />
-            <Bar
-              isAnimationActive={false}
-              dataKey="merged"
-              stackId="a"
-              fill="#6366f1"
-              name="Merged"
-            />
-            <Bar
-              isAnimationActive={false}
-              dataKey="opened"
-              stackId="a"
-              fill="#94a3b8"
-              name="Opened"
-            />
+            <Bar isAnimationActive={false} dataKey="merged" stackId="a" fill="#6366f1" name="Merged" />
+            <Bar isAnimationActive={false} dataKey="opened" stackId="a" fill="#94a3b8" name="Opened" />
           </BarChart>
         </ResponsiveContainer>
       </div>

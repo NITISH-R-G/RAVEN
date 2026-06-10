@@ -11,13 +11,11 @@ export default function ExecutiveOverview({ data }: { data: any }) {
           { label: 'Overall Health', value: data.overallScore },
           { label: 'Engineering Quality', value: data.engineeringScore },
           { label: 'Security Score', value: data.securityScore },
-          { label: 'Maintainability', value: data.maintainabilityScore },
-        ].map((item) => (
+          { label: 'Maintainability', value: data.maintainabilityScore }
+        ].map(item => (
           <div key={item.label} className="bg-slate-800 p-4 rounded-lg">
             <div className="text-sm text-slate-400">{item.label}</div>
-            <div
-              className={`text-3xl font-bold ${item.value > 80 ? 'text-green-400' : 'text-yellow-400'}`}
-            >
+            <div className={`text-3xl font-bold ${item.value > 80 ? 'text-green-400' : 'text-yellow-400'}`}>
               {item.value}
             </div>
           </div>
@@ -29,13 +27,7 @@ export default function ExecutiveOverview({ data }: { data: any }) {
             <XAxis dataKey="date" stroke="#64748b" />
             <YAxis stroke="#64748b" />
             <Tooltip contentStyle={{ backgroundColor: '#1e293b', border: 'none' }} />
-            <Line
-              isAnimationActive={false}
-              type="monotone"
-              dataKey="score"
-              stroke="#818cf8"
-              strokeWidth={2}
-            />
+            <Line isAnimationActive={false} type="monotone" dataKey="score" stroke="#818cf8" strokeWidth={2} />
           </LineChart>
         </ResponsiveContainer>
       </div>

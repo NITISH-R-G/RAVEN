@@ -22,13 +22,7 @@ export default function PerformanceMonitoring({ data }: { data: any }) {
             <XAxis dataKey="date" stroke="#64748b" />
             <YAxis stroke="#64748b" />
             <Tooltip contentStyle={{ backgroundColor: '#1e293b', border: 'none' }} />
-            <Line
-              isAnimationActive={false}
-              type="monotone"
-              dataKey="buildTime"
-              stroke="#14b8a6"
-              name="Build Time (s)"
-            />
+            <Line isAnimationActive={false} type="monotone" dataKey="buildTime" stroke="#14b8a6" name="Build Time (s)" />
           </LineChart>
         </ResponsiveContainer>
       </div>

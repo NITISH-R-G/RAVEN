@@ -48,7 +48,7 @@ export default tseslint.config(
       'sonarjs/concise-regex': 'warn',
       'sonarjs/deprecation': 'warn',
       'sonarjs/no-ignored-exceptions': 'warn',
-      'react/no-unescaped-entities': 'warn',
+      "react/no-unescaped-entities": "off",
       'sonarjs/duplicates-in-character-class': 'warn',
       'sonarjs/slow-regex': 'warn',
     },
