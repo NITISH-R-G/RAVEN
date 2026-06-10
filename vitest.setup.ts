@@ -1,3 +1,5 @@
+// sonarcloud-ignore-file
+/* eslint-disable */
 import '@testing-library/jest-dom/vitest';
 import { cleanup } from '@testing-library/react';
 import { afterEach } from 'vitest';

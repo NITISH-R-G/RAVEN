@@ -2,6 +2,7 @@ import express from 'express';
 import path from 'path';
 import { createServer as createViteServer } from 'vite';
 import dotenv from 'dotenv';
+import rateLimit from 'express-rate-limit';
 
 import router from './src/server/routes.js';
 
@@ -12,6 +13,16 @@ const app = express();
 const PORT = 3000;
 
 app.use(express.json());
+
+// Set up rate limiter: maximum of 100 requests per 15 minutes
+const limiter = rateLimit({
+  windowMs: 15 * 60 * 1000, // 15 minutes
+  max: 100, // limit each IP to 100 requests per windowMs
+  message: 'Too many requests from this IP, please try again after 15 minutes'
+});
+
+// Apply rate limiter to all requests
+app.use(limiter);
 
 // Apply routes
 app.use(router);

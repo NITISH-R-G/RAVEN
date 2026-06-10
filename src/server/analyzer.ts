@@ -8,15 +8,13 @@ import {
   TamperedSignature,
 } from '../types.js';
 
-const NAME_REGEX = /(?:NAME|Name|APPLICANT|Applicant|Owner|OWNER):\s*([A-Za-z ]+)/gi;
-const PAN_REGEX = /(?:PAN|PAN card|PAN):\s*([A-Z0-9]+)/gi;
-const FP_REGEX = /(?:device|fingerprint|fp-)\s*(?:ID|id)?:?\s*([a-fA-F0-9-]+)/gi;
-const EMP_REGEX = /(?:EMPLOYER|Employer|Company|COMPANY):\s*([A-Za-z0-9 ]+)/gi;
-const ADDR_REGEX = /(?:ADDRESS|Address|PROPERTY|Property|Flat|FLAT):\s*([A-Za-z0-9 ,.-]+)/gi;
-const ITR_REGEX =
-  /(?:TOTAL INCOME|GROSS INCOME|TAXABLE INCOME|INCOME|GTI):\s*(?:INR|₹)? *(?:[0-9,.]+)/i;
-const SAL_REGEX =
-  /(?:GROSS SALARY|NET SALARY|NET PAYABLE|PAYABLE|SALARY):\s*(?:INR|₹)? *(?:[0-9,.]+)/i;
+const NAME_REGEX = /(?:NAME|APPLICANT|OWNER):\s*([A-Za-z ]+)/gi;
+const PAN_REGEX = /(?:PAN(?: card)?):\s*([A-Z0-9]+)/gi;
+const FP_REGEX = /(?:device|fingerprint|fp-)(?:\s*(?:ID|id))?:?\s*([a-fA-F0-9-]+)/gi;
+const EMP_REGEX = /(?:EMPLOYER|COMPANY):\s*([A-Za-z0-9 ]+)/gi;
+const ADDR_REGEX = /(?:ADDRESS|PROPERTY|FLAT):\s*([A-Za-z0-9 ,.-]+)/gi;
+const ITR_REGEX = /(?:TOTAL INCOME|GROSS INCOME|TAXABLE INCOME|INCOME|GTI):(?:\s*(?:INR|₹))?\s*([0-9,.]+)/i;
+const SAL_REGEX = /(?:GROSS SALARY|NET SALARY|NET PAYABLE|PAYABLE|SALARY):(?:\s*(?:INR|₹))?\s*([0-9,.]+)/i;
 
 export function analyzeDocumentsDynamically(documents: DocumentItem[]): AnalysisResult {
   const contradictions: Contradiction[] = [];
@@ -26,9 +24,8 @@ export function analyzeDocumentsDynamically(documents: DocumentItem[]): Analysis
   const tamperedSignatures: TamperedSignature[] = [];
 
   let score = 12;
-  let verdict: 'HIGH RISK' | 'MEDIUM RISK' | 'LOW RISK' = 'LOW RISK';
-  let summary =
-    'Relational sweep successful: Workspace files are digitally sound and structurally aligned on all checks.';
+  let verdict: 'HIGH RISK' | 'MEDIUM RISK' | 'LOW RISK' | undefined;
+  let summary: string | undefined;
 
   let itrGross = 0;
   let salaryMonthly = 0;
@@ -115,13 +112,13 @@ export function analyzeDocumentsDynamically(documents: DocumentItem[]): Analysis
 
     // Parse Financial statements values
     if (type === 'ITR') {
-      const itrMatches = text.match(ITR_REGEX);
+      const itrMatches = ITR_REGEX.exec(text);
       if (itrMatches) {
         itrGross = parseInt(itrMatches[1].replace(/,/g, ''), 10);
       }
     }
     if (type === 'SALARY_SLIP') {
-      const salMatches = text.match(SAL_REGEX);
+      const salMatches = SAL_REGEX.exec(text);
       if (salMatches) {
         salaryMonthly = parseInt(salMatches[1].replace(/,/g, ''), 10);
         salaryAnnualized = salaryMonthly * 12;
@@ -350,6 +347,9 @@ export function analyzeDocumentsDynamically(documents: DocumentItem[]): Analysis
     score > 60
       ? 'Section 45IA Alert: Cross-document credit anomalies represent structural declaration non-compliance.'
       : 'Transaction structures fully conform to RBI guidelines.';
+
+  verdict = verdict || 'LOW RISK';
+  summary = summary || 'Relational sweep successful: Workspace files are digitally sound and structurally aligned on all checks.';
 
   return {
     score,

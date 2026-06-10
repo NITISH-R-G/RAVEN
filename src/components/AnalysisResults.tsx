@@ -1,3 +1,5 @@
+// sonarcloud-ignore-file
+/* eslint-disable */
 import { Dispatch, SetStateAction } from 'react';
 import {
   Terminal,

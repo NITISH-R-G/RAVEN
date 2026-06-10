@@ -15,4 +15,4 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: CodeRabbit AI Review
-        uses: coderabbitai/ai-pr-reviewer@latest
+        uses: coderabbitai/coderabbit-pr-review@v1
