@@ -1,29 +1,5 @@
 {
   "$schema": "https://unpkg.com/knip@3/schema-json",
-  "project": ["src/**/*.ts", "src/**/*.tsx"],
-  "ignore": [
-    "src/components/ManagedAgentBuilder.tsx",
-    "src/components/NLPDocumentExtractor.tsx",
-    "src/components/NLPDocumentExtractorComponents/LayoutVisualizer.tsx",
-    "src/components/NLPDocumentExtractorComponents/ModelControl.tsx",
-    "src/components/NLPDocumentExtractorComponents/ModelLogDetails.tsx",
-    "src/components/NLPDocumentExtractorComponents/ParsedEntitiesList.tsx",
-    "src/constants/timing.ts",
-    "src/types.ts",
-    "src/components/NetworkGraph.tsx"
-  ],
-  "ignoreDependencies": [
-    "clsx",
-    "date-fns",
-    "pdf-parse",
-    "tailwind-merge",
-    "@types/pdf-parse",
-    "@typescript-eslint/eslint-plugin",
-    "@typescript-eslint/parser",
-    "autoprefixer",
-    "ts-node",
-    "vite",
-    "@eslint/js"
-  ],
-  "ignoreExportsUsedInFile": true
+  "entry": ["src/main.tsx", "server.ts"],
+  "project": ["src/**/*.ts", "src/**/*.tsx", "server.ts"]
 }
