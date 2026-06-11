@@ -224,8 +224,6 @@ export default function App() {
     triggerVerification(updatedDocs, browserFingerprint?.id);
   };
 
-  const activeDocObj = documentsState.find((d) => d.id === activeDocTab);
-
   return (
     <div className="min-h-screen lg:h-screen lg:overflow-hidden bg-[#0A0A0B] text-slate-350 flex flex-col font-sans selection:bg-indigo-500/30 selection:text-white">
       <Header browserFingerprint={browserFingerprint} />
