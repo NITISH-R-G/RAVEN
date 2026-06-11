@@ -45,115 +45,119 @@ export function analyzeDocumentsDynamically(documents: DocumentItem[]): Analysis
   const items = documents || [];
 
   items.forEach((doc) => {
-    const text = doc.content || '';
-    const type = doc.type || 'OTHER';
+    try {
+      const text = String(doc.content || '');
+      const type = doc.type || 'OTHER';
 
-    // Parse Names
-    const nameMatches = text.match(NAME_REGEX);
-    if (nameMatches) {
-      nameMatches.forEach((m) => {
-        const val = m.split(':')[1]?.trim();
-        if (val && val.length > 3) {
-          people.add(val);
-          extractedEntities.push({ entity: val, value: `${type} Signee`, docType: type });
-        }
-      });
-    }
-
-    // Parse PAN / Tax identifiers
-    const panMatches = text.match(PAN_REGEX);
-    if (panMatches) {
-      panMatches.forEach((m) => {
-        const val = m.split(':')[1]?.trim();
-        if (val && val.length > 5) {
-          extractedEntities.push({ entity: val, value: `Tax PAN ID`, docType: type });
-        }
-      });
-    }
-
-    // Parse Device Fingerprints
-    const fpMatches = text.match(FP_REGEX);
-    if (fpMatches) {
-      fpMatches.forEach((m) => {
-        const parts = m.split(':');
-        const val = (parts.length > 1 ? parts[1] : m)
-          .replace(/device/i, '')
-          .replace(/id/i, '')
-          .replace(/fingerprint/i, '')
-          .replace(/=/g, '')
-          .trim();
-        if (val && val.length > 4) {
-          devices.add(val);
-        }
-      });
-    }
-
-    // Parse Employers
-    const empMatches = text.match(EMP_REGEX);
-    if (empMatches) {
-      empMatches.forEach((m) => {
-        const val = m.split(':')[1]?.trim();
-        if (val && val.length > 3) {
-          employers.add(val);
-          if (type === 'ITR') itrEmployer = val;
-          if (type === 'SALARY_SLIP') salaryEmployer = val;
-        }
-      });
-    }
-
-    // Parse Addresses
-    const addrMatches = text.match(ADDR_REGEX);
-    if (addrMatches) {
-      addrMatches.forEach((m) => {
-        const val = m.split(':')[1]?.trim();
-        if (val && val.length > 8) {
-          const shortAddr = val.split(',')[0].trim() || val;
-          addresses.add(shortAddr);
-        }
-      });
-    }
-
-    // Parse Financial statements values
-    if (type === 'ITR') {
-      const itrMatches = text.match(ITR_REGEX);
-      if (itrMatches) {
-        itrGross = parseInt(itrMatches[1].replace(/,/g, ''), 10);
+      // Parse Names
+      const nameMatches = text.match(NAME_REGEX);
+      if (nameMatches) {
+        nameMatches.forEach((m) => {
+          const val = m.split(':')[1]?.trim();
+          if (val && val.length > 3) {
+            people.add(val);
+            extractedEntities.push({ entity: val, value: `${type} Signee`, docType: type });
+          }
+        });
       }
-    }
-    if (type === 'SALARY_SLIP') {
-      const salMatches = text.match(SAL_REGEX);
-      if (salMatches) {
-        salaryMonthly = parseInt(salMatches[1].replace(/,/g, ''), 10);
-        salaryAnnualized = salaryMonthly * 12;
+
+      // Parse PAN / Tax identifiers
+      const panMatches = text.match(PAN_REGEX);
+      if (panMatches) {
+        panMatches.forEach((m) => {
+          const val = m.split(':')[1]?.trim();
+          if (val && val.length > 5) {
+            extractedEntities.push({ entity: val, value: `Tax PAN ID`, docType: type });
+          }
+        });
       }
-    }
 
-    // Verify EXIF author fields
-    const author = doc.metadata?.authorTool || '';
-    const dpi = doc.metadata?.dpiCheck || '';
+      // Parse Device Fingerprints
+      const fpMatches = text.match(FP_REGEX);
+      if (fpMatches) {
+        fpMatches.forEach((m) => {
+          const parts = m.split(':');
+          const val = (parts.length > 1 ? parts[1] : m)
+            .replace(/device/i, '')
+            .replace(/id/i, '')
+            .replace(/fingerprint/i, '')
+            .replace(/=/g, '')
+            .trim();
+          if (val && val.length > 4) {
+            devices.add(val);
+          }
+        });
+      }
 
-    if (text.includes('Canva') || author.includes('Canva')) {
-      tamperedSignatures.push({
-        signature: 'Canva Pro Template Mark',
-        confidence: 92,
-        explanation:
-          'Document elements align with Canva design exports instead of certified payroll system prints.',
-      });
-    }
-    if (text.includes('Photoshop') || author.includes('Photoshop')) {
-      tamperedSignatures.push({
-        signature: 'Adobe Photoshop CC adjustment layers',
-        confidence: 96,
-        explanation:
-          'EXIF contains raster modifying traces indicating coordinate table graphics manipulation.',
-      });
-    }
-    if (dpi && (dpi.includes('96') || dpi.includes('72'))) {
-      tamperedSignatures.push({
-        signature: 'Low Resolution Raster Anomaly',
-        confidence: 85,
-        explanation: `Raster mapped at a low ${dpi} rendering. Certified original financial vectors exceed 300 DPI.`,
-      });
+      // Parse Employers
+      const empMatches = text.match(EMP_REGEX);
+      if (empMatches) {
+        empMatches.forEach((m) => {
+          const val = m.split(':')[1]?.trim();
+          if (val && val.length > 3) {
+            employers.add(val);
+            if (type === 'ITR') itrEmployer = val;
+            if (type === 'SALARY_SLIP') salaryEmployer = val;
+          }
+        });
+      }
+
+      // Parse Addresses
+      const addrMatches = text.match(ADDR_REGEX);
+      if (addrMatches) {
+        addrMatches.forEach((m) => {
+          const val = m.split(':')[1]?.trim();
+          if (val && val.length > 8) {
+            const shortAddr = val.split(',')[0].trim() || val;
+            addresses.add(shortAddr);
+          }
+        });
+      }
+
+      // Parse Financial statements values
+      if (type === 'ITR') {
+        const itrMatches = text.match(ITR_REGEX);
+        if (itrMatches) {
+          itrGross = parseInt(itrMatches[1].replace(/,/g, ''), 10);
+        }
+      }
+      if (type === 'SALARY_SLIP') {
+        const salMatches = text.match(SAL_REGEX);
+        if (salMatches) {
+          salaryMonthly = parseInt(salMatches[1].replace(/,/g, ''), 10);
+          salaryAnnualized = salaryMonthly * 12;
+        }
+      }
+
+      // Verify EXIF author fields
+      const author = doc.metadata?.authorTool || '';
+      const dpi = doc.metadata?.dpiCheck || '';
+
+      if (text.includes('Canva') || author.includes('Canva')) {
+        tamperedSignatures.push({
+          signature: 'Canva Pro Template Mark',
+          confidence: 92,
+          explanation:
+            'Document elements align with Canva design exports instead of certified payroll system prints.',
+        });
+      }
+      if (text.includes('Photoshop') || author.includes('Photoshop')) {
+        tamperedSignatures.push({
+          signature: 'Adobe Photoshop CC adjustment layers',
+          confidence: 96,
+          explanation:
+            'EXIF contains raster modifying traces indicating coordinate table graphics manipulation.',
+        });
+      }
+      if (dpi && (dpi.includes('96') || dpi.includes('72'))) {
+        tamperedSignatures.push({
+          signature: 'Low Resolution Raster Anomaly',
+          confidence: 85,
+          explanation: `Raster mapped at a low ${dpi} rendering. Certified original financial vectors exceed 300 DPI.`,
+        });
+      }
+    } catch (error) {
+      console.error(`[RAVEN] Error extracting entities from document: ${error}`);
     }
   });
 

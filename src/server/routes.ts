@@ -142,6 +142,13 @@ router.post('/api/analyze', analyzeLimiter, upload.array('files'), async (req, r
     } else {
       documents = Array.isArray(req.body.documents) ? req.body.documents : [];
     }
+
+    // Explicitly validate shape to prevent type confusion vulnerabilities from invalid API payloads
+    documents = documents.map(doc => ({
+      ...doc,
+      content: String(doc.content || ''),
+      type: doc.type || 'OTHER'
+    }));
   }
 
   // Inject client fingerprint logs if any matching context is available
