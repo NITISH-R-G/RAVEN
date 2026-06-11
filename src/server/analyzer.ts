@@ -10,13 +10,13 @@ import {
 
 const NAME_REGEX = /(?:NAME|Name|APPLICANT|Applicant|Owner|OWNER):\s*([A-Za-z ]+)/gi;
 const PAN_REGEX = /(?:PAN|PAN card|PAN):\s*([A-Z0-9]+)/gi;
-const FP_REGEX = /(?:device|fingerprint|fp-)\s*(?:ID|id)?:?\s*([a-fA-F0-9-]+)/gi;
+const FP_REGEX = /(?:device|fingerprint|fp-)\s*(?:ID|id)?:?\s+([a-fA-F0-9-]+)/gi;
 const EMP_REGEX = /(?:EMPLOYER|Employer|Company|COMPANY):\s*([A-Za-z0-9 ]+)/gi;
 const ADDR_REGEX = /(?:ADDRESS|Address|PROPERTY|Property|Flat|FLAT):\s*([A-Za-z0-9 ,.-]+)/gi;
 const ITR_REGEX =
-  /(?:TOTAL INCOME|GROSS INCOME|TAXABLE INCOME|INCOME|GTI):\s*(?:INR|₹)? *(?:[0-9,.]+)/i;
+  /(?:TOTAL INCOME|GROSS INCOME|TAXABLE INCOME|INCOME|GTI):\s*(?:INR|₹)?\s*([0-9,.]+)/i;
 const SAL_REGEX =
-  /(?:GROSS SALARY|NET SALARY|NET PAYABLE|PAYABLE|SALARY):\s*(?:INR|₹)? *(?:[0-9,.]+)/i;
+  /(?:GROSS SALARY|NET SALARY|NET PAYABLE|PAYABLE|SALARY):\s*(?:INR|₹)?\s*([0-9,.]+)/i;
 
 export function analyzeDocumentsDynamically(documents: DocumentItem[]): AnalysisResult {
   const contradictions: Contradiction[] = [];
@@ -116,14 +116,14 @@ export function analyzeDocumentsDynamically(documents: DocumentItem[]): Analysis
 
       // Parse Financial statements values
       if (type === 'ITR') {
-        const itrMatches = text.match(ITR_REGEX);
-        if (itrMatches) {
+        const itrMatches = ITR_REGEX.exec(text);
+        if (itrMatches && itrMatches[1]) {
           itrGross = parseInt(itrMatches[1].replace(/,/g, ''), 10);
         }
       }
       if (type === 'SALARY_SLIP') {
-        const salMatches = text.match(SAL_REGEX);
-        if (salMatches) {
+        const salMatches = SAL_REGEX.exec(text);
+        if (salMatches && salMatches[1]) {
           salaryMonthly = parseInt(salMatches[1].replace(/,/g, ''), 10);
           salaryAnnualized = salaryMonthly * 12;
         }

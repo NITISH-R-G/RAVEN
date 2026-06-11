@@ -2,20 +2,13 @@ import React, { useState } from 'react';
 import { COPY_FEEDBACK_DURATION_MS } from '../constants/timing';
 import {
   Sparkles,
-  Cpu,
   Code,
   Settings,
-  FileText,
   Terminal,
   Play,
   Copy,
   Check,
-  BookOpen,
-  ExternalLink,
-  ShieldAlert,
-  Sliders,
   HelpCircle,
-  Network,
   RefreshCw,
 } from 'lucide-react';
 

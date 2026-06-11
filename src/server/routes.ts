@@ -144,10 +144,10 @@ router.post('/api/analyze', analyzeLimiter, upload.array('files'), async (req, r
     }
 
     // Explicitly validate shape to prevent type confusion vulnerabilities from invalid API payloads
-    documents = documents.map(doc => ({
+    documents = documents.map((doc) => ({
       ...doc,
       content: String(doc.content || ''),
-      type: doc.type || 'OTHER'
+      type: doc.type || 'OTHER',
     }));
   }
 

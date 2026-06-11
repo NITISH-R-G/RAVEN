@@ -27,7 +27,6 @@ export const NetworkGraph: React.FC<NetworkGraphProps> = ({ nodes, edges, onSele
 
     const width = 600;
     const height = 400;
-    const padding = 60;
     const newCoords: { [key: string]: { x: number; y: number } } = {};
 
     // Center principal node if possible (like an applicant or target property)
@@ -215,7 +214,6 @@ export const NetworkGraph: React.FC<NetworkGraphProps> = ({ nodes, edges, onSele
               const coord = coords[node.id];
               if (!coord) return null;
 
-              const style = getNodeColorClass(node.status);
               const isSelected = selectedNodeId === node.id;
               const isFlagged = node.status === 'flagged';
 

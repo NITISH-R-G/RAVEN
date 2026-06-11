@@ -1,14 +1,11 @@
-import { Terminal, Check, RefreshCw, Activity } from "lucide-react";
+import { Terminal, Check, RefreshCw, Activity } from 'lucide-react';
 
 interface AgenticSweepProgressProps {
   readonly activeStageId: number;
   readonly stageOutputs: { readonly [key: number]: string };
 }
 
-export function AgenticSweepProgress({
-  activeStageId,
-  stageOutputs,
-}: AgenticSweepProgressProps) {
+export function AgenticSweepProgress({ activeStageId, stageOutputs }: AgenticSweepProgressProps) {
   return (
     <div className="bg-[#161618] border border-white/5 rounded-xl p-6 flex flex-col gap-6 min-h-[540px]">
       <div className="border-b border-white/5 pb-3 flex justify-between items-center">
@@ -28,23 +25,23 @@ export function AgenticSweepProgress({
         {[
           {
             id: 1,
-            title: "Layer 1 — Document Ingestion & Optical Scan",
-            desc: "Verifies digital coordinates, raster anomalies & fonts integration.",
+            title: 'Layer 1 — Document Ingestion & Optical Scan',
+            desc: 'Verifies digital coordinates, raster anomalies & fonts integration.',
           },
           {
             id: 2,
-            title: "Layer 2 — Cross-Document Coherence Engine",
-            desc: "Crosschecks financial claims, employer registration indexes & dates.",
+            title: 'Layer 2 — Cross-Document Coherence Engine',
+            desc: 'Crosschecks financial claims, employer registration indexes & dates.',
           },
           {
             id: 3,
-            title: "Layer 3 — Fraud Ring Connection Topography",
-            desc: "Extracts logical nodes and checks shared identifiers/crossovers.",
+            title: 'Layer 3 — Fraud Ring Connection Topography',
+            desc: 'Extracts logical nodes and checks shared identifiers/crossovers.',
           },
           {
             id: 4,
-            title: "Layer 4 — Compliance Case Compilation",
-            desc: "Applies regulatory compliance weights and drafts actionable directives.",
+            title: 'Layer 4 — Compliance Case Compilation',
+            desc: 'Applies regulatory compliance weights and drafts actionable directives.',
           },
         ].map((step) => {
           const isActive = activeStageId === step.id;
@@ -71,19 +68,19 @@ export function AgenticSweepProgress({
             );
           }
 
-          let titleColor = "text-slate-500";
+          let titleColor = 'text-slate-500';
           if (isActive) {
-            titleColor = "text-indigo-300";
+            titleColor = 'text-indigo-300';
           } else if (isDone) {
-            titleColor = "text-emerald-400";
+            titleColor = 'text-emerald-400';
           }
 
-          let bgColor = "bg-black/20 border-white/5 opacity-40 select-none";
+          let bgColor = 'bg-black/20 border-white/5 opacity-40 select-none';
           if (isActive) {
             bgColor =
-              "bg-indigo-950/15 border-indigo-500/40 shadow-md shadow-indigo-950/30 ring-1 ring-indigo-500/20";
+              'bg-indigo-950/15 border-indigo-500/40 shadow-md shadow-indigo-950/30 ring-1 ring-indigo-500/20';
           } else if (isDone) {
-            bgColor = "bg-[#0A0A0B]/40 border-emerald-500/20";
+            bgColor = 'bg-[#0A0A0B]/40 border-emerald-500/20';
           }
 
           return (
@@ -95,9 +92,7 @@ export function AgenticSweepProgress({
                 <div className="flex items-center gap-2.5">
                   {iconContent}
                   <div>
-                    <h4
-                      className={`text-xs font-bold font-mono leading-none ${titleColor}`}
-                    >
+                    <h4 className={`text-xs font-bold font-mono leading-none ${titleColor}`}>
                       {step.title}
                     </h4>
                     <p className="text-[10px] text-slate-500 font-sans mt-1 leading-normal">

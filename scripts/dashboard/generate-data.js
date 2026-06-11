@@ -1,3 +1,4 @@
+/* eslint-env node */
 import fs from 'fs';
 import path from 'path';
 import { execSync } from 'child_process';
@@ -134,8 +135,8 @@ async function gatherMetrics() {
   try {
     const gitLog = execSync('git log -1 --format="%cd"').toString().trim();
     console.log('Last commit date:', gitLog);
-  } catch (e) {
-    console.log('Git command failed, using mock data.');
+  } catch (error) {
+    console.log('Git command failed, using mock data.', error.message);
   }
 
   // Attempt AI generation if key is present
@@ -163,8 +164,11 @@ async function gatherMetrics() {
       if (aiResponse.summary && aiResponse.actionItems && aiResponse.positiveTrends) {
         data.aiInsights = aiResponse;
       }
-    } catch (e) {
-      console.error('AI Insight generation failed, falling back to static insights:', e.message);
+    } catch (error) {
+      console.error(
+        'AI Insight generation failed, falling back to static insights:',
+        error.message,
+      );
     }
   } else {
     console.log('GEMINI_API_KEY not found, skipping live AI generation.');
