@@ -44,73 +44,53 @@ export function analyzeDocumentsDynamically(documents: DocumentItem[]): Analysis
 
   const items = documents || [];
 
-  items.forEach((doc) => {
+  for (const doc of items) {
     const text = doc.content || '';
     const type = doc.type || 'OTHER';
 
     // Parse Names
-    const nameMatches = text.match(NAME_REGEX);
-    if (nameMatches) {
-      nameMatches.forEach((m) => {
-        const val = m.split(':')[1]?.trim();
-        if (val && val.length > 3) {
-          people.add(val);
-          extractedEntities.push({ entity: val, value: `${type} Signee`, docType: type });
-        }
-      });
+    for (const m of text.match(NAME_REGEX) || []) {
+      const val = m.split(':')[1]?.trim();
+      if (!val || val.length <= 3) continue;
+      people.add(val);
+      extractedEntities.push({ entity: val, value: `${type} Signee`, docType: type });
     }
 
     // Parse PAN / Tax identifiers
-    const panMatches = text.match(PAN_REGEX);
-    if (panMatches) {
-      panMatches.forEach((m) => {
-        const val = m.split(':')[1]?.trim();
-        if (val && val.length > 5) {
-          extractedEntities.push({ entity: val, value: `Tax PAN ID`, docType: type });
-        }
-      });
+    for (const m of text.match(PAN_REGEX) || []) {
+      const val = m.split(':')[1]?.trim();
+      if (!val || val.length <= 5) continue;
+      extractedEntities.push({ entity: val, value: `Tax PAN ID`, docType: type });
     }
 
     // Parse Device Fingerprints
-    const fpMatches = text.match(FP_REGEX);
-    if (fpMatches) {
-      fpMatches.forEach((m) => {
-        const parts = m.split(':');
-        const val = (parts.length > 1 ? parts[1] : m)
-          .replace(/device/i, '')
-          .replace(/id/i, '')
-          .replace(/fingerprint/i, '')
-          .replace(/=/g, '')
-          .trim();
-        if (val && val.length > 4) {
-          devices.add(val);
-        }
-      });
+    for (const m of text.match(FP_REGEX) || []) {
+      const parts = m.split(':');
+      const val = (parts.length > 1 ? parts[1] : m)
+        .replace(/device/i, '')
+        .replace(/id/i, '')
+        .replace(/fingerprint/i, '')
+        .replace(/=/g, '')
+        .trim();
+      if (!val || val.length <= 4) continue;
+      devices.add(val);
     }
 
     // Parse Employers
-    const empMatches = text.match(EMP_REGEX);
-    if (empMatches) {
-      empMatches.forEach((m) => {
-        const val = m.split(':')[1]?.trim();
-        if (val && val.length > 3) {
-          employers.add(val);
-          if (type === 'ITR') itrEmployer = val;
-          if (type === 'SALARY_SLIP') salaryEmployer = val;
-        }
-      });
+    for (const m of text.match(EMP_REGEX) || []) {
+      const val = m.split(':')[1]?.trim();
+      if (!val || val.length <= 3) continue;
+      employers.add(val);
+      if (type === 'ITR') itrEmployer = val;
+      if (type === 'SALARY_SLIP') salaryEmployer = val;
     }
 
     // Parse Addresses
-    const addrMatches = text.match(ADDR_REGEX);
-    if (addrMatches) {
-      addrMatches.forEach((m) => {
-        const val = m.split(':')[1]?.trim();
-        if (val && val.length > 8) {
-          const shortAddr = val.split(',')[0].trim() || val;
-          addresses.add(shortAddr);
-        }
-      });
+    for (const m of text.match(ADDR_REGEX) || []) {
+      const val = m.split(':')[1]?.trim();
+      if (!val || val.length <= 8) continue;
+      const shortAddr = val.split(',')[0].trim() || val;
+      addresses.add(shortAddr);
     }
 
     // Parse Financial statements values
@@ -155,24 +135,24 @@ export function analyzeDocumentsDynamically(documents: DocumentItem[]): Analysis
         explanation: `Raster mapped at a low ${dpi} rendering. Certified original financial vectors exceed 300 DPI.`,
       });
     }
-  });
+  }
 
   // Real-time comparative logic
   if (itrEmployer && salaryEmployer) {
     const lowerItrEmployer = itrEmployer.toLowerCase();
     const lowerSalaryEmployer = salaryEmployer.toLowerCase();
-    if (lowerItrEmployer !== lowerSalaryEmployer) {
-      if (
-        !lowerItrEmployer.includes(lowerSalaryEmployer) &&
-        !lowerSalaryEmployer.includes(lowerItrEmployer)
-      ) {
-        contradictions.push({
-          title: 'Employer Brand Identification Conflict',
-          severity: 'medium',
-          description: `Government tax filings register '${itrEmployer}' as prime employer, but salary slip certifies payment from '${salaryEmployer}'. Signifies distinct discrepancies.`,
-          crossDocSource: 'ITR vs Salary Slip',
-        });
-      }
+
+    if (
+      lowerItrEmployer !== lowerSalaryEmployer &&
+      !lowerItrEmployer.includes(lowerSalaryEmployer) &&
+      !lowerSalaryEmployer.includes(lowerItrEmployer)
+    ) {
+      contradictions.push({
+        title: 'Employer Brand Identification Conflict',
+        severity: 'medium',
+        description: `Government tax filings register '${itrEmployer}' as prime employer, but salary slip certifies payment from '${salaryEmployer}'. Signifies distinct discrepancies.`,
+        crossDocSource: 'ITR vs Salary Slip',
+      });
     }
   }
 
